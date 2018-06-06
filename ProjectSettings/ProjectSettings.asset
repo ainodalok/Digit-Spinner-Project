@@ -136,7 +136,8 @@ PlayerSettings:
       depthFormat: 1
   protectGraphicsMemory: 0
   useHDRDisplay: 0
-  applicationIdentifier: {}
+  applicationIdentifier:
+    Android: com.FrostNovaInt.DigitSpinner
   buildNumber: {}
   AndroidBundleVersionCode: 1
   AndroidMinSdkVersion: 16
@@ -593,6 +594,6 @@ PlayerSettings:
   apiCompatibilityLevel: 2
   cloudProjectId: c1879b15-66c3-418e-92b7-8b152489ecca
   projectName: Digit Spinner
-  organizationId: 3d-games-studio
+  organizationId: 3d-games-studios
   cloudEnabled: 0
   enableNewInputSystem: 0
