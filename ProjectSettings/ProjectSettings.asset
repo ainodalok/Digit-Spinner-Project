@@ -586,7 +586,6 @@ PlayerSettings:
   switchAllowsRuntimeAddOnContentInstall: 0
   switchDataLossConfirmation: 0
   switchSupportedNpadStyles: 3
-  switchNativeFsCacheSize: 32
   switchSocketConfigEnabled: 0
   switchTcpInitialSendBufferSize: 32
   switchTcpInitialReceiveBufferSize: 64
@@ -820,7 +819,7 @@ PlayerSettings:
   apiCompatibilityLevel: 2
   cloudProjectId: c1879b15-66c3-418e-92b7-8b152489ecca
   projectName: Digit Spinner
-  organizationId: 3d-games-studios
+  organizationId: frost-nova-interactive
   cloudEnabled: 0
   enableNativePlatformBackendsForNewInputSystem: 0
   disableOldInputManagerSupport: 0

@@ -35,9 +35,9 @@ public class SceneLoadManager : MonoBehaviour
         }
         if (currentScene != null)
         {
-            findCameraInScene(currentScene).SetActive(false);
+            FindCameraInScene(currentScene).SetActive(false);
         }
-        findCameraInScene(sceneName).SetActive(true);
+        FindCameraInScene(sceneName).SetActive(true);
         SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetSceneByName(sceneName));
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
         if (currentScene != null)
@@ -47,7 +47,7 @@ public class SceneLoadManager : MonoBehaviour
         currentScene = sceneName;
     }
 
-    private GameObject findCameraInScene(string sceneName)
+    private GameObject FindCameraInScene(string sceneName)
     {
         GameObject[] gameObjects = SceneManager.GetSceneByName(sceneName).GetRootGameObjects();
         //GameObject camera = gameObjects.ToList().Find(g => g.name == "Main Camera");
