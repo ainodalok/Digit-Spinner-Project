@@ -38,7 +38,6 @@ public class SceneLoadManager : MonoBehaviour
             Util.FindGameObjectByName("Main Camera", currentScene).SetActive(false);
         }
         Util.FindGameObjectByName("Main Camera", sceneName).SetActive(true);
-        SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetSceneByName(sceneName));
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
         if (currentScene != null)
         {
