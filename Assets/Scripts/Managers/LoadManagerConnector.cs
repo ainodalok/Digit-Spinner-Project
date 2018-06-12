@@ -22,5 +22,5 @@ public class LoadManagerConnector : MonoBehaviour {
         {
             button.onClick.AddListener(() => LoaderScript.WrapLoadCoroutine("Menu"));
         }
-    }
+    } 
 }

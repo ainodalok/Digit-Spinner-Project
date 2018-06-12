@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
+using UnityEngine;
 
 public class BoardLogic {
-    public const int BOARD_SIZE = 9;
+    public const int BOARD_SIZE = 7;
     public const int PROPHECY_HEIGHT = 5;
 
     public int[][] activeTiles = new int[BOARD_SIZE][];
@@ -81,7 +82,7 @@ public class BoardLogic {
     */
     private int TryMove(int[][] temporaryTiles)
     {
-        List<int[]> tilesToRemove = MatchFinder.FindMatchingTiles(temporaryTiles);
+        List<Vector2Int> tilesToRemove = MatchFinder.FindMatchingTiles(temporaryTiles);
         int count = tilesToRemove.Count;
 
         if (count > 0)
@@ -97,7 +98,7 @@ public class BoardLogic {
      * Destroys tiles from activeTiles according to a list of arrays of tile coordinates
      * Fills the board in from the prophecyTiles and fills prophecyTiles with random numbers
      */
-    private void DestroyTiles(List<int[]> tiles)
+    private void DestroyTiles(List<Vector2Int> tiles)
     {
         do
         {
@@ -141,7 +142,7 @@ public class BoardLogic {
      */
     private void EnsureNoMatchOnStart()
     {
-        List<int[]> tilesToRemove = MatchFinder.FindMatchingTiles(activeTiles);
+        List<Vector2Int> tilesToRemove = MatchFinder.FindMatchingTiles(activeTiles);
 
         do
         {

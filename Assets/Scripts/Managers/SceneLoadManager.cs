@@ -35,9 +35,9 @@ public class SceneLoadManager : MonoBehaviour
         }
         if (currentScene != null)
         {
-            FindCameraInScene(currentScene).SetActive(false);
+            Util.FindGameObjectByName("Main Camera", currentScene).SetActive(false);
         }
-        FindCameraInScene(sceneName).SetActive(true);
+        Util.FindGameObjectByName("Main Camera", sceneName).SetActive(true);
         SceneManager.MoveGameObjectToScene(gameObject, SceneManager.GetSceneByName(sceneName));
         SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
         if (currentScene != null)
@@ -45,15 +45,6 @@ public class SceneLoadManager : MonoBehaviour
             SceneManager.UnloadSceneAsync(currentScene);
         }
         currentScene = sceneName;
-    }
-
-    private GameObject FindCameraInScene(string sceneName)
-    {
-        GameObject[] gameObjects = SceneManager.GetSceneByName(sceneName).GetRootGameObjects();
-        //GameObject camera = gameObjects.ToList().Find(g => g.name == "Main Camera");
-        GameObject camera = System.Array.Find<GameObject>(gameObjects, g => g.name == "Main Camera");
-
-        return camera;
     }
 
     // Reload the current scene

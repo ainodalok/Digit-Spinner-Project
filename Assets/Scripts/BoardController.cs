@@ -7,21 +7,23 @@ using TMPro;
 
 public class BoardController : MonoBehaviour {
     private BoardLogic boardLogic;
-    private GameObject board;
+    public GameObject tilePrefab;
 
 	// Use this for initialization
 	void Start () {
-        board = Util.FindGameObjectByName("Board");
         boardLogic = new BoardLogic();
 
-        for (int i = 0; i <= BoardLogic.BOARD_SIZE - 1; i++)
+        for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
         {
-            for (int j = 0; j <= BoardLogic.BOARD_SIZE - 1; j++)
+            for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
             {
-                GameObject tile = new GameObject();
-                tile.name = String.Format("Tile ({0}, {1})", i.ToString(), j.ToString());
-
-                TextMeshPro textMesh = tile.AddComponent<TextMeshPro>();
+                Vector2 position = new Vector2(i, j);
+                GameObject newTile = Instantiate(tilePrefab);
+                newTile.transform.SetParent(gameObject.transform);
+                newTile.name = String.Format("Tile ({0}, {1})", i, j);
+                newTile.transform.localPosition = position;
+                newTile.transform.rotation = Quaternion.identity;
+                newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = boardLogic.activeTiles[i][j].ToString();
             }
         }
 	}
@@ -30,9 +32,4 @@ public class BoardController : MonoBehaviour {
 	void Update () {
 		
 	}
-
-    private void CreateTextMesh(int x, int y, string text)
-    {
-
-    }
 }

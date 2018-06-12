@@ -2,18 +2,19 @@
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using UnityEngine;
 
 public class MatchFinder
 {
     //List of all found "matches" - sequences of 3 and more ascending tiles
-    static private List<List<int[]>> matchList;
+    static private List<List<Vector2Int>> matchList;
     //A match that is currently being added to and found new members for
-    static private List<int[]> currentMatch;
+    static private List<Vector2Int> currentMatch;
     static private int[][] board;
 
-    public static List<int[]> FindMatchingTiles(int[][] b)
+    public static List<Vector2Int> FindMatchingTiles(int[][] b)
     {
-        matchList = new List<List<int[]>>();
+        matchList = new List<List<Vector2Int>>();
         board = b;
 
         for (int i = 0; i <= board.Length - 1; i++)
@@ -25,13 +26,13 @@ public class MatchFinder
             }
         }
 
-        List<int[]> matchingTiles = new List<int[]>();
+        List<Vector2Int> matchingTiles = new List<Vector2Int>();
 
         matchList.ForEach((match) =>
         {
             match.ForEach((tile) =>
             {
-                if (matchingTiles.Find(x => x.SequenceEqual(tile)) == null)
+                if (!matchingTiles.Contains(tile))
                 {
                    matchingTiles.Add(tile);
                 }
@@ -47,13 +48,13 @@ public class MatchFinder
         int boardSize = board[0].Length;
         int currentNumber = board[x][y];
 
-        int[] currentTile = new int[2];
+        Vector2Int currentTile = new Vector2Int();
         currentTile[0] = x;
         currentTile[1] = y;
 
         if (currentMatch == null)
         {
-            currentMatch = new List<int[]>();
+            currentMatch = new List<Vector2Int>();
         }
 
         currentMatch.Add(currentTile);
@@ -85,7 +86,7 @@ public class MatchFinder
         //This means a sequence is complete - could not find any continuation.
         if (nothingFound && currentMatch.Count >= 3)
         {
-            matchList.Add(Util.CloneList(currentMatch));
+            matchList.Add(new List<Vector2Int>(currentMatch));
         }
 
         //remove current tile from the current match
