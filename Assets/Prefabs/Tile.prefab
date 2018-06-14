@@ -19,7 +19,9 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 224822927759680934}
-  - component: {fileID: 61772858402779568}
+  - component: {fileID: 114741367738502842}
+  - component: {fileID: 61563705520934870}
+  - component: {fileID: 114630444518447100}
   m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
@@ -88,7 +90,7 @@ MeshFilter:
   m_PrefabInternal: {fileID: 100100000}
   m_GameObject: {fileID: 1203650736907636}
   m_Mesh: {fileID: 0}
---- !u!61 &61772858402779568
+--- !u!61 &61563705520934870
 BoxCollider2D:
   m_ObjectHideFlags: 1
   m_PrefabParentObject: {fileID: 0}
@@ -228,6 +230,30 @@ MonoBehaviour:
   - {fileID: 0}
   - {fileID: 0}
   m_maskType: 0
+--- !u!114 &114630444518447100
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1179319931414950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 4f3d7624986e85d418740f56fd489f63, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  x: 0
+  y: 0
+--- !u!114 &114741367738502842
+MonoBehaviour:
+  m_ObjectHideFlags: 1
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 100100000}
+  m_GameObject: {fileID: 1179319931414950}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: bb60e511e8e04c24da31879aebd25f28, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!222 &222769266823456990
 CanvasRenderer:
   m_ObjectHideFlags: 1

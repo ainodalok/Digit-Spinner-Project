@@ -8,13 +8,16 @@ using TMPro;
 public class BoardController : MonoBehaviour {
     private BoardLogic boardLogic;
     public GameObject tilePrefab;
+    public GameObject[][] activeTileObjects = new GameObject[BoardLogic.BOARD_SIZE][];
 
 	// Use this for initialization
-	void Start () {
+	void Awake () {
         boardLogic = new BoardLogic();
 
         for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
         {
+            activeTileObjects[i] = new GameObject[BoardLogic.BOARD_SIZE];
+
             for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
             {
                 Vector2 position = new Vector2(i, j);
@@ -24,6 +27,10 @@ public class BoardController : MonoBehaviour {
                 newTile.transform.localPosition = position;
                 newTile.transform.rotation = Quaternion.identity;
                 newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = boardLogic.activeTiles[i][j].ToString();
+                newTile.GetComponent<Tile>().x = i;
+                newTile.GetComponent<Tile>().y = j;
+
+                activeTileObjects[i][j] = newTile;
             }
         }
 	}
@@ -32,4 +39,9 @@ public class BoardController : MonoBehaviour {
 	void Update () {
 		
 	}
+
+    public BoardLogic GetBoardLogic()
+    {
+        return boardLogic;
+    }
 }
