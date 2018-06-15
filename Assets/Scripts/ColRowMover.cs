@@ -4,120 +4,84 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
 
-public class ColRowMover : MonoBehaviour, IPointerDownHandler, IPointerUpHandler, IBeginDragHandler, IDragHandler, IEndDragHandler {
+public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
     private List<GameObject> movingTiles;
-    private bool isMovingNow = false;
     /* false when moving a row, true when moving a column */
     private bool isColumnMoving = false;
-    private GameObject draggedTile;
     private Vector2 currentMovement;
-    private BoardLogic boardLogic;
-    private Vector2 initialPosition;
-    private float modifier;
-    private Vector2 boardStartPoint;
+    private BoardController boardController;
+    private Vector2 oldPosition;
 
     private void Start()
     {
-        boardLogic = gameObject.transform.parent.GetComponent<BoardController>().GetBoardLogic();
-        modifier = Screen.width / 8.5f;
-        boardStartPoint = new Vector2(modifier * 0.75f, modifier * 1.75f);
-    }
-
-    public void OnPointerDown(PointerEventData e)
-    {
-        draggedTile = gameObject;
-            /*
-            GetTile(
-                (int) Math.Round(e.position.x),
-                (int) Math.Round(e.position.y)
-            );
-            */
-
-        initialPosition = draggedTile.transform.position;
+        boardController = gameObject.transform.parent.GetComponent<BoardController>();
     }
 
     public void OnBeginDrag(PointerEventData e)
     {
-        Debug.Log(e.position.x);
-        Debug.Log(e.position.y);
-        currentMovement = ((e.position - boardStartPoint) / modifier) - new Vector2(draggedTile.transform.position.x + 5.25f, draggedTile.transform.position.y + 5f);
+        currentMovement = e.delta;
         movingTiles = new List<GameObject>();
-
-        if (currentMovement.y > currentMovement.x)
+        if (Mathf.Abs(currentMovement.y) > Mathf.Abs(currentMovement.x))
         {
             for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
             {
-                movingTiles.Add(GetTile(i, draggedTile.GetComponent<Tile>().y));
+                movingTiles.Add(GetTile(Mathf.RoundToInt(Camera.main.ScreenToWorldPoint(e.position).x)+3, i));
             }
-
-            currentMovement.y = 0;
+            
             isColumnMoving = true;
         }
-        else
+        else if (Mathf.Abs(currentMovement.y) < Mathf.Abs(currentMovement.x))
         {
             for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
             {
-                movingTiles.Add(GetTile(draggedTile.GetComponent<Tile>().x, i));
+                movingTiles.Add(GetTile(i, Mathf.RoundToInt(Camera.main.ScreenToWorldPoint(e.position).y)+5));
             }
-
-            currentMovement.x = 0;
+            
             isColumnMoving = false;
         }
-
-        isMovingNow = true;
-        StartCoroutine(MoveTiles());
+        oldPosition = (Vector2)(Camera.main.ScreenToWorldPoint(e.position));
     }
 
     public void OnDrag(PointerEventData e)
     {
-        currentMovement = ((e.position - boardStartPoint) / modifier) - new Vector2(draggedTile.transform.position.x + 5.25f, draggedTile.transform.position.y + 3f);
-
+        currentMovement = (Vector2)(Camera.main.ScreenToWorldPoint(e.position));
         if (isColumnMoving)
         {
-            currentMovement.y = 0;
+            movingTiles.ForEach((t) =>
+            {
+                t.transform.position += new Vector3(0, currentMovement.y-oldPosition.y, 0);
+            });
         }
         else
         {
-            currentMovement.x = 0;
+            movingTiles.ForEach((t) =>
+            {
+                t.transform.position += new Vector3(currentMovement.x-oldPosition.x, 0, 0);
+            });
         }
+        oldPosition = currentMovement;
     }
 
     public void OnEndDrag(PointerEventData e)
     {
-        isMovingNow = false;
-    }
-
-    public void OnPointerUp(PointerEventData e)
-    {
-        StopCoroutine(MoveTiles());
 
         if (isColumnMoving)
         {
             //boardLogic.MoveColumn((int)Math.Round(initialPosition.x), (int)Math.Round(e.position.y - initialPosition.y));
+            movingTiles.ForEach((t) =>
+            {
+                RectTransform tileRectPos = t.transform.GetComponent<RectTransform>();
+                tileRectPos.localPosition = new Vector3(tileRectPos.localPosition.x, Mathf.Round(tileRectPos.localPosition.y), tileRectPos.localPosition.z);
+            });
         }
         else
         {
             //boardLogic.MoveColumn((int)Math.Round(e.position.y - initialPosition.y), (int)Math.Round(initialPosition.x));
-        }
-    }
-
-    private IEnumerator MoveTiles()
-    {
-        while (isMovingNow)
-        {
             movingTiles.ForEach((t) =>
             {
-                Vector3 temp = t.transform.position;
-
-                temp.x += currentMovement.x;
-                temp.y += currentMovement.y;
-
-                t.transform.position = temp;
+                RectTransform tileRectPos = t.transform.GetComponent<RectTransform>();
+                tileRectPos.localPosition = new Vector3(Mathf.Round(tileRectPos.localPosition.x), tileRectPos.localPosition.y, tileRectPos.localPosition.z);
             });
-
-            currentMovement = new Vector2(0f, 0f);
-
-            yield return null;
         }
     }
 

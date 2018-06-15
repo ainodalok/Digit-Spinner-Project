@@ -27,8 +27,6 @@ public class BoardController : MonoBehaviour {
                 newTile.transform.localPosition = position;
                 newTile.transform.rotation = Quaternion.identity;
                 newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = boardLogic.activeTiles[i][j].ToString();
-                newTile.GetComponent<Tile>().x = i;
-                newTile.GetComponent<Tile>().y = j;
 
                 activeTileObjects[i][j] = newTile;
             }
