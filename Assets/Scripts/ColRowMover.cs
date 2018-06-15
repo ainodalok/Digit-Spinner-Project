@@ -25,7 +25,9 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         {
             for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
             {
-                movingTiles.Add(GetTile(Mathf.RoundToInt(Camera.main.ScreenToWorldPoint(e.position).x)+3, i));
+                int x = Mathf.RoundToInt(Camera.main.ScreenToWorldPoint(e.position).x) + 3;
+                movingTiles.Add(GetTile(x, i));
+                movingTiles.AddRange(GetGhostTiles(x, i));
             }
             
             isColumnMoving = true;
@@ -34,7 +36,9 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         {
             for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
             {
-                movingTiles.Add(GetTile(i, Mathf.RoundToInt(Camera.main.ScreenToWorldPoint(e.position).y)+5));
+                int y = Mathf.RoundToInt(Camera.main.ScreenToWorldPoint(e.position).y) + 5;
+                movingTiles.Add(GetTile(i, y));
+                movingTiles.AddRange(GetGhostTiles(i, y));
             }
             
             isColumnMoving = false;
@@ -88,5 +92,10 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     private GameObject GetTile(int x, int y)
     {
         return gameObject.transform.parent.GetComponent<BoardController>().activeTileObjects[x][y];
+    }
+
+    private GameObject[] GetGhostTiles(int x, int y)
+    {
+        return gameObject.transform.parent.GetComponent<BoardController>().ghostTileObjects[x][y];
     }
 }
