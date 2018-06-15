@@ -21,7 +21,7 @@ GameObject:
   - component: {fileID: 224822927759680934}
   - component: {fileID: 114741367738502842}
   - component: {fileID: 61563705520934870}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: Tile
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -40,7 +40,7 @@ GameObject:
   - component: {fileID: 23840890085450118}
   - component: {fileID: 222769266823456990}
   - component: {fileID: 114279263395003058}
-  m_Layer: 8
+  m_Layer: 0
   m_Name: NumberTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
@@ -62,7 +62,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 1
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 21800180849670330, guid: 0bed7c49c9987634ebb8624b525da8c4, type: 2}
+  - {fileID: 2100000, guid: f94493ba53a1fa6489df573e3ac43fc9, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
