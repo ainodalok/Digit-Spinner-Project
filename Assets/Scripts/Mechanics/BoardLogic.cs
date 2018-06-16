@@ -22,7 +22,7 @@ public class BoardLogic {
      * returns int - amount of tiles that have been deleted.
      * Distance can be negative for upwards movement.
      */ 
-    public int MoveColumn(int x, int distance)
+    public List<Vector2Int> MoveColumn(int x, int distance)
     {
         int[][] temporaryTiles = Util.CloneArray(activeTiles);
 
@@ -54,7 +54,7 @@ public class BoardLogic {
      * returns int - amount of tiles that have been deleted.
      * Distance can be negative for leftwards movement.
      */
-    public int MoveRow(int y, int distance)
+    public List<Vector2Int> MoveRow(int y, int distance)
     {
         int[][] temporaryTiles = Util.CloneArray(activeTiles);
 
@@ -80,7 +80,7 @@ public class BoardLogic {
     /*
     * returns int - amount of tiles that have been deleted.
     */
-    private int TryMove(int[][] temporaryTiles)
+    private List<Vector2Int> TryMove(int[][] temporaryTiles)
     {
         List<Vector2Int> tilesToRemove = MatchFinder.FindMatchingTiles(temporaryTiles);
         int count = tilesToRemove.Count;
@@ -88,39 +88,57 @@ public class BoardLogic {
         if (count > 0)
         {
             activeTiles = temporaryTiles;
-            DestroyTiles(tilesToRemove);
         }
 
-        return count;
+        return tilesToRemove;
     }
 
     /*
      * Destroys tiles from activeTiles according to a list of arrays of tile coordinates
      * Fills the board in from the prophecyTiles and fills prophecyTiles with random numbers
      */
-    private void DestroyTiles(List<Vector2Int> tiles)
+    public List<Vector2Int> DestroyTiles(List<Vector2Int> tiles)
     {
-        do
+        int[] column;
+
+        tiles.ForEach((t) =>
         {
-            tiles.ForEach((t) =>
+            /* @WARNING change this if you decide to use 0 as one of the possible tile value */
+            activeTiles[t[0]][t[1]] = 0;
+        });
+
+        for (int i = 0; i < activeTiles.Length; i++)
+        {
+            column = activeTiles[i];
+
+            for (int j = BOARD_SIZE - 1; j >= 0; j--)
             {
-                for (int i = t[1]; i >= 1; i--)
+                /* @WARNING change this if you decide to use 0 as one of the possible tile value */
+                if (column[j] == 0)
                 {
-                    activeTiles[t[0]][i] = activeTiles[t[0]][i - 1];
+                    SlideDownTo(i, j);
                 }
+            }
+        }
 
-                activeTiles[t[0]][0] = prophecyTiles[t[0]][PROPHECY_HEIGHT - 1];
+        return MatchFinder.FindMatchingTiles(activeTiles);
+    }
 
-                for (int i = PROPHECY_HEIGHT - 1; i <= 1; i--)
-                {
-                    prophecyTiles[t[0]][i] = prophecyTiles[t[0]][i - 1];
-                }
+    private void SlideDownTo(int x, int y)
+    {
+        for (int i = y; i < BOARD_SIZE - 1; i++)
+        {
+            activeTiles[x][i] = activeTiles[x][i + 1];
+        }
 
-                prophecyTiles[t[0]][0] = randObj.Next(10);
-            });
+        activeTiles[x][BOARD_SIZE - 1] = prophecyTiles[x][0];
 
-            tiles = MatchFinder.FindMatchingTiles(activeTiles);
-        } while (tiles.Count > 0);
+        for (int i = 0; i < PROPHECY_HEIGHT - 1; i++)
+        {
+            prophecyTiles[x][i] = prophecyTiles[x][i + 1];
+        }
+
+        prophecyTiles[x][PROPHECY_HEIGHT - 1] = randObj.Next(9) + 1;
     }
 
     private void GenerateActiveTiles()
@@ -131,7 +149,7 @@ public class BoardLogic {
 
             for (int j = 0; j <= BOARD_SIZE - 1; j++)
             {
-                activeTiles[i][j] = randObj.Next(10);
+                activeTiles[i][j] = randObj.Next(9) + 1;
             }
         }
     }
@@ -148,7 +166,7 @@ public class BoardLogic {
         {
             tilesToRemove.ForEach((t) =>
             {
-                activeTiles[t[0]][t[1]] = randObj.Next(10);
+                activeTiles[t[0]][t[1]] = randObj.Next(9) + 1;
             });
 
             tilesToRemove = MatchFinder.FindMatchingTiles(activeTiles);

@@ -14,7 +14,6 @@ public class BoardController : MonoBehaviour {
     void Awake () {
         boardLogic = new BoardLogic();
         SetupActiveTiles();
-        SetupInitialGhostTiles();
 	}
 
     private void SetupActiveTiles()
@@ -36,11 +35,6 @@ public class BoardController : MonoBehaviour {
                 activeTileObjects[i][j] = newTile;
             }
         }
-    }
-
-    private void SetupInitialGhostTiles()
-    {
-        
     }
 
     public BoardLogic GetBoardLogic()
