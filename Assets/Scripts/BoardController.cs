@@ -6,21 +6,15 @@ using System;
 using TMPro;
 
 public class BoardController : MonoBehaviour {
-    public const int GHOST_TILE_AMOUNT = 4;
-
     private BoardLogic boardLogic;
     public GameObject tilePrefab;
     public GameObject[][] activeTileObjects = new GameObject[BoardLogic.BOARD_SIZE][];
-    public GameObject[][][] ghostTileObjects = new GameObject[BoardLogic.BOARD_SIZE][][];
+    public GameObject[] ghostTiles = new GameObject[2];
 
-	void Awake () {
+    void Awake () {
         boardLogic = new BoardLogic();
         SetupActiveTiles();
-        SetupGhostTiles();
-	}
-	
-	void Update () {
-		
+        SetupInitialGhostTiles();
 	}
 
     private void SetupActiveTiles()
@@ -44,72 +38,67 @@ public class BoardController : MonoBehaviour {
         }
     }
 
-    /* 
-     * this creates a screen wrapping effect by
-     * making an array of 4 "ghost" tiles for each of the active tiles
-     * one for each of the possible move directions: NESW
-     */ 
-    private void SetupGhostTiles()
+    private void SetupInitialGhostTiles()
     {
-        for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
-        {
-            ghostTileObjects[i] = new GameObject[BoardLogic.BOARD_SIZE][];
-
-            for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
-            {
-                //tile we are creating ghosts of
-                GameObject tile = activeTileObjects[i][j];
-                ghostTileObjects[i][j] = new GameObject[GHOST_TILE_AMOUNT];
-
-                for (int k = 0; k < GHOST_TILE_AMOUNT; k++)
-                {
-                    /* setting name and offset vector vars for all of the 4 movement directions;
-                     * offset vector is a vector that is added to original tile localPosition in order to get
-                     * the position of a ghost tile, i.e. for the northern ghost ship Y coordinate should 
-                     * be larger by 7 than the original one. 
-                     */
-
-                    string side;
-                    Vector3 offsetVector;
-
-                    if (k == 0)
-                    {
-                        offsetVector = new Vector3(0, BoardLogic.BOARD_SIZE, 0);
-                        side = "North";
-                    }
-                    else if (k == 1)
-                    {
-                        offsetVector = new Vector3(BoardLogic.BOARD_SIZE, 0, 0);
-                        side = "East";
-                    }
-                    else if (k == 2)
-                    {
-                        offsetVector = new Vector3(0, -BoardLogic.BOARD_SIZE, 0);
-                        side = "South";
-                    }
-                    else
-                    {
-                        offsetVector = new Vector3(-BoardLogic.BOARD_SIZE, 0, 0);
-                        side = "West";
-                    }
-
-                    GameObject ghostTile = Instantiate(tile);
-                    ghostTile.transform.parent = tile.transform.parent;
-                    ghostTile.name = String.Format("{0} Ghost {1}", side, tile.name);
-                    ghostTile.transform.localPosition = tile.transform.localPosition + offsetVector;
-                    ghostTileObjects[i][j][k] = ghostTile;
-                }
-            }
-        }
-    }
-
-    private void DestroyCurrentTiles()
-    {
-
+        
     }
 
     public BoardLogic GetBoardLogic()
     {
         return boardLogic;
+    }
+
+    public void ShiftInsert(int number, bool isFirstElement, bool isColumn)
+    {
+        if (isColumn)
+        {
+            if (isFirstElement)
+            {
+                GameObject temp = activeTileObjects[number][0];
+
+                for (int i = 1; i < BoardLogic.BOARD_SIZE; i++)
+                {
+                    activeTileObjects[number][i - 1] = activeTileObjects[number][i];
+                }
+
+                activeTileObjects[number][BoardLogic.BOARD_SIZE - 1] = temp;
+            }
+            else
+            {
+                GameObject temp = activeTileObjects[number][BoardLogic.BOARD_SIZE - 1];
+
+                for (int i = 1; i < BoardLogic.BOARD_SIZE; i++)
+                {
+                    activeTileObjects[number][BoardLogic.BOARD_SIZE - i] = activeTileObjects[number][BoardLogic.BOARD_SIZE - i - 1];
+                }
+
+                activeTileObjects[number][0] = temp;
+            }
+        }
+        else
+        {
+            if (isFirstElement)
+            {
+                GameObject temp = activeTileObjects[0][number];
+
+                for (int i = 1; i < BoardLogic.BOARD_SIZE; i++)
+                {
+                    activeTileObjects[i - 1][number] = activeTileObjects[i][number];
+                }
+
+                activeTileObjects[BoardLogic.BOARD_SIZE - 1][number] = temp;
+            }
+            else
+            {
+                GameObject temp = activeTileObjects[BoardLogic.BOARD_SIZE - 1][number];
+
+                for (int i = 1; i < BoardLogic.BOARD_SIZE; i++)
+                {
+                    activeTileObjects[BoardLogic.BOARD_SIZE - i][number] = activeTileObjects[BoardLogic.BOARD_SIZE - i - 1][number];
+                }
+
+                activeTileObjects[0][number] = temp;
+            }
+        }
     }
 }
