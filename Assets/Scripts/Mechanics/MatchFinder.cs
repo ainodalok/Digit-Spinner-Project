@@ -48,9 +48,7 @@ public class MatchFinder
         int boardSize = board[0].Length;
         int currentNumber = board[x][y];
 
-        Vector2Int currentTile = new Vector2Int();
-        currentTile[0] = x;
-        currentTile[1] = y;
+        Vector2Int currentTile = new Vector2Int(x, y);
 
         if (currentMatch == null)
         {

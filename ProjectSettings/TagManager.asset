@@ -7,6 +7,7 @@ TagManager:
   - SceneLoadManager
   - MainCameraGame
   - MainCameraMenu
+  - ScoreTxt
   layers:
   - Default
   - TransparentFX

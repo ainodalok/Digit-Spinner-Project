@@ -11508,6 +11508,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   tilePrefab: {fileID: 1179319931414950, guid: 04ee9d35898a9b74698097f23063fee0, type: 2}
+  scoreText: {fileID: 415179608}
   ghostTiles:
   - {fileID: 0}
   - {fileID: 0}

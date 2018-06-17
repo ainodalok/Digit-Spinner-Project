@@ -7,7 +7,7 @@ public class BoardLogic {
     public const int PROPHECY_HEIGHT = 5;
 
     public int[][] activeTiles = new int[BOARD_SIZE][];
-    public int[][] prophecyTiles = new int[PROPHECY_HEIGHT][];
+    public int[][] prophecyTiles = new int[BOARD_SIZE][];
 
     System.Random randObj = new System.Random();
 
@@ -18,11 +18,23 @@ public class BoardLogic {
         GenerateProphecyTiles();
     }
 
+    public List<Vector2Int> Move(int number, int distance, bool isColumn)
+    {
+        if (isColumn)
+        {
+            return MoveColumn(number, distance);
+        }
+        else
+        {
+            return MoveRow(number, distance);
+        }
+    }
+
     /*
      * returns int - amount of tiles that have been deleted.
      * Distance can be negative for upwards movement.
-     */ 
-    public List<Vector2Int> MoveColumn(int x, int distance)
+     */
+    private List<Vector2Int> MoveColumn(int x, int distance)
     {
         int[][] temporaryTiles = Util.CloneArray(activeTiles);
 
@@ -35,11 +47,11 @@ public class BoardLogic {
 
             if (newIndex >= BOARD_SIZE)
             {
-                newIndex -= BOARD_SIZE;
+                newIndex %= BOARD_SIZE;
             }
             else if (newIndex < 0)
             {
-                newIndex += BOARD_SIZE;
+                newIndex = BOARD_SIZE + (newIndex % BOARD_SIZE);
             }
 
             newColumn[newIndex] = currentColumn[i];
@@ -54,21 +66,21 @@ public class BoardLogic {
      * returns int - amount of tiles that have been deleted.
      * Distance can be negative for leftwards movement.
      */
-    public List<Vector2Int> MoveRow(int y, int distance)
+    private List<Vector2Int> MoveRow(int y, int distance)
     {
         int[][] temporaryTiles = Util.CloneArray(activeTiles);
 
-        for (int i = 0; i <= 0; i++)
+        for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
         {
             int newIndex = i + distance;
 
             if (newIndex >= BOARD_SIZE)
             {
-                newIndex -= BOARD_SIZE;
+                newIndex %= BOARD_SIZE;
             }
             else if (newIndex < 0)
             {
-                newIndex += BOARD_SIZE;
+                newIndex = BOARD_SIZE + (newIndex % BOARD_SIZE);
             }
 
             temporaryTiles[newIndex][y] = activeTiles[i][y];
@@ -83,9 +95,8 @@ public class BoardLogic {
     private List<Vector2Int> TryMove(int[][] temporaryTiles)
     {
         List<Vector2Int> tilesToRemove = MatchFinder.FindMatchingTiles(temporaryTiles);
-        int count = tilesToRemove.Count;
 
-        if (count > 0)
+        if (tilesToRemove.Count > 0)
         {
             activeTiles = temporaryTiles;
         }
@@ -107,7 +118,7 @@ public class BoardLogic {
             activeTiles[t[0]][t[1]] = 0;
         });
 
-        for (int i = 0; i < activeTiles.Length; i++)
+        for (int i = 0; i < BOARD_SIZE; i++)
         {
             column = activeTiles[i];
 
@@ -126,9 +137,12 @@ public class BoardLogic {
 
     private void SlideDownTo(int x, int y)
     {
-        for (int i = y; i < BOARD_SIZE - 1; i++)
+        if (y < BOARD_SIZE - 1)
         {
-            activeTiles[x][i] = activeTiles[x][i + 1];
+            for (int i = y; i < BOARD_SIZE - 1; i++)
+            {
+                activeTiles[x][i] = activeTiles[x][i + 1];
+            }
         }
 
         activeTiles[x][BOARD_SIZE - 1] = prophecyTiles[x][0];
@@ -175,13 +189,13 @@ public class BoardLogic {
 
     private void GenerateProphecyTiles()
     {
-        for (int i = 0; i <= PROPHECY_HEIGHT - 1; i++)
+        for (int i = 0; i < BOARD_SIZE; i++)
         {
-            prophecyTiles[i] = new int[BOARD_SIZE];
+            prophecyTiles[i] = new int[PROPHECY_HEIGHT];
 
-            for (int j = 0; j <= PROPHECY_HEIGHT - 1; j++)
+            for (int j = 0; j < PROPHECY_HEIGHT; j++)
             {
-                prophecyTiles[i][j] = randObj.Next(10);
+                prophecyTiles[i][j] = randObj.Next(9) + 1;
             }
         }
     }

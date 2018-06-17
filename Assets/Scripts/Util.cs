@@ -11,6 +11,11 @@ public class Util {
         return source.Select(s => s.ToArray()).ToArray();
     }
 
+    public static GameObject[][] CloneGameObjectArray(GameObject[][] source)
+    {
+        return source.Select(s => s.ToArray()).ToArray();
+    }
+
     public static List<T> CloneList<T>(List<T> oldList) where T : ICloneable
     {
         List<T> newList = new List<T>(oldList.Count);

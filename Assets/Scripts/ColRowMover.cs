@@ -11,6 +11,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     private int number;
     private Vector2 currentMovement;
     private Vector2 oldPosition;
+    private Vector3 initialPosition;
     private BoardController bc;
 
     void Start()
@@ -20,6 +21,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnBeginDrag(PointerEventData e)
     {
+        initialPosition = gameObject.transform.localPosition;
         currentMovement = e.delta;
         if (Mathf.Abs(currentMovement.y) > Mathf.Abs(currentMovement.x))
         {
@@ -187,6 +189,8 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnEndDrag(PointerEventData e)
     {
+        int overallMovement;
+
         if (isColumnMoving)
         {
             foreach (GameObject t in bc.activeTileObjects[number])
@@ -200,6 +204,8 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             {
                 Destroy(bc.ghostTiles[i]);
             }
+
+            overallMovement = Mathf.RoundToInt(gameObject.transform.localPosition.y - initialPosition.y);
         }
         else
         {
@@ -215,6 +221,75 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             {
                 Destroy(bc.ghostTiles[i]);
             }
+
+            overallMovement = Mathf.RoundToInt(gameObject.transform.localPosition.x - initialPosition.x);
+        }
+
+        if (overallMovement != 0)
+        {
+            List<Vector2Int> tilesToRemove = bc.GetBoardLogic().Move(number, overallMovement, isColumnMoving);
+
+            if (tilesToRemove.Count == 0 || tilesToRemove == null)
+            {
+                MoveBack(overallMovement);
+                return;
+            }
+
+            StartCoroutine(DestroyMatchedTiles(tilesToRemove));
+        }
+    }
+
+    private void MoveBack(int distance)
+    {
+        bc.ShiftBy(number, -distance, isColumnMoving);
+
+        for (int i = 0; i < BoardLogic.BOARD_SIZE; i ++)
+        {
+            GameObject tile;
+
+            if (isColumnMoving)
+            {
+                tile = bc.activeTileObjects[number][i];
+                tile.transform.localPosition += new Vector3(0, -distance, 0);
+
+                if (tile.transform.localPosition.y >= BoardLogic.BOARD_SIZE)
+                {
+                    tile.transform.localPosition += new Vector3(0, -BoardLogic.BOARD_SIZE, 0);
+                }
+
+                if (tile.transform.localPosition.y < 0)
+                {
+                    tile.transform.localPosition += new Vector3(0, BoardLogic.BOARD_SIZE, 0);
+                }
+            }
+            else
+            {
+                tile = bc.activeTileObjects[i][number];
+                tile.transform.localPosition += new Vector3(-distance, 0, 0);
+
+
+                if (tile.transform.localPosition.x >= BoardLogic.BOARD_SIZE)
+                {
+                    tile.transform.localPosition += new Vector3(-BoardLogic.BOARD_SIZE, 0, 0);
+                }
+
+                if (tile.transform.localPosition.x < 0)
+                {
+                    tile.transform.localPosition += new Vector3(BoardLogic.BOARD_SIZE, 0, 0);
+                }
+            }
+        }
+    }
+
+    private IEnumerator DestroyMatchedTiles(List<Vector2Int> tilesToRemove)
+    {
+        while (tilesToRemove.Count > 0)
+        {
+            bc.AddScore(tilesToRemove.Count * 10);
+            tilesToRemove = bc.GetBoardLogic().DestroyTiles(tilesToRemove);
+            bc.UpdateDigitsBasic();
+
+            yield return new WaitForSeconds(0.7f);
         }
     }
 

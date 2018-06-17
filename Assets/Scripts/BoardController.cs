@@ -8,8 +8,10 @@ using TMPro;
 public class BoardController : MonoBehaviour {
     private BoardLogic boardLogic;
     public GameObject tilePrefab;
+    public GameObject scoreText;
     public GameObject[][] activeTileObjects = new GameObject[BoardLogic.BOARD_SIZE][];
     public GameObject[] ghostTiles = new GameObject[2];
+    private int score;
 
     void Awake () {
         boardLogic = new BoardLogic();
@@ -94,5 +96,73 @@ public class BoardController : MonoBehaviour {
                 activeTileObjects[0][number] = temp;
             }
         }
+    }
+
+    public void ShiftBy(int number, int distance, bool isColumn)
+    {
+        if (isColumn)
+        {
+            GameObject[] newColumn = new GameObject[BoardLogic.BOARD_SIZE];
+            GameObject[] currentColumn = activeTileObjects[number];
+
+            for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
+            {
+                int newIndex = i + distance;
+
+                if (newIndex >= BoardLogic.BOARD_SIZE)
+                {
+                    newIndex %= BoardLogic.BOARD_SIZE;
+                }
+                else if (newIndex < 0)
+                {
+                    newIndex = BoardLogic.BOARD_SIZE + (newIndex % BoardLogic.BOARD_SIZE);
+                }
+
+                newColumn[newIndex] = currentColumn[i];
+            }
+
+            activeTileObjects[number] = newColumn;
+        }
+        else
+        {
+            GameObject[][] temporaryTileObjects = Util.CloneGameObjectArray(activeTileObjects);
+
+            for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
+            {
+                int newIndex = i + distance;
+
+                if (newIndex >= BoardLogic.BOARD_SIZE)
+                {
+                    newIndex %= BoardLogic.BOARD_SIZE;
+                }
+                else if (newIndex < 0)
+                {
+                    newIndex = BoardLogic.BOARD_SIZE + (newIndex % BoardLogic.BOARD_SIZE);
+                }
+
+                temporaryTileObjects[newIndex][number] = activeTileObjects[i][number];
+            }
+
+            activeTileObjects = temporaryTileObjects;
+        }
+    }
+
+    public void UpdateDigitsBasic()
+    {
+        for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
+        {
+            for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
+            {
+                activeTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = 
+                    boardLogic.activeTiles[i][j].ToString();
+            }
+        }
+    }
+
+    public void AddScore(int add)
+    {
+        score += add;
+
+        scoreText.GetComponent<TextMeshProUGUI>().text = string.Format("Score: {0}", score);
     }
 }
