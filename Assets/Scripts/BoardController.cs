@@ -163,6 +163,6 @@ public class BoardController : MonoBehaviour {
     {
         score += add;
 
-        scoreText.GetComponent<TextMeshProUGUI>().text = string.Format("Score: {0}", score);
+        scoreText.GetComponent<TextMeshProUGUI>().text = string.Format("Score: \n{0}", score);
     }
 }

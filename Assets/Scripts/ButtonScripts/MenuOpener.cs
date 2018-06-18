@@ -3,7 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 
 public class MenuOpener : MonoBehaviour {
-    private bool open = false;
+    public bool open = false;
   
     public void ToggleMenu()
     {

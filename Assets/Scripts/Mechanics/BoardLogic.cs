@@ -31,7 +31,7 @@ public class BoardLogic {
     }
 
     /*
-     * returns int - amount of tiles that have been deleted.
+     * returns List - tiles that have to be deleted.
      * Distance can be negative for upwards movement.
      */
     private List<Vector2Int> MoveColumn(int x, int distance)
@@ -63,7 +63,7 @@ public class BoardLogic {
     }
 
     /*
-     * returns int - amount of tiles that have been deleted.
+     * returns List - tiles that have to be deleted.
      * Distance can be negative for leftwards movement.
      */
     private List<Vector2Int> MoveRow(int y, int distance)
@@ -90,7 +90,7 @@ public class BoardLogic {
     }
 
     /*
-    * returns int - amount of tiles that have been deleted.
+    * returns List - tiles that have to be deleted.
     */
     private List<Vector2Int> TryMove(int[][] temporaryTiles)
     {

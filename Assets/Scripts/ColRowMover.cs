@@ -285,11 +285,11 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     {
         while (tilesToRemove.Count > 0)
         {
+            yield return new WaitForSeconds(3.7f);
+
             bc.AddScore(tilesToRemove.Count * 10);
             tilesToRemove = bc.GetBoardLogic().DestroyTiles(tilesToRemove);
             bc.UpdateDigitsBasic();
-
-            yield return new WaitForSeconds(0.7f);
         }
     }
 

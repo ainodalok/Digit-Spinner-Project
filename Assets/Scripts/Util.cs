@@ -39,4 +39,11 @@ public class Util {
 
         return System.Array.Find<GameObject>(gameObjects, g => g.name == name);
     }
+
+    public static GameObject FindGameObjectByName_SceneIndex(string name, int sceneIndex)
+    {
+        GameObject[] gameObjects = SceneManager.GetSceneAt(sceneIndex).GetRootGameObjects();
+
+        return System.Array.Find<GameObject>(gameObjects, g => g.name == name);
+    }
 }

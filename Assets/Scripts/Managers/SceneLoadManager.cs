@@ -37,10 +37,11 @@ public class SceneLoadManager : MonoBehaviour
         {
             Util.FindGameObjectByName("Main Camera", currentScene).SetActive(false);
         }
-        Util.FindGameObjectByName("Main Camera", sceneName).SetActive(true);
-        SceneManager.SetActiveScene(SceneManager.GetSceneByName(sceneName));
+        SceneManager.SetActiveScene(SceneManager.GetSceneAt(SceneManager.sceneCount - 1));
+        Util.FindGameObjectByName_SceneIndex("Main Camera", SceneManager.sceneCount - 1).SetActive(true);
         if (currentScene != null)
         {
+            
             SceneManager.UnloadSceneAsync(currentScene);
         }
         currentScene = sceneName;
@@ -49,6 +50,6 @@ public class SceneLoadManager : MonoBehaviour
     // Reload the current scene
     public void ReloadScene()
     {
-        LoadScene(SceneManager.GetActiveScene().name);
+        StartCoroutine(LoadScene(SceneManager.GetActiveScene().name));
     }
 }
