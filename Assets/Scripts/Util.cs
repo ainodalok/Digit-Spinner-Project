@@ -28,7 +28,7 @@ public class Util {
         return newList;
     }
 
-    public static GameObject FindGameObjectByName(string name, string sceneName = "")
+    public static GameObject FindRootGameObjectByName(string name, string sceneName = "")
     {
         if (sceneName == "")
         {
@@ -40,10 +40,22 @@ public class Util {
         return System.Array.Find<GameObject>(gameObjects, g => g.name == name);
     }
 
-    public static GameObject FindGameObjectByName_SceneIndex(string name, int sceneIndex)
+    public static GameObject FindRootGameObjectByName_SceneIndex(string name, int sceneIndex)
     {
         GameObject[] gameObjects = SceneManager.GetSceneAt(sceneIndex).GetRootGameObjects();
 
         return System.Array.Find<GameObject>(gameObjects, g => g.name == name);
+    }
+    
+    //Knuth's shuffle
+    public static void ShuffleArray(int[] numbers)
+    {
+        for (int i = 0; i < numbers.Length; i++)
+        {
+            int tmp = numbers[i];
+            int r = UnityEngine.Random.Range(i, numbers.Length);
+            numbers[i] = numbers[r];
+            numbers[r] = tmp;
+        }
     }
 }

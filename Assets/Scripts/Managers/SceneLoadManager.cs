@@ -5,19 +5,24 @@ using System.Linq;
 
 public class SceneLoadManager : MonoBehaviour
 {
-    private string currentScene = null; 
+    public string currentScene = "";
+    public static AudioManager audioManager;
 
     void Awake()
     {
         if (SceneManager.sceneCount < 2)
         {
             StartCoroutine(LoadScene("Menu"));
-            
         }
         else
         {
             currentScene = SceneManager.GetActiveScene().name;
         }
+    }
+
+    void Start()
+    {
+        audioManager = Util.FindRootGameObjectByName("AudioManager", "Managers").GetComponent<AudioManager>();
     }
 
     public void WrapLoadCoroutine(string sceneName)
@@ -33,13 +38,22 @@ public class SceneLoadManager : MonoBehaviour
         {
             yield return null;
         }
-        if (currentScene != null)
-        {
-            Util.FindGameObjectByName("Main Camera", currentScene).SetActive(false);
-        }
         SceneManager.SetActiveScene(SceneManager.GetSceneAt(SceneManager.sceneCount - 1));
-        Util.FindGameObjectByName_SceneIndex("Main Camera", SceneManager.sceneCount - 1).SetActive(true);
-        if (currentScene != null)
+        audioManager.pausedBGM = false;
+        if (currentScene != "")
+        {
+            Util.FindRootGameObjectByName("Main Camera", currentScene).SetActive(false);
+            if (currentScene == "Menu")
+            {
+                audioManager.sounds[audioManager.menuBGM[audioManager.currentMenuBGMIndex]].source.Stop();
+            }
+            else if (currentScene == "Game")
+            {
+                audioManager.sounds[audioManager.gameBGM[audioManager.currentGameBGMIndex]].source.Stop();
+            }
+        }
+        Util.FindRootGameObjectByName_SceneIndex("Main Camera", SceneManager.sceneCount - 1).SetActive(true);
+        if (currentScene != "")
         {
             
             SceneManager.UnloadSceneAsync(currentScene);
