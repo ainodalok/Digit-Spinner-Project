@@ -2,6 +2,7 @@ using UnityEngine.Audio;
 using System;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using System.Collections;
 
 public class AudioManager : MonoBehaviour
 {
@@ -25,43 +26,45 @@ public class AudioManager : MonoBehaviour
             s.source.volume = s.volume;
             s.source.outputAudioMixerGroup = mixerGroup;
 		}
+        StartCoroutine(CheckIfPlaying());
 	}
 
-    void Update()
+    IEnumerator CheckIfPlaying()
     {
-        if (!IsPlayingBGM() && !pausedBGM)
+        while (true)
         {
-            PlayBGM();
+            yield return new WaitForSeconds(0.5f);
+            if ((!IsPlayingBGM()) && (!pausedBGM))
+            {
+                PlayBGM();
+            }
         }
     }
 
     private void PlayBGM()
     {
-        if (!IsPlayingBGM())
+        if (SceneManager.GetActiveScene().name == "Menu")
         {
-            if (SceneManager.GetActiveScene().name == "Menu")
+            if ((currentMenuBGMIndex < 0) || (currentMenuBGMIndex >= menuBGM.Length - 1))
             {
-                if ((currentMenuBGMIndex < 0) || (currentMenuBGMIndex >= menuBGM.Length - 1))
-                {
-                    Util.ShuffleArray(menuBGM);
-                    currentMenuBGMIndex = -1;
-                }
-                currentMenuBGMIndex++;
-                sounds[menuBGM[currentMenuBGMIndex]].source.Play();
+                Util.ShuffleArray(menuBGM);
+                currentMenuBGMIndex = -1;
             }
-            else if (SceneManager.GetActiveScene().name == "Game")
-            {
-                if ((currentGameBGMIndex < 0) || (currentGameBGMIndex >= gameBGM.Length - 1))
-                {
-                    Util.ShuffleArray(gameBGM);
-                    currentGameBGMIndex = -1;
-                }
-
-                currentGameBGMIndex++;
-                sounds[gameBGM[currentGameBGMIndex]].source.Play();
-            }
-            Debug.Log("Scene - " + SceneManager.GetActiveScene().name + ", currentGameBGMIndex - " + currentGameBGMIndex + ", currentMenuBGMIndex - " + currentMenuBGMIndex);
+            currentMenuBGMIndex++;
+            sounds[menuBGM[currentMenuBGMIndex]].source.Play();
         }
+        else if (SceneManager.GetActiveScene().name == "Game")
+        {
+            if ((currentGameBGMIndex < 0) || (currentGameBGMIndex >= gameBGM.Length - 1))
+            {
+                Util.ShuffleArray(gameBGM);
+                currentGameBGMIndex = -1;
+            }
+
+            currentGameBGMIndex++;
+            sounds[gameBGM[currentGameBGMIndex]].source.Play();
+        }
+        Debug.Log("Scene - " + SceneManager.GetActiveScene().name + ", currentGameBGMIndex - " + currentGameBGMIndex + ", currentMenuBGMIndex - " + currentMenuBGMIndex);
     }
 
     private bool IsPlayingBGM()
