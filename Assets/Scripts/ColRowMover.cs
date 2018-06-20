@@ -25,42 +25,16 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         currentMovement = e.delta;
         if (Mathf.Abs(currentMovement.y) > Mathf.Abs(currentMovement.x))
         {
-            number = Mathf.RoundToInt(Camera.main.ScreenToWorldPoint(e.position).x) + 3;
-
-            for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
-            {
-                GameObject tile = GetTile(number, i);
-
-                if (i == 0)
-                {
-                    bc.ghostTiles[0] = CreateGhostTile(tile, new Vector3(0, BoardLogic.BOARD_SIZE, 0));
-                }
-                else if (i == BoardLogic.BOARD_SIZE - 1)
-                {
-                    bc.ghostTiles[1] = CreateGhostTile(tile, new Vector3(0, -BoardLogic.BOARD_SIZE, 0));
-                }
-            }
-            
+            number = Mathf.RoundToInt(initialPosition.x);
+            bc.ghostTiles[0] = CreateGhostTile(GetTile(number, 0), new Vector3(0, BoardLogic.BOARD_SIZE, 0));
+            bc.ghostTiles[1] = CreateGhostTile(GetTile(number, BoardLogic.BOARD_SIZE - 1), new Vector3(0, -BoardLogic.BOARD_SIZE, 0));
             isColumnMoving = true;
         }
         else if (Mathf.Abs(currentMovement.y) < Mathf.Abs(currentMovement.x))
         {
-            number = Mathf.RoundToInt(Camera.main.ScreenToWorldPoint(e.position).y) + 5;
-
-            for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
-            {
-                GameObject tile = GetTile(i, number);
-
-                if (i == 0)
-                {
-                    bc.ghostTiles[0] = CreateGhostTile(tile, new Vector3(BoardLogic.BOARD_SIZE, 0, 0));
-                }
-                else if (i == BoardLogic.BOARD_SIZE - 1)
-                {
-                    bc.ghostTiles[1] = CreateGhostTile(tile, new Vector3(-BoardLogic.BOARD_SIZE, 0, 0));
-                }
-            }
-            
+            number = Mathf.RoundToInt(initialPosition.y);
+            bc.ghostTiles[0] = CreateGhostTile(GetTile(0, number), new Vector3(BoardLogic.BOARD_SIZE, 0, 0));
+            bc.ghostTiles[1] = CreateGhostTile(GetTile(BoardLogic.BOARD_SIZE - 1, number), new Vector3(-BoardLogic.BOARD_SIZE, 0, 0));
             isColumnMoving = false;
         }
         oldPosition = (Vector2)(Camera.main.ScreenToWorldPoint(e.position));
@@ -85,7 +59,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 bc.activeTileObjects[number][i].transform.localPosition += offsetVector;
             }
 
-            if (bc.activeTileObjects[number][0].transform.localPosition.y < -0.5f)
+            while (bc.activeTileObjects[number][0].transform.localPosition.y < -0.5f)
             {
                 Vector3 temp = bc.activeTileObjects[number][0].transform.localPosition;
                 bc.activeTileObjects[number][0].transform.localPosition = bc.ghostTiles[0].transform.localPosition;
@@ -106,7 +80,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 bc.ghostTiles[1] = tempObj;
             }
 
-            if (bc.activeTileObjects[number][BoardLogic.BOARD_SIZE - 1].transform.localPosition.y > BoardLogic.BOARD_SIZE - 0.5f)
+            while (bc.activeTileObjects[number][BoardLogic.BOARD_SIZE - 1].transform.localPosition.y > BoardLogic.BOARD_SIZE - 0.5f)
             {
                 Vector3 temp = bc.activeTileObjects[number][BoardLogic.BOARD_SIZE - 1].transform.localPosition;
                 bc.activeTileObjects[number][BoardLogic.BOARD_SIZE - 1].transform.localPosition = bc.ghostTiles[1].transform.localPosition;
@@ -141,7 +115,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 bc.activeTileObjects[i][number].transform.localPosition += offsetVector;
             }
 
-            if (bc.activeTileObjects[0][number].transform.localPosition.x < -0.5f)
+            while (bc.activeTileObjects[0][number].transform.localPosition.x < -0.5f)
             {
                 Vector3 temp = bc.activeTileObjects[0][number].transform.localPosition;
                 bc.activeTileObjects[0][number].transform.localPosition = bc.ghostTiles[0].transform.localPosition;
@@ -162,7 +136,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 bc.ghostTiles[1] = tempObj;
             }
 
-            if (bc.activeTileObjects[BoardLogic.BOARD_SIZE - 1][number].transform.localPosition.x > BoardLogic.BOARD_SIZE - 0.5f)
+            while (bc.activeTileObjects[BoardLogic.BOARD_SIZE - 1][number].transform.localPosition.x > BoardLogic.BOARD_SIZE - 0.5f)
             {
                 Vector3 temp = bc.activeTileObjects[BoardLogic.BOARD_SIZE - 1][number].transform.localPosition;
                 bc.activeTileObjects[BoardLogic.BOARD_SIZE - 1][number].transform.localPosition = bc.ghostTiles[1].transform.localPosition;
@@ -308,6 +282,8 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         return newTile;
     }
+
+    //DEBUG FUNCS
 
     private void LogColumn(int number)
     {
