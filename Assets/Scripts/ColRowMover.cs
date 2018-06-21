@@ -21,6 +21,11 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnBeginDrag(PointerEventData e)
     {
+        if (bc.isDestroying)
+        {
+            return;
+        }
+
         initialPosition = gameObject.transform.localPosition;
         currentMovement = e.delta;
         if (Mathf.Abs(currentMovement.y) > Mathf.Abs(currentMovement.x))
@@ -42,6 +47,11 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnDrag(PointerEventData e)
     {
+        if (bc.isDestroying)
+        {
+            return;
+        }
+
         Vector3 offsetVector;
         currentMovement = (Vector2)(Camera.main.ScreenToWorldPoint(e.position));
         
@@ -257,19 +267,23 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     private IEnumerator DestroyMatchedTiles(List<Vector2Int> tilesToRemove)
     {
+        bc.isDestroying = true;
+
         while (tilesToRemove.Count > 0)
         {
-            yield return new WaitForSeconds(3.7f);
+            yield return new WaitForSeconds(2.5f);
 
             bc.AddScore(tilesToRemove.Count * 10);
             tilesToRemove = bc.GetBoardLogic().DestroyTiles(tilesToRemove);
             bc.UpdateDigitsBasic();
         }
+
+        bc.isDestroying = false;
     }
 
     private GameObject GetTile(int x, int y)
     {
-        return gameObject.transform.parent.GetComponent<BoardController>().activeTileObjects[x][y];
+        return bc.activeTileObjects[x][y];
     }
 
     private GameObject CreateGhostTile(GameObject tile, Vector3 offset)

@@ -11,6 +11,9 @@ public class BoardController : MonoBehaviour {
     public GameObject scoreText;
     public GameObject[][] activeTileObjects = new GameObject[BoardLogic.BOARD_SIZE][];
     public GameObject[] ghostTiles = new GameObject[2];
+    /* true when ColRowMover.DestroyTiles is being run, i.e. when the tiles are 
+     * being matched and destroyed. We do not allow moving anything else while this is happening. */
+    public bool isDestroying = false;
     private int score;
 
     void Awake () {
