@@ -64,7 +64,6 @@ public class AudioManager : MonoBehaviour
             currentGameBGMIndex++;
             sounds[gameBGM[currentGameBGMIndex]].source.Play();
         }
-        Debug.Log("Scene - " + SceneManager.GetActiveScene().name + ", currentGameBGMIndex - " + currentGameBGMIndex + ", currentMenuBGMIndex - " + currentMenuBGMIndex);
     }
 
     private bool IsPlayingBGM()

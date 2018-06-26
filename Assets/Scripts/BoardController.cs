@@ -11,15 +11,14 @@ public class BoardController : MonoBehaviour {
     public GameObject scoreText;
     public GameObject[][] activeTileObjects = new GameObject[BoardLogic.BOARD_SIZE][];
     public GameObject[] ghostTiles = new GameObject[2];
-    /* true when ColRowMover.DestroyTiles is being run, i.e. when the tiles are 
-     * being matched and destroyed. We do not allow moving anything else while this is happening. */
-    public bool isDestroying = false;
     private int score;
 
     void Awake () {
         boardLogic = new BoardLogic();
         SetupActiveTiles();
-	}
+        ghostTiles[0] = CreateGhostTile(activeTileObjects[0][0], new Vector3(0, BoardLogic.BOARD_SIZE, 0));
+        ghostTiles[1] = CreateGhostTile(activeTileObjects[0][BoardLogic.BOARD_SIZE - 1], new Vector3(0, -BoardLogic.BOARD_SIZE, 0));
+    }
 
     private void SetupActiveTiles()
     {
@@ -167,5 +166,14 @@ public class BoardController : MonoBehaviour {
         score += add;
 
         scoreText.GetComponent<TextMeshProUGUI>().text = string.Format("Score: \n{0}", score);
+    }
+
+    private GameObject CreateGhostTile(GameObject tile, Vector3 offset)
+    {
+        GameObject newTile = Instantiate(tile);
+        newTile.transform.SetParent(tile.transform.parent);
+        newTile.transform.localPosition = tile.transform.localPosition + offset;
+        newTile.name = string.Concat(tile.name, " Ghost");
+        return newTile;
     }
 }

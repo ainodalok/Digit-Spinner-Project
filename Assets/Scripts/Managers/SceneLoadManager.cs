@@ -55,7 +55,6 @@ public class SceneLoadManager : MonoBehaviour
         Util.FindRootGameObjectByName_SceneIndex("Main Camera", SceneManager.sceneCount - 1).SetActive(true);
         if (currentScene != "")
         {
-            
             SceneManager.UnloadSceneAsync(currentScene);
         }
         currentScene = sceneName;

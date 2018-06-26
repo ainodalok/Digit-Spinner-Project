@@ -21,11 +21,6 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnBeginDrag(PointerEventData e)
     {
-        if (bc.isDestroying)
-        {
-            return;
-        }
-
         initialPosition = gameObject.transform.localPosition;
         currentMovement = e.delta;
         if (Mathf.Abs(currentMovement.y) > Mathf.Abs(currentMovement.x))
@@ -47,11 +42,6 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     public void OnDrag(PointerEventData e)
     {
-        if (bc.isDestroying)
-        {
-            return;
-        }
-
         Vector3 offsetVector;
         currentMovement = (Vector2)(Camera.main.ScreenToWorldPoint(e.position));
         
@@ -167,7 +157,6 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 bc.ghostTiles[1] = tempObj;
             }
         }
-
         oldPosition = currentMovement;
     }
 
@@ -177,11 +166,11 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         if (isColumnMoving)
         {
-            foreach (GameObject t in bc.activeTileObjects[number])
+            for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
             {
-                RectTransform tileRectPos = t.transform.GetComponent<RectTransform>();
-                tileRectPos.localPosition = new Vector3(tileRectPos.localPosition.x, Mathf.Round(tileRectPos.localPosition.y), tileRectPos.localPosition.z);
-                t.name = string.Format("Tile ({0}, {1})", tileRectPos.localPosition.x, tileRectPos.localPosition.y);
+                GameObject t = bc.activeTileObjects[number][i];
+                t.transform.localPosition = new Vector3(t.transform.localPosition.x, Mathf.Round(t.transform.localPosition.y), t.transform.localPosition.z);
+                t.name = string.Format("Tile ({0}, {1})", t.transform.localPosition.x, t.transform.localPosition.y);
             }
 
             for (int i = 0; i < bc.ghostTiles.Length; i++)
@@ -196,9 +185,8 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
             {
                 GameObject t = bc.activeTileObjects[i][number];
-                RectTransform tileRectPos = t.transform.GetComponent<RectTransform>();
-                tileRectPos.localPosition = new Vector3(Mathf.Round(tileRectPos.localPosition.x), tileRectPos.localPosition.y, tileRectPos.localPosition.z);
-                t.name = string.Format("Tile ({0}, {1})", tileRectPos.localPosition.x, tileRectPos.localPosition.y);
+                t.transform.localPosition = new Vector3(Mathf.Round(t.transform.localPosition.x), t.transform.localPosition.y, t.transform.localPosition.z);
+                t.name = string.Format("Tile ({0}, {1})", t.transform.localPosition.x, t.transform.localPosition.y);
             }
 
             for (int i = 0; i < bc.ghostTiles.Length; i++)
@@ -267,18 +255,23 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     private IEnumerator DestroyMatchedTiles(List<Vector2Int> tilesToRemove)
     {
-        bc.isDestroying = true;
-
         while (tilesToRemove.Count > 0)
         {
+            tilesToRemove.ForEach((t) =>
+            {
+                bc.activeTileObjects[t.x][t.y].transform.GetChild(0).GetComponent<TextMeshPro>().color = new Color32(255, 0, 0, 255);
+            });
             yield return new WaitForSeconds(2.5f);
+
+            tilesToRemove.ForEach((t) =>
+            {
+                bc.activeTileObjects[t.x][t.y].transform.GetChild(0).GetComponent<TextMeshPro>().color = new Color32(255, 255, 255, 255);
+            });
 
             bc.AddScore(tilesToRemove.Count * 10);
             tilesToRemove = bc.GetBoardLogic().DestroyTiles(tilesToRemove);
             bc.UpdateDigitsBasic();
         }
-
-        bc.isDestroying = false;
     }
 
     private GameObject GetTile(int x, int y)
@@ -286,16 +279,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         return bc.activeTileObjects[x][y];
     }
 
-    private GameObject CreateGhostTile(GameObject tile, Vector3 offset)
-    {
-        GameObject newTile = Instantiate(tile);
-        newTile.transform.SetParent(tile.transform.parent);
-        newTile.transform.localPosition = tile.transform.localPosition + offset;
-        newTile.name = string.Concat(gameObject.name, " Ghost");
-        newTile.GetComponent<TileController>().isGhost = true;
-
-        return newTile;
-    }
+    
 
     //DEBUG FUNCS
 
