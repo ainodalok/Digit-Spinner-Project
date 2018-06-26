@@ -8,21 +8,7 @@ public class Timer : MonoBehaviour {
     private int time;
     private bool paused = false;
     private Coroutine counter;
-    private bool finished = false;
-
-    void Update()
-    {
-        if (time <= 0 && !finished)
-        {
-            MenuOpener menuOpener = transform.GetComponentInParent(typeof(MenuOpener)) as MenuOpener;
-            if (menuOpener.open == false)
-            {
-                finished = true;
-                menuOpener.ToggleMenu();
-                menuOpener.transform.Find("GamePanel").Find("Footer").Find("MenuBtn").gameObject.SetActive(false);
-            }
-        }
-    }
+    public BoardController bc;
 
     void Start()
     {
@@ -31,7 +17,7 @@ public class Timer : MonoBehaviour {
 
     private void StartTimer()
     {
-        time = 600;
+        time = 1200;
         counter = StartCoroutine(MsCounter());
     }
 
@@ -62,5 +48,12 @@ public class Timer : MonoBehaviour {
             time--;
             yield return new WaitForSeconds(0.1f);
         }
+        while (bc.isDestroying)
+        {
+            yield return null;
+        }
+        MenuOpener menuOpener = transform.GetComponentInParent(typeof(MenuOpener)) as MenuOpener;
+        menuOpener.ToggleMenu();
+        menuOpener.transform.Find("GamePanel").Find("Footer").Find("MenuBtn").gameObject.SetActive(false);
     }
 }

@@ -11,12 +11,18 @@ public class AudioManager : MonoBehaviour
     
     [HideInInspector]
     public int[] gameBGM = { 0, 1, 2, 3, 4, 5 };
+    [HideInInspector]
     public int[] menuBGM = { 6, 7, 8 };
+    [HideInInspector]
     public int currentMenuBGMIndex = -1;
+    [HideInInspector]
     public int currentGameBGMIndex = -1;
+    [HideInInspector]
     public bool pausedBGM = false;
+    [HideInInspector]
+    public bool muted = false;
 
-	void Awake()
+    void Awake()
 	{
 		foreach (Sound s in sounds)
 		{
@@ -34,7 +40,7 @@ public class AudioManager : MonoBehaviour
         while (true)
         {
             yield return new WaitForSeconds(0.5f);
-            if ((!IsPlayingBGM()) && (!pausedBGM))
+            if ((!IsPlayingBGM()) && (!pausedBGM) && (!muted))
             {
                 PlayBGM();
             }
@@ -66,7 +72,7 @@ public class AudioManager : MonoBehaviour
         }
     }
 
-    private bool IsPlayingBGM()
+    public bool IsPlayingBGM()
     {
         string currentScene = SceneManager.GetActiveScene().name;
         if (((currentScene == "Menu") && ((currentMenuBGMIndex > -1) && (currentMenuBGMIndex < menuBGM.Length))) || 
@@ -100,4 +106,23 @@ public class AudioManager : MonoBehaviour
 		}
 		s.source.Play();
 	}
+
+    public void MuteSounds()
+    {
+        if (!muted)
+        {
+            string currentScene = SceneManager.GetActiveScene().name;
+            Sound s = null;
+            if (currentScene == "Menu")
+            {
+                s = sounds[menuBGM[currentMenuBGMIndex]];
+            }
+            else if (currentScene == "Game")
+            {
+                s = sounds[gameBGM[currentGameBGMIndex]];
+            }
+            s.source.Stop();
+        }
+        muted = !muted;
+    }
 }

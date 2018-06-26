@@ -13,6 +13,9 @@ public class BoardController : MonoBehaviour {
     public GameObject[] ghostTiles = new GameObject[2];
     private int score;
 
+    [HideInInspector]
+    public bool isDestroying = false;
+
     void Awake () {
         boardLogic = new BoardLogic();
         SetupActiveTiles();
@@ -171,7 +174,7 @@ public class BoardController : MonoBehaviour {
     private GameObject CreateGhostTile(GameObject tile, Vector3 offset)
     {
         GameObject newTile = Instantiate(tile);
-        newTile.transform.SetParent(tile.transform.parent);
+        newTile.transform.SetParent(gameObject.transform);
         newTile.transform.localPosition = tile.transform.localPosition + offset;
         newTile.name = string.Concat(tile.name, " Ghost");
         return newTile;

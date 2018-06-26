@@ -11,16 +11,16 @@ public class MenuOpener : MonoBehaviour {
         {
             open = false;
             transform.Find("MenuPanel").gameObject.SetActive(false);
-            SceneLoadManager.audioManager.sounds[SceneLoadManager.audioManager.gameBGM[SceneLoadManager.audioManager.currentGameBGMIndex]].source.UnPause();
-            SceneLoadManager.audioManager.pausedBGM = false;
+            //SceneLoadManager.audioManager.sounds[SceneLoadManager.audioManager.gameBGM[SceneLoadManager.audioManager.currentGameBGMIndex]].source.UnPause();
+            //SceneLoadManager.audioManager.pausedBGM = false;
             Util.FindRootGameObjectByName("Board").SetActive(true);
         }
         else
         {
             open = true;
             Util.FindRootGameObjectByName("Board").SetActive(false);
-            SceneLoadManager.audioManager.pausedBGM = true;
-            SceneLoadManager.audioManager.sounds[SceneLoadManager.audioManager.gameBGM[SceneLoadManager.audioManager.currentGameBGMIndex]].source.Pause();
+            //SceneLoadManager.audioManager.pausedBGM = true;
+            //SceneLoadManager.audioManager.sounds[SceneLoadManager.audioManager.gameBGM[SceneLoadManager.audioManager.currentGameBGMIndex]].source.Pause();
             transform.Find("MenuPanel").gameObject.SetActive(true);
         }
     }

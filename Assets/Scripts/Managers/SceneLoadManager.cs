@@ -7,6 +7,7 @@ public class SceneLoadManager : MonoBehaviour
 {
     public string currentScene = "";
     public static AudioManager audioManager;
+    private bool loading = false;
 
     void Awake()
     {
@@ -27,7 +28,11 @@ public class SceneLoadManager : MonoBehaviour
 
     public void WrapLoadCoroutine(string sceneName)
     {
-        StartCoroutine(LoadScene(sceneName));
+        if (!loading)
+        {
+            loading = true;
+            StartCoroutine(LoadScene(sceneName));
+        }
     }
 
     // Load a scene with a specified string name
@@ -38,31 +43,42 @@ public class SceneLoadManager : MonoBehaviour
         {
             yield return null;
         }
-        SceneManager.SetActiveScene(SceneManager.GetSceneAt(SceneManager.sceneCount - 1));
         audioManager.pausedBGM = false;
         if (currentScene != "")
         {
             Util.FindRootGameObjectByName("Main Camera", currentScene).SetActive(false);
             if (currentScene == "Menu")
             {
-                audioManager.sounds[audioManager.menuBGM[audioManager.currentMenuBGMIndex]].source.Stop();
+                if (audioManager.IsPlayingBGM() || audioManager.pausedBGM)
+                {
+                    audioManager.sounds[audioManager.menuBGM[audioManager.currentMenuBGMIndex]].source.Stop();
+                }
             }
             else if (currentScene == "Game")
             {
-                audioManager.sounds[audioManager.gameBGM[audioManager.currentGameBGMIndex]].source.Stop();
+                if (audioManager.IsPlayingBGM() || audioManager.pausedBGM)
+                {
+                    audioManager.sounds[audioManager.gameBGM[audioManager.currentGameBGMIndex]].source.Stop();
+                }
             }
         }
-        Util.FindRootGameObjectByName_SceneIndex("Main Camera", SceneManager.sceneCount - 1).SetActive(true);
+        SceneManager.SetActiveScene(SceneManager.GetSceneAt(SceneManager.sceneCount - 1));
         if (currentScene != "")
         {
             SceneManager.UnloadSceneAsync(currentScene);
         }
         currentScene = sceneName;
+        Util.FindRootGameObjectByName_SceneIndex("Main Camera", SceneManager.sceneCount - 1).SetActive(true);
+        loading = false;
     }
 
     // Reload the current scene
     public void ReloadScene()
     {
-        StartCoroutine(LoadScene(SceneManager.GetActiveScene().name));
+        if (!loading)
+        {
+            loading = true;
+            StartCoroutine(LoadScene(SceneManager.GetActiveScene().name));
+        }
     }
 }

@@ -26,17 +26,14 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         if (Mathf.Abs(currentMovement.y) > Mathf.Abs(currentMovement.x))
         {
             number = Mathf.RoundToInt(initialPosition.x);
-            bc.ghostTiles[0] = CreateGhostTile(GetTile(number, 0), new Vector3(0, BoardLogic.BOARD_SIZE, 0));
-            bc.ghostTiles[1] = CreateGhostTile(GetTile(number, BoardLogic.BOARD_SIZE - 1), new Vector3(0, -BoardLogic.BOARD_SIZE, 0));
             isColumnMoving = true;
         }
         else if (Mathf.Abs(currentMovement.y) < Mathf.Abs(currentMovement.x))
         {
             number = Mathf.RoundToInt(initialPosition.y);
-            bc.ghostTiles[0] = CreateGhostTile(GetTile(0, number), new Vector3(BoardLogic.BOARD_SIZE, 0, 0));
-            bc.ghostTiles[1] = CreateGhostTile(GetTile(BoardLogic.BOARD_SIZE - 1, number), new Vector3(-BoardLogic.BOARD_SIZE, 0, 0));
             isColumnMoving = false;
         }
+        ChangeGhostTiles();
         oldPosition = (Vector2)(Camera.main.ScreenToWorldPoint(e.position));
     }
 
@@ -163,7 +160,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public void OnEndDrag(PointerEventData e)
     {
         int overallMovement;
-
+        SetEnableTileColliders(false);
         if (isColumnMoving)
         {
             for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
@@ -171,11 +168,12 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 GameObject t = bc.activeTileObjects[number][i];
                 t.transform.localPosition = new Vector3(t.transform.localPosition.x, Mathf.Round(t.transform.localPosition.y), t.transform.localPosition.z);
                 t.name = string.Format("Tile ({0}, {1})", t.transform.localPosition.x, t.transform.localPosition.y);
-            }
-
-            for (int i = 0; i < bc.ghostTiles.Length; i++)
-            {
-                Destroy(bc.ghostTiles[i]);
+                bc.ghostTiles[0].transform.localPosition = new Vector3(bc.ghostTiles[0].transform.localPosition.x,
+                                                           Mathf.Round(bc.ghostTiles[0].transform.localPosition.y),
+                                                                       bc.ghostTiles[0].transform.localPosition.z);
+                bc.ghostTiles[1].transform.localPosition = new Vector3(bc.ghostTiles[1].transform.localPosition.x,
+                                                           Mathf.Round(bc.ghostTiles[1].transform.localPosition.y),
+                                                                       bc.ghostTiles[1].transform.localPosition.z);
             }
 
             overallMovement = Mathf.RoundToInt(gameObject.transform.localPosition.y - initialPosition.y);
@@ -187,11 +185,12 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 GameObject t = bc.activeTileObjects[i][number];
                 t.transform.localPosition = new Vector3(Mathf.Round(t.transform.localPosition.x), t.transform.localPosition.y, t.transform.localPosition.z);
                 t.name = string.Format("Tile ({0}, {1})", t.transform.localPosition.x, t.transform.localPosition.y);
-            }
-
-            for (int i = 0; i < bc.ghostTiles.Length; i++)
-            {
-                Destroy(bc.ghostTiles[i]);
+                bc.ghostTiles[0].transform.localPosition = new Vector3(Mathf.Round(bc.ghostTiles[0].transform.localPosition.x), 
+                                                                                   bc.ghostTiles[0].transform.localPosition.y, 
+                                                                                   bc.ghostTiles[0].transform.localPosition.z);
+                bc.ghostTiles[1].transform.localPosition = new Vector3(Mathf.Round(bc.ghostTiles[1].transform.localPosition.x),
+                                                                                   bc.ghostTiles[1].transform.localPosition.y,
+                                                                                   bc.ghostTiles[1].transform.localPosition.z);
             }
 
             overallMovement = Mathf.RoundToInt(gameObject.transform.localPosition.x - initialPosition.x);
@@ -204,10 +203,14 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             if (tilesToRemove.Count == 0 || tilesToRemove == null)
             {
                 MoveBack(overallMovement);
+                SetEnableTileColliders(true);
                 return;
             }
-
             StartCoroutine(DestroyMatchedTiles(tilesToRemove));
+        }
+        else
+        {
+            SetEnableTileColliders(true);
         }
     }
 
@@ -255,6 +258,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
     private IEnumerator DestroyMatchedTiles(List<Vector2Int> tilesToRemove)
     {
+        bc.isDestroying = true;
         while (tilesToRemove.Count > 0)
         {
             tilesToRemove.ForEach((t) =>
@@ -272,6 +276,8 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             tilesToRemove = bc.GetBoardLogic().DestroyTiles(tilesToRemove);
             bc.UpdateDigitsBasic();
         }
+        bc.isDestroying = false;
+        SetEnableTileColliders(true);
     }
 
     private GameObject GetTile(int x, int y)
@@ -279,7 +285,36 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         return bc.activeTileObjects[x][y];
     }
 
-    
+    private void ChangeGhost(GameObject ghost, GameObject tile, Vector3 offset)
+    {
+        ghost.transform.SetParent(bc.transform);
+        ghost.transform.localPosition = tile.transform.localPosition + offset;
+        ghost.name = string.Concat(tile.name, " Ghost");
+        ghost.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = tile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text;
+    }
+
+    private void ChangeGhostTiles()
+    {
+        if (isColumnMoving)
+        {
+            ChangeGhost(bc.ghostTiles[0], GetTile(number, 0), new Vector3(0, BoardLogic.BOARD_SIZE, 0));
+            ChangeGhost(bc.ghostTiles[1], GetTile(number, BoardLogic.BOARD_SIZE - 1), new Vector3(0, -BoardLogic.BOARD_SIZE, 0));
+        }
+        else
+        {
+            ChangeGhost(bc.ghostTiles[0], GetTile(0, number), new Vector3(BoardLogic.BOARD_SIZE, 0, 0));
+            ChangeGhost(bc.ghostTiles[1], GetTile(BoardLogic.BOARD_SIZE - 1, number), new Vector3(-BoardLogic.BOARD_SIZE, 0, 0));
+        }
+    }
+
+    private void SetEnableTileColliders(bool enable)
+    {
+        BoxCollider2D[] colliders = gameObject.transform.parent.GetComponentsInChildren<BoxCollider2D>();
+        foreach (BoxCollider2D comp in colliders)
+        {
+            comp.enabled = enable;
+        }
+    }
 
     //DEBUG FUNCS
 

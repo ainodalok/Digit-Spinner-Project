@@ -142,6 +142,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: ce7241c7ac287654d95da51ab514192f, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  currentScene: 
 --- !u!4 &1602385748
 Transform:
   m_ObjectHideFlags: 0
@@ -167,7 +168,7 @@ GameObject:
   - component: {fileID: 1737998035}
   m_Layer: 0
   m_Name: AudioManager
-  m_TagString: Untagged
+  m_TagString: AudioManager
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -252,4 +253,8 @@ MonoBehaviour:
     loop: 0
     mixerGroup: {fileID: 0}
     source: {fileID: 0}
-  currentBGMIndex: -1
+  gameBGM: 000000000100000002000000030000000400000005000000
+  menuBGM: 060000000700000008000000
+  currentMenuBGMIndex: -1
+  currentGameBGMIndex: -1
+  pausedBGM: 0
