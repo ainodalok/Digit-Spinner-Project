@@ -755,6 +755,15 @@ Prefab:
       propertyPath: m_ClearFlags
       value: 3
       objectReference: {fileID: 0}
+    - target: {fileID: 1192413520943706, guid: 8d4d0d3eb938f7242a32a636102030b1, type: 2}
+      propertyPath: m_IsActive
+      value: 1
+      objectReference: {fileID: 0}
+    - target: {fileID: 114838501450283254, guid: 8d4d0d3eb938f7242a32a636102030b1,
+        type: 2}
+      propertyPath: ShaderType
+      value: 1
+      objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8d4d0d3eb938f7242a32a636102030b1, type: 2}
   m_IsPrefabParent: 0
