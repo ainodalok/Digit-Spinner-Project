@@ -4,11 +4,13 @@ using UnityEngine;
 using UnityEngine.Events;
 using UnityEngine.UI;
 
-public class LoadManagerConnector : MonoBehaviour {
+public class ManagerConnector : MonoBehaviour
+{
 
     void Awake()
     {
         SceneLoadManager LoaderScript = GameObject.FindWithTag("SceneLoadManager").GetComponent<SceneLoadManager>();
+        AudioManager AudioManagerScript = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
         Button button = GetComponent<Button>();
         if (button.name == "TimeAttackBtn")
         {
@@ -22,5 +24,9 @@ public class LoadManagerConnector : MonoBehaviour {
         {
             button.onClick.AddListener(() => LoaderScript.WrapLoadCoroutine("Menu"));
         }
-    } 
+        if (button.name == "MuteBtn")
+        {
+            button.onClick.AddListener(() => AudioManagerScript.MuteSounds());
+        }
+    }
 }

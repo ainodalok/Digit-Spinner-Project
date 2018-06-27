@@ -8,9 +8,17 @@ using TMPro;
 public class BoardController : MonoBehaviour {
     private BoardLogic boardLogic;
     public GameObject tilePrefab;
+    public GameObject prophecyTilePrefab;
+
+    [HideInInspector]
     public GameObject scoreText;
+    [HideInInspector]
+    public GameObject[][] prophecyTileObjects = new GameObject[BoardLogic.BOARD_SIZE][];
+    [HideInInspector]
     public GameObject[][] activeTileObjects = new GameObject[BoardLogic.BOARD_SIZE][];
+    [HideInInspector]
     public GameObject[] ghostTiles = new GameObject[2];
+
     private int score;
 
     [HideInInspector]
@@ -19,8 +27,14 @@ public class BoardController : MonoBehaviour {
     void Awake () {
         boardLogic = new BoardLogic();
         SetupActiveTiles();
+        SetupProphecyTiles();
         ghostTiles[0] = CreateGhostTile(activeTileObjects[0][0], new Vector3(0, BoardLogic.BOARD_SIZE, 0));
         ghostTiles[1] = CreateGhostTile(activeTileObjects[0][BoardLogic.BOARD_SIZE - 1], new Vector3(0, -BoardLogic.BOARD_SIZE, 0));
+    }
+
+    public BoardLogic GetBoardLogic()
+    {
+        return boardLogic;
     }
 
     private void SetupActiveTiles()
@@ -44,9 +58,25 @@ public class BoardController : MonoBehaviour {
         }
     }
 
-    public BoardLogic GetBoardLogic()
+    private void SetupProphecyTiles()
     {
-        return boardLogic;
+        for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
+        {
+            prophecyTileObjects[i] = new GameObject[BoardLogic.PROPHECY_HEIGHT];
+
+            for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
+            {
+                Vector2 position = new Vector2(i, j + BoardLogic.BOARD_SIZE);
+                GameObject newTile = Instantiate(prophecyTilePrefab);
+                newTile.transform.SetParent(gameObject.transform);
+                newTile.name = String.Format("Prophecy Tile ({0}, {1})", i, j);
+                newTile.transform.localPosition = position;
+                newTile.transform.rotation = Quaternion.identity;
+                newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = boardLogic.prophecyTiles[i][j].ToString();
+
+                prophecyTileObjects[i][j] = newTile;
+            }
+        }
     }
 
     public void ShiftInsert(int number, bool isFirstElement, bool isColumn)
@@ -158,8 +188,14 @@ public class BoardController : MonoBehaviour {
         {
             for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
             {
-                activeTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = 
+                activeTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text =
                     boardLogic.activeTiles[i][j].ToString();
+            }
+
+            for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
+            {
+                prophecyTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text =
+                    boardLogic.prophecyTiles[i][j].ToString();
             }
         }
     }
