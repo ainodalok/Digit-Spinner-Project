@@ -261,6 +261,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         bc.isDestroying = true;
         while (tilesToRemove.Count > 0)
         {
+            /*
             tilesToRemove.ForEach((t) =>
             {
                 bc.activeTileObjects[t.x][t.y].transform.GetChild(0).GetComponent<TextMeshPro>().color = new Color32(255, 0, 0, 255);
@@ -271,6 +272,15 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             {
                 bc.activeTileObjects[t.x][t.y].transform.GetChild(0).GetComponent<TextMeshPro>().color = new Color32(255, 255, 255, 255);
             });
+            */
+
+            for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
+            {
+                for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
+                {
+                    iTween.MoveTo(bc.activeTileObjects[i][j], iTween.Hash("y", j - tilesToRemove.FindAll(t => (t.x == i) && (t.y < j)).Count))
+                }
+            }
 
             bc.AddScore(tilesToRemove.Count * 10);
             tilesToRemove = bc.GetBoardLogic().DestroyTiles(tilesToRemove);
