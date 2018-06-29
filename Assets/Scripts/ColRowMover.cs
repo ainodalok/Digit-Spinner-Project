@@ -260,33 +260,73 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     private IEnumerator DestroyMatchedTiles(List<Vector2Int> tilesToRemove)
     {
         bc.isDestroying = true;
+
         while (tilesToRemove.Count > 0)
         {
-            /*
             tilesToRemove.ForEach((t) =>
             {
-                bc.activeTileObjects[t.x][t.y].transform.GetChild(0).GetComponent<TextMeshPro>().color = new Color32(255, 0, 0, 255);
+                bc.activeTileObjects[t.x][t.y].transform.GetChild(0).GetComponent<TextMeshPro>().color = new Color32(0, 255, 0, 255);
             });
-            yield return new WaitForSeconds(2.5f);
+
+            yield return new WaitForSeconds(0.5f);
 
             tilesToRemove.ForEach((t) =>
             {
                 bc.activeTileObjects[t.x][t.y].transform.GetChild(0).GetComponent<TextMeshPro>().color = new Color32(255, 255, 255, 255);
+                bc.activeTileObjects[t.x][t.y].SetActive(false);
             });
-            */
+
+            yield return new WaitForSeconds(0.5f);
+
+            int fallDistance = 0;
+            int maxDistance = 0;
 
             for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
             {
                 for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
                 {
-                    bc.activeTileObjects[i][j].transform.DOLocalMoveY(j - tilesToRemove.FindAll(t => (t.x == i) && (t.y < j)).Count, tilesToRemove.FindAll(t => (t.x == i) && (t.y < j)).Count/2.0f);
+                    fallDistance = tilesToRemove.FindAll(t => (t.x == i) && (t.y < j)).Count;
+
+                    bc.activeTileObjects[i][j].transform.DOLocalMoveY(j - fallDistance, fallDistance/2.0f);
+                }
+
+                for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
+                {
+                    bc.prophecyTileObjects[i][j].transform.DOLocalMoveY(BoardLogic.BOARD_SIZE + j - fallDistance, fallDistance / 2.0f);
+                }
+
+                if (maxDistance < fallDistance)
+                {
+                    maxDistance = fallDistance;
                 }
             }
+
+            yield return new WaitForSeconds(maxDistance / 2.0f);
             bc.AddScore(tilesToRemove.Count * 10);
+
+            for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
+            {
+                for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
+                {
+                    bc.activeTileObjects[i][j].transform.localPosition.Set(i, j, bc.activeTileObjects[i][j].transform.localPosition.z);
+                }
+
+                for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
+                {
+                    bc.prophecyTileObjects[i][j].transform.localPosition.Set(i, j + BoardLogic.BOARD_SIZE, bc.prophecyTileObjects[i][j].transform.localPosition.z);
+                }
+            }
+
+            tilesToRemove.ForEach((t) =>
+            {
+                bc.activeTileObjects[t.x][t.y].SetActive(true);
+            });
+
             tilesToRemove = bc.GetBoardLogic().DestroyTiles(tilesToRemove);
             bc.UpdateDigitsBasic();
             yield return null;
         }
+
         bc.isDestroying = false;
         SetEnableTileColliders(true);
     }
