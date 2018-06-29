@@ -15,6 +15,8 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     private Vector3 initialPosition;
     private BoardController bc;
 
+    private Vector3 HIDING_SPOT = new Vector3(0, 0, -100);
+
     void Start()
     {
         bc = gameObject.GetComponentInParent<BoardController>();
@@ -273,7 +275,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             tilesToRemove.ForEach((t) =>
             {
                 bc.activeTileObjects[t.x][t.y].transform.GetChild(0).GetComponent<TextMeshPro>().color = new Color32(255, 255, 255, 255);
-                bc.activeTileObjects[t.x][t.y].SetActive(false);
+                bc.activeTileObjects[t.x][t.y].transform.localPosition = HIDING_SPOT;
             });
 
             yield return new WaitForSeconds(0.5f);
@@ -289,6 +291,8 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
                     bc.activeTileObjects[i][j].transform.DOLocalMoveY(j - fallDistance, fallDistance/2.0f);
                 }
+
+                fallDistance = tilesToRemove.FindAll(t => (t.x == i) && (t.y < BoardLogic.BOARD_SIZE)).Count;
 
                 for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
                 {
@@ -308,19 +312,14 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             {
                 for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
                 {
-                    bc.activeTileObjects[i][j].transform.localPosition.Set(i, j, bc.activeTileObjects[i][j].transform.localPosition.z);
+                    bc.activeTileObjects[i][j].transform.localPosition = new Vector3(i, j, 0);
                 }
 
                 for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
                 {
-                    bc.prophecyTileObjects[i][j].transform.localPosition.Set(i, j + BoardLogic.BOARD_SIZE, bc.prophecyTileObjects[i][j].transform.localPosition.z);
+                    bc.prophecyTileObjects[i][j].transform.localPosition = new Vector3(i, j + BoardLogic.BOARD_SIZE, 0);
                 }
             }
-
-            tilesToRemove.ForEach((t) =>
-            {
-                bc.activeTileObjects[t.x][t.y].SetActive(true);
-            });
 
             tilesToRemove = bc.GetBoardLogic().DestroyTiles(tilesToRemove);
             bc.UpdateDigitsBasic();
