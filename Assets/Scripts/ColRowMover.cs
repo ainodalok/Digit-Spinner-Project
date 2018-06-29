@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.EventSystems;
 using System;
 using TMPro;
+using DG.Tweening;
 
 public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
     /* false when moving a row, true when moving a column */
@@ -278,10 +279,9 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             {
                 for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
                 {
-                    //iTween.MoveTo(bc.activeTileObjects[i][j], iTween.Hash("y", j - tilesToRemove.FindAll(t => (t.x == i) && (t.y < j)).Count))
+                    bc.activeTileObjects[i][j].transform.DOLocalMoveY(j - tilesToRemove.FindAll(t => (t.x == i) && (t.y < j)).Count, tilesToRemove.FindAll(t => (t.x == i) && (t.y < j)).Count/2.0f);
                 }
             }
-
             bc.AddScore(tilesToRemove.Count * 10);
             tilesToRemove = bc.GetBoardLogic().DestroyTiles(tilesToRemove);
             bc.UpdateDigitsBasic();
