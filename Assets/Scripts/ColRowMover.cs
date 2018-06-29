@@ -278,13 +278,14 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             {
                 for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
                 {
-                    iTween.MoveTo(bc.activeTileObjects[i][j], iTween.Hash("y", j - tilesToRemove.FindAll(t => (t.x == i) && (t.y < j)).Count))
+                    //iTween.MoveTo(bc.activeTileObjects[i][j], iTween.Hash("y", j - tilesToRemove.FindAll(t => (t.x == i) && (t.y < j)).Count))
                 }
             }
 
             bc.AddScore(tilesToRemove.Count * 10);
             tilesToRemove = bc.GetBoardLogic().DestroyTiles(tilesToRemove);
             bc.UpdateDigitsBasic();
+            yield return null;
         }
         bc.isDestroying = false;
         SetEnableTileColliders(true);
