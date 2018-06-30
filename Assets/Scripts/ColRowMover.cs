@@ -262,68 +262,74 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     private IEnumerator DestroyMatchedTiles(List<Vector2Int> tilesToRemove)
     {
         bc.isDestroying = true;
+        int maxDistance = 0;
+        int[] fallDistances = new int[BoardLogic.BOARD_SIZE];
 
         while (tilesToRemove.Count > 0)
         {
+            //Hiding disappearing tiles in HIDING_SPOT
             tilesToRemove.ForEach((t) =>
             {
-                bc.activeTileObjects[t.x][t.y].transform.GetChild(0).GetComponent<TextMeshPro>().color = new Color32(0, 255, 0, 255);
-            });
-
-            yield return new WaitForSeconds(0.5f);
-
-            tilesToRemove.ForEach((t) =>
-            {
-                bc.activeTileObjects[t.x][t.y].transform.GetChild(0).GetComponent<TextMeshPro>().color = new Color32(255, 255, 255, 255);
+                Vector3 parentOldPos = bc.activeTileObjects[t.x][t.y].transform.position;
                 bc.activeTileObjects[t.x][t.y].transform.localPosition = HIDING_SPOT;
+                bc.activeTileObjects[t.x][t.y].transform.GetChild(2).position = parentOldPos;
+                bc.activeTileObjects[t.x][t.y].transform.GetChild(2).GetComponent<ParticleSystem>().Play();
             });
 
             yield return new WaitForSeconds(0.5f);
 
-            int fallDistance = 0;
-            int maxDistance = 0;
-
+            //Falling down animation
+            Sequence fallingSequence = DOTween.Sequence();
             for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
             {
                 for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
                 {
-                    fallDistance = tilesToRemove.FindAll(t => (t.x == i) && (t.y < j)).Count;
+                    fallDistances[i] = tilesToRemove.FindAll(t => (t.x == i) && (t.y < j)).Count;
 
-                    bc.activeTileObjects[i][j].transform.DOLocalMoveY(j - fallDistance, fallDistance/2.0f);
+                    fallingSequence.Join(bc.activeTileObjects[i][j].transform.DOLocalMoveY(j - fallDistances[i], 0.5f));
                 }
 
-                fallDistance = tilesToRemove.FindAll(t => (t.x == i) && (t.y < BoardLogic.BOARD_SIZE)).Count;
+                fallDistances[i] = tilesToRemove.FindAll(t => (t.x == i) && (t.y < BoardLogic.BOARD_SIZE)).Count;
 
                 for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
                 {
-                    bc.prophecyTileObjects[i][j].transform.DOLocalMoveY(BoardLogic.BOARD_SIZE + j - fallDistance, fallDistance / 2.0f);
+                    fallingSequence.Join(bc.prophecyTileObjects[i][j].transform.DOLocalMoveY(BoardLogic.BOARD_SIZE + j - fallDistances[i], 0.5f));
                 }
 
-                if (maxDistance < fallDistance)
+                if (maxDistance < fallDistances[i])
                 {
-                    maxDistance = fallDistance;
+                    maxDistance = fallDistances[i];
                 }
             }
-
-            yield return new WaitForSeconds(maxDistance / 2.0f);
+            fallingSequence.Play();
+            yield return fallingSequence.WaitForCompletion();
+            
             bc.AddScore(tilesToRemove.Count * 10);
 
+            //Returning tiles back to their original position and scaling newly appeared prophecy tiles
+            Sequence scalingSequence = DOTween.Sequence();
             for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
             {
                 for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
                 {
                     bc.activeTileObjects[i][j].transform.localPosition = new Vector3(i, j, 0);
+                    bc.activeTileObjects[i][j].transform.GetChild(2).localPosition = new Vector3(0, 0, 0);
                 }
 
                 for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
                 {
                     bc.prophecyTileObjects[i][j].transform.localPosition = new Vector3(i, j + BoardLogic.BOARD_SIZE, 0);
+                    if (BoardLogic.PROPHECY_HEIGHT - j <= fallDistances[i])
+                    {
+                        scalingSequence.Join(bc.prophecyTileObjects[i][j].transform.DOScale(0.0f, 0.1f).From());
+                    }
                 }
             }
 
             tilesToRemove = bc.GetBoardLogic().DestroyTiles(tilesToRemove);
             bc.UpdateDigitsBasic();
-            yield return null;
+            scalingSequence.Play();
+            yield return scalingSequence.WaitForCompletion();
         }
 
         bc.isDestroying = false;
