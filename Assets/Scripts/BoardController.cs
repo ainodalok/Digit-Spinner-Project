@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using System.Linq;
 using System;
 using TMPro;
@@ -23,6 +24,8 @@ public class BoardController : MonoBehaviour {
 
     [HideInInspector]
     public bool isDestroying = false;
+    [HideInInspector]
+    public MenuOpener menuOpener;
 
     void Awake () {
         boardLogic = new BoardLogic();
@@ -30,6 +33,11 @@ public class BoardController : MonoBehaviour {
         SetupProphecyTiles();
         ghostTiles[0] = CreateGhostTile(activeTileObjects[0][0], new Vector3(0, BoardLogic.BOARD_SIZE, 0));
         ghostTiles[1] = CreateGhostTile(activeTileObjects[0][BoardLogic.BOARD_SIZE - 1], new Vector3(0, -BoardLogic.BOARD_SIZE, 0));
+    }
+
+    private void Start()
+    {
+        menuOpener = Util.FindRootGameObjectByName_SceneIndex("HUDCanvas", SceneManager.sceneCount - 1).GetComponent<MenuOpener>();
     }
 
     public BoardLogic GetBoardLogic()
@@ -218,37 +226,53 @@ public class BoardController : MonoBehaviour {
 
 
 
-    public void SetEnableBoardRenderers(bool enable)
+    public void SetEnableBoard(bool enable)
     {
-        ParticleSystem[] particleSystems = gameObject.GetComponentsInChildren<ParticleSystem>();
-        foreach (ParticleSystem comp in particleSystems)
+        ParticleSystemRenderer[] particleSystemRenderers = gameObject.GetComponentsInChildren<ParticleSystemRenderer>();
+        foreach (ParticleSystemRenderer comp in particleSystemRenderers)
         {
-            if (enable)
-            {
-                if (comp.gameObject.name == "BarrierRL" || comp.gameObject.name == "BarrierLR")
-                {
-                    comp.Play();
-                }
-            }
-            else
-            {
-                comp.Stop();
-            }
+            comp.enabled = enable;
         }
 
         MeshRenderer[] meshRenderers = gameObject.GetComponentsInChildren<MeshRenderer>();
         foreach (MeshRenderer comp in meshRenderers)
         {
-            comp.enabled = enable;
+            ColRowMover colRowMover = comp.transform.parent.gameObject.GetComponent<ColRowMover>();
+            if (colRowMover != null)
+            {
+                if (!colRowMover.tileToRemove)
+                {
+                    comp.enabled = enable;
+                }
+            }
+            else
+            {
+                comp.enabled = enable;
+            }
+            
         }
 
         SpriteRenderer[] spriteRenderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
         foreach (SpriteRenderer comp in spriteRenderers)
         {
-            comp.enabled = enable;
+            ColRowMover colRowMover = comp.transform.parent.gameObject.GetComponent<ColRowMover>();
+            if (colRowMover != null)
+            {
+                if (!colRowMover.tileToRemove)
+                {
+                    comp.enabled = enable;
+                }
+            }
+            else
+            {
+                comp.enabled = enable;
+            }
         }
 
-        SetEnableTileColliders(enable);
+        if (!isDestroying)
+        {
+            SetEnableTileColliders(enable);
+        }
     }
 
     public void SetEnableTileColliders(bool enable)

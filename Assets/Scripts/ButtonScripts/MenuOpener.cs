@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.SceneManagement;
 
 public class MenuOpener : MonoBehaviour {
     public bool open = false;
@@ -10,8 +11,8 @@ public class MenuOpener : MonoBehaviour {
 
     void Start()
     {
-        Board = Util.FindRootGameObjectByName("Board", "Game");
         MenuPanel = transform.Find("MenuPanel").gameObject;
+        Board = Util.FindRootGameObjectByName_SceneIndex("Board", SceneManager.sceneCount - 1);
     }
 
     public void ToggleMenu()
@@ -22,12 +23,12 @@ public class MenuOpener : MonoBehaviour {
             MenuPanel.SetActive(false);
             //SceneLoadManager.audioManager.sounds[SceneLoadManager.audioManager.gameBGM[SceneLoadManager.audioManager.currentGameBGMIndex]].source.UnPause();
             //SceneLoadManager.audioManager.pausedBGM = false;
-            Board.GetComponent<BoardController>().SetEnableBoardRenderers(true);
+            Board.GetComponent<BoardController>().SetEnableBoard(true);
         }
         else
         {
             open = true;
-            Board.GetComponent<BoardController>().SetEnableBoardRenderers(false);
+            Board.GetComponent<BoardController>().SetEnableBoard(false);
             //SceneLoadManager.audioManager.pausedBGM = true;
             //SceneLoadManager.audioManager.sounds[SceneLoadManager.audioManager.gameBGM[SceneLoadManager.audioManager.currentGameBGMIndex]].source.Pause();
             MenuPanel.SetActive(true);

@@ -15,7 +15,8 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     private Vector3 initialPosition;
     private BoardController bc;
 
-    private Vector3 HIDING_SPOT = new Vector3(0, 0, -100);
+    [HideInInspector]
+    public bool tileToRemove = false;
 
     void Start()
     {
@@ -267,9 +268,10 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         while (tilesToRemove.Count > 0)
         {
-            //Hiding disappearing tiles in HIDING_SPOT
+            //Hiding disappearing tiles
             tilesToRemove.ForEach((t) =>
             {
+                bc.activeTileObjects[t.x][t.y].GetComponent<ColRowMover>().tileToRemove = true;
                 bc.activeTileObjects[t.x][t.y].transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
                 bc.activeTileObjects[t.x][t.y].transform.GetChild(1).GetComponent<SpriteRenderer>().enabled = false;
                 bc.activeTileObjects[t.x][t.y].transform.GetChild(2).GetComponent<ParticleSystem>().Play();
@@ -305,15 +307,19 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             
             bc.AddScore(tilesToRemove.Count * 10);
 
-            //Returning tiles back to their original position and scaling newly appeared prophecy tiles
+            //Showing hidden tiles and scaling newly appeared prophecy tiles
             Sequence scalingSequence = DOTween.Sequence();
             for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
             {
                 for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
                 {
                     bc.activeTileObjects[i][j].transform.localPosition = new Vector3(i, j, 0);
-                    bc.activeTileObjects[i][j].transform.GetChild(0).GetComponent<MeshRenderer>().enabled = true;
-                    bc.activeTileObjects[i][j].transform.GetChild(1).GetComponent<SpriteRenderer>().enabled = true;
+                    bc.activeTileObjects[i][j].GetComponent<ColRowMover>().tileToRemove = false;
+                    if (!bc.menuOpener.open)
+                    {
+                        bc.activeTileObjects[i][j].transform.GetChild(0).GetComponent<MeshRenderer>().enabled = true;
+                        bc.activeTileObjects[i][j].transform.GetChild(1).GetComponent<SpriteRenderer>().enabled = true;
+                    }
                 }
 
                 for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
@@ -333,7 +339,10 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         }
 
         bc.isDestroying = false;
-        bc.SetEnableTileColliders(true);
+        if (!bc.menuOpener.open)
+        {
+            bc.SetEnableTileColliders(true);
+        }
     }
 
     private GameObject GetTile(int x, int y)
