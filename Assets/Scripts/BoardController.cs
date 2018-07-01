@@ -215,4 +215,48 @@ public class BoardController : MonoBehaviour {
         newTile.name = string.Concat(tile.name, " Ghost");
         return newTile;
     }
+
+
+
+    public void SetEnableBoardRenderers(bool enable)
+    {
+        ParticleSystem[] particleSystems = gameObject.GetComponentsInChildren<ParticleSystem>();
+        foreach (ParticleSystem comp in particleSystems)
+        {
+            if (enable)
+            {
+                if (comp.gameObject.name == "BarrierRL" || comp.gameObject.name == "BarrierLR")
+                {
+                    comp.Play();
+                }
+            }
+            else
+            {
+                comp.Stop();
+            }
+        }
+
+        MeshRenderer[] meshRenderers = gameObject.GetComponentsInChildren<MeshRenderer>();
+        foreach (MeshRenderer comp in meshRenderers)
+        {
+            comp.enabled = enable;
+        }
+
+        SpriteRenderer[] spriteRenderers = gameObject.GetComponentsInChildren<SpriteRenderer>();
+        foreach (SpriteRenderer comp in spriteRenderers)
+        {
+            comp.enabled = enable;
+        }
+
+        SetEnableTileColliders(enable);
+    }
+
+    public void SetEnableTileColliders(bool enable)
+    {
+        BoxCollider2D[] colliders = gameObject.GetComponentsInChildren<BoxCollider2D>();
+        foreach (BoxCollider2D comp in colliders)
+        {
+            comp.enabled = enable;
+        }
+    }
 }

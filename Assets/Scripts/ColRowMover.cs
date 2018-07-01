@@ -163,7 +163,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
     public void OnEndDrag(PointerEventData e)
     {
         int overallMovement;
-        SetEnableTileColliders(false);
+        bc.SetEnableTileColliders(false);
         if (isColumnMoving)
         {
             for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
@@ -206,14 +206,14 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             if (tilesToRemove.Count == 0 || tilesToRemove == null)
             {
                 MoveBack(overallMovement);
-                SetEnableTileColliders(true);
+                bc.SetEnableTileColliders(true);
                 return;
             }
             StartCoroutine(DestroyMatchedTiles(tilesToRemove));
         }
         else
         {
-            SetEnableTileColliders(true);
+            bc.SetEnableTileColliders(true);
         }
     }
 
@@ -270,9 +270,8 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             //Hiding disappearing tiles in HIDING_SPOT
             tilesToRemove.ForEach((t) =>
             {
-                Vector3 parentOldPos = bc.activeTileObjects[t.x][t.y].transform.position;
-                bc.activeTileObjects[t.x][t.y].transform.localPosition = HIDING_SPOT;
-                bc.activeTileObjects[t.x][t.y].transform.GetChild(2).position = parentOldPos;
+                bc.activeTileObjects[t.x][t.y].transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
+                bc.activeTileObjects[t.x][t.y].transform.GetChild(1).GetComponent<SpriteRenderer>().enabled = false;
                 bc.activeTileObjects[t.x][t.y].transform.GetChild(2).GetComponent<ParticleSystem>().Play();
             });
 
@@ -313,7 +312,8 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
                 {
                     bc.activeTileObjects[i][j].transform.localPosition = new Vector3(i, j, 0);
-                    bc.activeTileObjects[i][j].transform.GetChild(2).localPosition = new Vector3(0, 0, 0);
+                    bc.activeTileObjects[i][j].transform.GetChild(0).GetComponent<MeshRenderer>().enabled = true;
+                    bc.activeTileObjects[i][j].transform.GetChild(1).GetComponent<SpriteRenderer>().enabled = true;
                 }
 
                 for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
@@ -333,7 +333,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         }
 
         bc.isDestroying = false;
-        SetEnableTileColliders(true);
+        bc.SetEnableTileColliders(true);
     }
 
     private GameObject GetTile(int x, int y)
@@ -360,15 +360,6 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         {
             ChangeGhost(bc.ghostTiles[0], GetTile(0, number), new Vector3(BoardLogic.BOARD_SIZE, 0, 0));
             ChangeGhost(bc.ghostTiles[1], GetTile(BoardLogic.BOARD_SIZE - 1, number), new Vector3(-BoardLogic.BOARD_SIZE, 0, 0));
-        }
-    }
-
-    private void SetEnableTileColliders(bool enable)
-    {
-        BoxCollider2D[] colliders = gameObject.transform.parent.GetComponentsInChildren<BoxCollider2D>();
-        foreach (BoxCollider2D comp in colliders)
-        {
-            comp.enabled = enable;
         }
     }
 
