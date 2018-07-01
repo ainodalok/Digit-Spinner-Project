@@ -276,7 +276,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 bc.activeTileObjects[t.x][t.y].transform.GetChild(2).GetComponent<ParticleSystem>().Play();
             });
 
-            yield return new WaitForSeconds(0.5f);
+            yield return new WaitForSeconds(0.3f);
 
             //Falling down animation
             Sequence fallingSequence = DOTween.Sequence();
@@ -286,14 +286,14 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 {
                     fallDistances[i] = tilesToRemove.FindAll(t => (t.x == i) && (t.y < j)).Count;
 
-                    fallingSequence.Join(bc.activeTileObjects[i][j].transform.DOLocalMoveY(j - fallDistances[i], 0.5f));
+                    fallingSequence.Join(bc.activeTileObjects[i][j].transform.DOLocalMoveY(j - fallDistances[i], (float)Math.Sqrt(fallDistances[i]) / 2.0f));
                 }
 
                 fallDistances[i] = tilesToRemove.FindAll(t => (t.x == i) && (t.y < BoardLogic.BOARD_SIZE)).Count;
 
                 for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
                 {
-                    fallingSequence.Join(bc.prophecyTileObjects[i][j].transform.DOLocalMoveY(BoardLogic.BOARD_SIZE + j - fallDistances[i], 0.5f));
+                    fallingSequence.Join(bc.prophecyTileObjects[i][j].transform.DOLocalMoveY(BoardLogic.BOARD_SIZE + j - fallDistances[i], (float)Math.Sqrt(fallDistances[i]) / 2.0f));
                 }
 
                 if (maxDistance < fallDistances[i])
