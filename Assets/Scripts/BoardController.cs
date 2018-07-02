@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 using System.Linq;
 using System;
 using TMPro;
+using DG.Tweening;
 
 public class BoardController : MonoBehaviour {
     private BoardLogic boardLogic;
@@ -228,10 +229,39 @@ public class BoardController : MonoBehaviour {
 
     public void SetEnableBoard(bool enable)
     {
-        ParticleSystemRenderer[] particleSystemRenderers = gameObject.GetComponentsInChildren<ParticleSystemRenderer>();
-        foreach (ParticleSystemRenderer comp in particleSystemRenderers)
+        ParticleSystem[] particleSystem = gameObject.GetComponentsInChildren<ParticleSystem>();
+        foreach (ParticleSystem comp in particleSystem)
         {
-            comp.enabled = enable;
+            comp.gameObject.GetComponent<ParticleSystemRenderer>().enabled = enable;
+            ColRowMover colRowMover = comp.transform.parent.gameObject.GetComponent<ColRowMover>();
+            if (colRowMover != null)
+            {
+                if (enable)
+                {
+                    if (comp.isPaused)
+                    {
+                        comp.Play();
+                    }
+                }
+                else
+                {
+                    if (comp.isPlaying)
+                    {
+                        comp.Pause();
+                    }
+                }
+            }
+            else
+            {
+                if (enable)
+                {
+                    comp.Play();
+                }
+                else
+                {
+                    comp.Pause();
+                }
+            }
         }
 
         MeshRenderer[] meshRenderers = gameObject.GetComponentsInChildren<MeshRenderer>();
@@ -272,6 +302,17 @@ public class BoardController : MonoBehaviour {
         if (!isDestroying)
         {
             SetEnableTileColliders(enable);
+        }
+        else
+        {
+            if (menuOpener.open)
+            {
+                DOTween.PauseAll();
+            }
+            else
+            {
+                DOTween.PlayAll();
+            }
         }
     }
 

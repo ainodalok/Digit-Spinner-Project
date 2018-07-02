@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.SceneManagement;
+using TMPro;
 
 public class MenuOpener : MonoBehaviour {
     public bool open = false;
@@ -33,5 +34,16 @@ public class MenuOpener : MonoBehaviour {
             //SceneLoadManager.audioManager.sounds[SceneLoadManager.audioManager.gameBGM[SceneLoadManager.audioManager.currentGameBGMIndex]].source.Pause();
             MenuPanel.SetActive(true);
         }
+    }
+
+    public void endGame()
+    {
+        Transform gamePanelTransform = transform.Find("GamePanel");
+        GameObject scoreTxt = gamePanelTransform.Find("Header").Find("ScoreTxt").gameObject;
+        GameObject scoreEndTxt = MenuPanel.transform.Find("ScoreEndTxt").gameObject;
+        gamePanelTransform.Find("Footer").Find("MenuBtn").gameObject.SetActive(false);
+        scoreEndTxt.GetComponent<TextMeshProUGUI>().text = scoreTxt.GetComponent<TextMeshProUGUI>().text;
+        scoreTxt.SetActive(false);
+        scoreEndTxt.SetActive(true);
     }
 }

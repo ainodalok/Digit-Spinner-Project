@@ -54,6 +54,6 @@ public class Timer : MonoBehaviour {
         }
         MenuOpener menuOpener = transform.GetComponentInParent(typeof(MenuOpener)) as MenuOpener;
         menuOpener.ToggleMenu();
-        menuOpener.transform.Find("GamePanel").Find("Footer").Find("MenuBtn").gameObject.SetActive(false);
+        menuOpener.endGame();
     }
 }

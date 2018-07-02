@@ -265,6 +265,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         bc.isDestroying = true;
         int maxDistance = 0;
         int[] fallDistances = new int[BoardLogic.BOARD_SIZE];
+        bool particlesPlaying = false;
 
         while (tilesToRemove.Count > 0)
         {
@@ -275,9 +276,19 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 bc.activeTileObjects[t.x][t.y].transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
                 bc.activeTileObjects[t.x][t.y].transform.GetChild(1).GetComponent<SpriteRenderer>().enabled = false;
                 bc.activeTileObjects[t.x][t.y].transform.GetChild(2).GetComponent<ParticleSystem>().Play();
+                particlesPlaying = true;
             });
 
-            yield return new WaitForSeconds(0.3f);
+            while (particlesPlaying)
+            {
+                particlesPlaying = false;
+                tilesToRemove.ForEach((t) =>
+                {
+                    particlesPlaying = bc.activeTileObjects[t.x][t.y].transform.GetChild(2).GetComponent<ParticleSystem>().IsAlive();
+                });
+                yield return null;
+            };
+            //yield return new WaitForSeconds(0.3f);
 
             //Falling down animation
             Sequence fallingSequence = DOTween.Sequence();
