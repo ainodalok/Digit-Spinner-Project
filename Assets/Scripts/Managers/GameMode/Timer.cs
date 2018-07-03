@@ -4,29 +4,27 @@ using UnityEngine;
 using TMPro;
 
 public class Timer : ObjectiveTracker {
-    private int time;
+    private int time = 1200;
     private bool paused = false;
     private Coroutine counter;
 
-    void Start()
+    new void Start()
     {
-        StartTimer();
-        bc = GameObject.FindGameObjectWithTag("Board").GetComponent<BoardController>();
+        base.Start();
+        gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Time left:\n{0}.{1}", time / 10, time % 10);
     }
 
-    private void StartTimer()
+    public void StartTimer()
     {
-        time = 1200;
-        gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Time left:\n{0}.{1}", time / 10, time % 10);
         counter = StartCoroutine(MsCounter());
     }
 
-    private void StopTimer()
+    public void StopTimer()
     {
         StopCoroutine(counter);
     }
 
-    public void PauseTimer()
+    public void ToggleTimer()
     {
         if (paused)
         {

@@ -11,7 +11,6 @@ public enum GameMode
 };
 
 public class GameModeManager : MonoBehaviour {
-
     public GameMode mode = GameMode.None;
     public ObjectiveTracker tracker;
 

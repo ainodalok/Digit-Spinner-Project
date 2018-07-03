@@ -4,19 +4,13 @@ using UnityEngine;
 using TMPro;
 
 public class TurnCounter : ObjectiveTracker {
-    private int turnsLeft;
+    private int turnsLeft = 20;
 
 	// Use this for initialization
-	void Start () {
-        StartCounter();
-	}
-
-    private void StartCounter()
-    {
-        turnsLeft = 20;
+	new void Start() {
+        base.Start();
         gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Turns left:\n{0}", turnsLeft);
-        bc = GameObject.FindGameObjectWithTag("Board").GetComponent<BoardController>();
-    }
+	}
 
     public void UpdateTurns()
     {

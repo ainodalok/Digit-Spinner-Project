@@ -9,7 +9,7 @@ using DG.Tweening;
 
 public class BoardController : MonoBehaviour {
     private BoardLogic boardLogic;
-    private GameModeManager gameModeManager;
+    public GameModeManager gameModeManager;
 
     public GameObject tilePrefab;
     public GameObject prophecyTilePrefab;
@@ -30,7 +30,8 @@ public class BoardController : MonoBehaviour {
     [HideInInspector]
     public MenuOpener menuOpener;
 
-    void Awake () {
+    void Awake ()
+    {
         boardLogic = new BoardLogic();
         SetupActiveTiles();
         SetupProphecyTiles();
@@ -41,7 +42,6 @@ public class BoardController : MonoBehaviour {
     private void Start()
     {
         menuOpener = Util.FindRootGameObjectByName_SceneIndex("HUDCanvas", SceneManager.sceneCount - 1).GetComponent<MenuOpener>();
-        gameModeManager = GameObject.FindGameObjectWithTag("Header").GetComponent<GameModeManager>();
     }
 
     public BoardLogic GetBoardLogic()
@@ -310,17 +310,6 @@ public class BoardController : MonoBehaviour {
         if (!isDestroying)
         {
             SetEnableTileColliders(enable);
-        }
-        else
-        {
-            if (menuOpener.open)
-            {
-                DOTween.PauseAll();
-            }
-            else
-            {
-                DOTween.PlayAll();
-            }
         }
     }
 

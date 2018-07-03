@@ -288,13 +288,12 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
             while (particlesPlaying)
             {
                 particlesPlaying = false;
-                tilesToRemove.ForEach((t) =>
+                for (int i = 0; (i < tilesToRemove.Count) && (!particlesPlaying); i++)
                 {
-                    particlesPlaying = bc.activeTileObjects[t.x][t.y].transform.GetChild(2).GetComponent<ParticleSystem>().IsAlive();
-                });
+                    particlesPlaying = bc.activeTileObjects[tilesToRemove[i].x][tilesToRemove[i].y].transform.GetChild(2).GetComponent<ParticleSystem>().IsAlive();
+                }
                 yield return null;
             };
-            //yield return new WaitForSeconds(0.3f);
 
             //Falling down animation
             Sequence fallingSequence = DOTween.Sequence();
