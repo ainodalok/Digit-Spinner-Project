@@ -210,6 +210,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 bc.SetEnableTileColliders(true);
                 return;
             }
+
             StartCoroutine(DestroyMatchedTiles(tilesToRemove));
         }
         else
@@ -266,6 +267,8 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         int maxDistance = 0;
         int[] fallDistances = new int[BoardLogic.BOARD_SIZE];
         bool particlesPlaying = false;
+
+        bc.GetGameModeManager().UpdateTurns();
 
         while (tilesToRemove.Count > 0)
         {

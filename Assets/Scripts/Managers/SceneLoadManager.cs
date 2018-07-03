@@ -6,6 +6,7 @@ using System.Linq;
 public class SceneLoadManager : MonoBehaviour
 {
     public string currentScene = "";
+    public GameMode currentGameMode = GameMode.None;
     public static AudioManager audioManager;
     private bool loading = false;
 
@@ -26,17 +27,19 @@ public class SceneLoadManager : MonoBehaviour
         audioManager = Util.FindRootGameObjectByName("AudioManager", "Managers").GetComponent<AudioManager>();
     }
 
-    public void WrapLoadCoroutine(string sceneName)
+    public void WrapLoadCoroutine(string sceneName, GameMode gameMode = GameMode.None)
     {
+        currentGameMode = gameMode;
+
         if (!loading)
         {
             loading = true;
-            StartCoroutine(LoadScene(sceneName));
+            StartCoroutine(LoadScene(sceneName, gameMode));
         }
     }
 
     // Load a scene with a specified string name
-    IEnumerator LoadScene(string sceneName)
+    IEnumerator LoadScene(string sceneName, GameMode gameMode = GameMode.None)
     {
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
         while (!async.isDone)

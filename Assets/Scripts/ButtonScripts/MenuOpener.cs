@@ -36,7 +36,7 @@ public class MenuOpener : MonoBehaviour {
         }
     }
 
-    public void endGame()
+    public void EndGame()
     {
         Transform gamePanelTransform = transform.Find("GamePanel");
         GameObject scoreTxt = gamePanelTransform.Find("Header").Find("ScoreTxt").gameObject;

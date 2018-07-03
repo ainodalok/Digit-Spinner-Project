@@ -9,6 +9,8 @@ TagManager:
   - MainCameraMenu
   - ScoreTxt
   - AudioManager
+  - Header
+  - Board
   layers:
   - Default
   - TransparentFX

@@ -14,7 +14,11 @@ public class ManagerConnector : MonoBehaviour
         Button button = GetComponent<Button>();
         if (button.name == "TimeAttackBtn")
         {
-            button.onClick.AddListener(() => LoaderScript.WrapLoadCoroutine("Game"));
+            button.onClick.AddListener(() => LoaderScript.WrapLoadCoroutine("Game", GameMode.TimeAttack));
+        }
+        if (button.name == "LimitedTurnsBtn")
+        {
+            button.onClick.AddListener(() => LoaderScript.WrapLoadCoroutine("Game", GameMode.LimitedTurns));
         }
         if (button.name == "RestartBtn")
         {

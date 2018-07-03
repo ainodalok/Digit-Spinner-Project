@@ -11129,6 +11129,7 @@ GameObject:
   - component: {fileID: 1775675598}
   - component: {fileID: 1775675597}
   - component: {fileID: 1775675599}
+  - component: {fileID: 1775675600}
   m_Layer: 5
   m_Name: ObjectiveTxt
   m_TagString: Untagged
@@ -11173,7 +11174,7 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 00.000
+  m_text: 00
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0bed7c49c9987634ebb8624b525da8c4, type: 2}
   m_sharedMaterial: {fileID: 21800180849670330, guid: 0bed7c49c9987634ebb8624b525da8c4,
@@ -11242,10 +11243,10 @@ MonoBehaviour:
   m_margin: {x: 0, y: 0, z: 0, w: 0}
   m_textInfo:
     textComponent: {fileID: 1775675597}
-    characterCount: 6
+    characterCount: 2
     spriteCount: 0
     spaceCount: 0
-    wordCount: 2
+    wordCount: 1
     linkCount: 0
     lineCount: 1
     pageCount: 1
@@ -11280,9 +11281,21 @@ MonoBehaviour:
   m_PrefabParentObject: {fileID: 0}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1775675595}
-  m_Enabled: 1
+  m_Enabled: 0
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: 884ddadd63e326c44ad320ddfc07a894, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  bc: {fileID: 1845161032}
+--- !u!114 &1775675600
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1775675595}
+  m_Enabled: 0
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 9b1421ce1f5a66d468613748a1e1c01d, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
   bc: {fileID: 1845161032}
@@ -11652,7 +11665,7 @@ GameObject:
   - component: {fileID: 1845161032}
   m_Layer: 0
   m_Name: Board
-  m_TagString: Untagged
+  m_TagString: Board
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11701,9 +11714,10 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 2017151769}
+  - component: {fileID: 2017151770}
   m_Layer: 5
   m_Name: Header
-  m_TagString: Untagged
+  m_TagString: Header
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11728,6 +11742,19 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2017151770
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2017151768}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 508e4b095a2475f41a7ea9a1100523d9, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  mode: 0
+  tracker: {fileID: 0}
 --- !u!1 &2090539802
 GameObject:
   m_ObjectHideFlags: 0
