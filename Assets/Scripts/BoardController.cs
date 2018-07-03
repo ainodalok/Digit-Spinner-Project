@@ -28,18 +28,24 @@ public class BoardController : MonoBehaviour {
 
     [HideInInspector]
     public bool isDestroying = false;
+
+    public static Vector3 SPAWN_SIZE = new Vector3(0, 0, 1);
+    public static Vector3 ACTIVE_SIZE = new Vector3(1, 1, 1);
+    public static Vector3 SIZE_STEP = new Vector3(0.1f, 0.1f);
+    const float INITIAL_SCALE_DURATION = 0.7f;
     
     void Awake ()
     {
         boardLogic = new BoardLogic();
         SetupActiveTiles();
         SetupProphecyTiles();
-        ghostTiles[0] = CreateGhostTile(activeTileObjects[0][0], new Vector3(0, BoardLogic.BOARD_SIZE, 0));
-        ghostTiles[1] = CreateGhostTile(activeTileObjects[0][BoardLogic.BOARD_SIZE - 1], new Vector3(0, -BoardLogic.BOARD_SIZE, 0));
+        SetupGhostTiles();
     }
 
     private void SetupActiveTiles()
     {
+        Sequence scalingSequence = DOTween.Sequence();
+
         for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
         {
             activeTileObjects[i] = new GameObject[BoardLogic.BOARD_SIZE];
@@ -55,12 +61,18 @@ public class BoardController : MonoBehaviour {
                 newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = boardLogic.activeTiles[i][j].ToString();
 
                 activeTileObjects[i][j] = newTile;
+                scalingSequence.Join(newTile.transform.DOScale(ACTIVE_SIZE, INITIAL_SCALE_DURATION));
             }
         }
+
+        scalingSequence.SetEase(Ease.Linear);
+        scalingSequence.Play();
     }
 
     private void SetupProphecyTiles()
     {
+        Sequence scalingSequence = DOTween.Sequence();
+
         for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
         {
             prophecyTileObjects[i] = new GameObject[BoardLogic.PROPHECY_HEIGHT];
@@ -75,9 +87,22 @@ public class BoardController : MonoBehaviour {
                 newTile.transform.rotation = Quaternion.identity;
                 newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = boardLogic.prophecyTiles[i][j].ToString();
 
+                scalingSequence.Join(newTile.transform.DOScale(ACTIVE_SIZE - j * SIZE_STEP, INITIAL_SCALE_DURATION));
                 prophecyTileObjects[i][j] = newTile;
             }
         }
+
+        scalingSequence.SetEase(Ease.Linear);
+        scalingSequence.Play();
+    }
+
+    private void SetupGhostTiles()
+    {
+        ghostTiles[0] = CreateGhostTile(activeTileObjects[0][0], new Vector3(0, BoardLogic.BOARD_SIZE, 0));
+        ghostTiles[1] = CreateGhostTile(activeTileObjects[0][BoardLogic.BOARD_SIZE - 1], new Vector3(0, -BoardLogic.BOARD_SIZE, 0));
+
+        ghostTiles[0].transform.localScale = ACTIVE_SIZE;
+        ghostTiles[1].transform.localScale = ACTIVE_SIZE;
     }
 
     public void ShiftInsert(int number, bool isFirstElement, bool isColumn)
@@ -216,8 +241,6 @@ public class BoardController : MonoBehaviour {
         newTile.name = string.Concat(tile.name, " Ghost");
         return newTile;
     }
-
-
 
     public void SetEnableBoard(bool enable)
     {

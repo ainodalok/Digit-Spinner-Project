@@ -295,8 +295,10 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 yield return null;
             };
 
-            //Falling down animation
+            //Falling down and scaling falling prophecy tiles animation
             Sequence fallingSequence = DOTween.Sequence();
+            Vector3 newSize;
+
             for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
             {
                 for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
@@ -311,6 +313,14 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
                 {
                     fallingSequence.Join(bc.prophecyTileObjects[i][j].transform.DOLocalMoveY(BoardLogic.BOARD_SIZE + j - fallDistances[i], (float)Math.Sqrt(fallDistances[i]) / 2.0f));
+
+                    //Adding scaling tweens for prophecy tiles
+                    newSize = bc.prophecyTileObjects[i][j].transform.localScale + (fallDistances[i] * BoardController.SIZE_STEP);
+                    if (newSize.x > 1)
+                    {
+                        newSize = BoardController.ACTIVE_SIZE;
+                    }
+                    fallingSequence.Join(bc.prophecyTileObjects[i][j].transform.DOScale(newSize, (float)Math.Sqrt(fallDistances[i]) / 2.0f));
                 }
 
                 if (maxDistance < fallDistances[i])
@@ -343,13 +353,19 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                     bc.prophecyTileObjects[i][j].transform.localPosition = new Vector3(i, j + BoardLogic.BOARD_SIZE, 0);
                     if (BoardLogic.PROPHECY_HEIGHT - j <= fallDistances[i])
                     {
-                        scalingSequence.Join(bc.prophecyTileObjects[i][j].transform.DOScale(0.0f, 0.1f).From());
+                        bc.prophecyTileObjects[i][j].transform.localScale = BoardController.SPAWN_SIZE;
+                        scalingSequence.Join(bc.prophecyTileObjects[i][j].transform.DOScale(BoardController.ACTIVE_SIZE - j * BoardController.SIZE_STEP, 0.1f));
+                    }
+                    else
+                    {
+                        bc.prophecyTileObjects[i][j].transform.localScale = BoardController.ACTIVE_SIZE - j * BoardController.SIZE_STEP;
                     }
                 }
             }
 
             tilesToRemove = bc.boardLogic.DestroyTiles(tilesToRemove);
             bc.UpdateDigitsBasic();
+            scalingSequence.SetEase(Ease.Linear);
             scalingSequence.Play();
             yield return scalingSequence.WaitForCompletion();
         }
