@@ -21,11 +21,6 @@ public class GameModeManager : MonoBehaviour {
         UpdateSceneForMode();
 	}
 
-    public void UpdateTurns()
-    {
-        tracker.UpdateTurns();
-    }
-
     private void UpdateSceneForMode()
     {
         if (mode == GameMode.TimeAttack)
@@ -34,7 +29,7 @@ public class GameModeManager : MonoBehaviour {
         }
         else if (mode == GameMode.LimitedTurns)
         {
-            tracker = gameObject.transform.GetChild(1).gameObject.AddComponent<TurnCounter>();
+            tracker = gameObject.transform.GetChild(1).gameObject.GetComponent<TurnCounter>();
         }
 
         tracker.enabled = true;

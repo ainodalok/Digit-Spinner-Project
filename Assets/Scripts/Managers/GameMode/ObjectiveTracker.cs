@@ -12,10 +12,8 @@ public abstract class ObjectiveTracker : MonoBehaviour {
             yield return null;
         }
 
-        MenuOpener menuOpener = transform.GetComponentInParent(typeof(MenuOpener)) as MenuOpener;
+        MenuOpener menuOpener = transform.GetComponentInParent<MenuOpener>();
         menuOpener.ToggleMenu();
         menuOpener.EndGame();
     }
-
-    public abstract void UpdateTurns();
 }

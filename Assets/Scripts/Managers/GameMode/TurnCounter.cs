@@ -13,12 +13,12 @@ public class TurnCounter : ObjectiveTracker {
 
     private void StartCounter()
     {
-        turnsLeft = 2;
+        turnsLeft = 20;
         gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Turns left:\n{0}", turnsLeft);
         bc = GameObject.FindGameObjectWithTag("Board").GetComponent<BoardController>();
     }
 
-    public void SubtractOne()
+    public void UpdateTurns()
     {
         turnsLeft--;
         gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Turns left:\n{0}", turnsLeft);
@@ -27,10 +27,5 @@ public class TurnCounter : ObjectiveTracker {
         {
             StartCoroutine(EndGame());
         }
-    }
-
-    public override void UpdateTurns()
-    {
-        SubtractOne();
     }
 }

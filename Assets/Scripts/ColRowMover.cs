@@ -268,7 +268,10 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         int[] fallDistances = new int[BoardLogic.BOARD_SIZE];
         bool particlesPlaying = false;
 
-        bc.GetGameModeManager().UpdateTurns();
+        if (bc.GetGameModeManager().mode == GameMode.LimitedTurns)
+        {
+            (bc.GetGameModeManager().tracker as TurnCounter).UpdateTurns();
+        }
 
         while (tilesToRemove.Count > 0)
         {
