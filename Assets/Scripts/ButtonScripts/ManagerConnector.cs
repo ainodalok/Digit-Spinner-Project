@@ -6,7 +6,6 @@ using UnityEngine.UI;
 
 public class ManagerConnector : MonoBehaviour
 {
-
     void Awake()
     {
         SceneLoadManager LoaderScript = GameObject.FindWithTag("SceneLoadManager").GetComponent<SceneLoadManager>();

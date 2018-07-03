@@ -6,13 +6,9 @@ using UnityEngine.SceneManagement;
 public abstract class ObjectiveTracker : MonoBehaviour {
     public BoardController bc;
 
-    protected void Start()
-    {
-        bc = Util.FindRootGameObjectByName_SceneIndex("Board", SceneManager.sceneCount - 1).GetComponent<BoardController>();
-    }
-
     protected IEnumerator EndGame()
     {
+        Debug.Log(bc);
         while (bc.isDestroying)
         {
             yield return null;

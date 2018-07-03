@@ -8,11 +8,12 @@ using TMPro;
 using DG.Tweening;
 
 public class BoardController : MonoBehaviour {
-    private BoardLogic boardLogic;
+    public BoardLogic boardLogic;
     public GameModeManager gameModeManager;
 
     public GameObject tilePrefab;
     public GameObject prophecyTilePrefab;
+    public MenuOpener menuOpener;
 
     [HideInInspector]
     public GameObject scoreText;
@@ -27,9 +28,7 @@ public class BoardController : MonoBehaviour {
 
     [HideInInspector]
     public bool isDestroying = false;
-    [HideInInspector]
-    public MenuOpener menuOpener;
-
+    
     void Awake ()
     {
         boardLogic = new BoardLogic();
@@ -37,21 +36,6 @@ public class BoardController : MonoBehaviour {
         SetupProphecyTiles();
         ghostTiles[0] = CreateGhostTile(activeTileObjects[0][0], new Vector3(0, BoardLogic.BOARD_SIZE, 0));
         ghostTiles[1] = CreateGhostTile(activeTileObjects[0][BoardLogic.BOARD_SIZE - 1], new Vector3(0, -BoardLogic.BOARD_SIZE, 0));
-    }
-
-    private void Start()
-    {
-        menuOpener = Util.FindRootGameObjectByName_SceneIndex("HUDCanvas", SceneManager.sceneCount - 1).GetComponent<MenuOpener>();
-    }
-
-    public BoardLogic GetBoardLogic()
-    {
-        return boardLogic;
-    }
-
-    public GameModeManager GetGameModeManager()
-    {
-        return gameModeManager;
     }
 
     private void SetupActiveTiles()

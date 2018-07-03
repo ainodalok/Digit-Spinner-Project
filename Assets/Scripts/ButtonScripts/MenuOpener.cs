@@ -8,20 +8,17 @@ using DG.Tweening;
 public class MenuOpener : MonoBehaviour {
     public bool open = false;
 
-    private GameObject Board;
-    private GameObject MenuPanel;
-    private GameModeManager gameModeManager;
-
-    void Start()
-    {
-        MenuPanel = transform.Find("MenuPanel").gameObject;
-        Board = Util.FindRootGameObjectByName_SceneIndex("Board", SceneManager.sceneCount - 1);
-        gameModeManager = Board.GetComponent<BoardController>().GetGameModeManager();
-    }
+    public BoardController boardController;
+    public GameObject menuPanel;
+    public GameModeManager gameModeManager;
+    public GameObject menuBtn;
+    public GameObject scoreTxt;
+    public GameObject scoreEndTxt;
+    public ReadyStart readyStart;
 
     public void ToggleMenu()
     {
-        if (gameModeManager.mode == GameMode.TimeAttack)
+        if ((gameModeManager.mode == GameMode.TimeAttack) && readyStart.ready)
         {
             (gameModeManager.tracker as Timer).ToggleTimer();
         }
@@ -29,30 +26,25 @@ public class MenuOpener : MonoBehaviour {
         if (open)
         {
             open = false;
-            MenuPanel.SetActive(false);
-            //SceneLoadManager.audioManager.sounds[SceneLoadManager.audioManager.gameBGM[SceneLoadManager.audioManager.currentGameBGMIndex]].source.UnPause();
-            //SceneLoadManager.audioManager.pausedBGM = false;
-            Board.GetComponent<BoardController>().SetEnableBoard(true);
+            menuPanel.SetActive(false);
+            boardController.SetEnableBoard(true);
             DOTween.PlayAll();
+            readyStart.TogglePause();
         }
         //Opens menu
         else
         {
             open = true;
-            Board.GetComponent<BoardController>().SetEnableBoard(false);
-            //SceneLoadManager.audioManager.pausedBGM = true;
-            //SceneLoadManager.audioManager.sounds[SceneLoadManager.audioManager.gameBGM[SceneLoadManager.audioManager.currentGameBGMIndex]].source.Pause();
-            MenuPanel.SetActive(true);
+            boardController.SetEnableBoard(false);
+            menuPanel.SetActive(true);
             DOTween.PauseAll();
+            readyStart.TogglePause();
         }
     }
 
     public void EndGame()
     {
-        Transform gamePanelTransform = transform.Find("GamePanel");
-        GameObject scoreTxt = gamePanelTransform.Find("Header").Find("ScoreTxt").gameObject;
-        GameObject scoreEndTxt = MenuPanel.transform.Find("ScoreEndTxt").gameObject;
-        gamePanelTransform.Find("Footer").Find("MenuBtn").gameObject.SetActive(false);
+        menuBtn.SetActive(false);
         scoreEndTxt.GetComponent<TextMeshProUGUI>().text = scoreTxt.GetComponent<TextMeshProUGUI>().text;
         scoreTxt.SetActive(false);
         scoreEndTxt.SetActive(true);

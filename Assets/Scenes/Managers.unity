@@ -143,6 +143,8 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   currentScene: 
+  currentGameMode: 0
+  audioManager: {fileID: 1737998035}
 --- !u!4 &1602385748
 Transform:
   m_ObjectHideFlags: 0
@@ -258,3 +260,4 @@ MonoBehaviour:
   currentMenuBGMIndex: -1
   currentGameBGMIndex: -1
   pausedBGM: 0
+  muted: 0

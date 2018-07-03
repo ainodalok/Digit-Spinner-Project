@@ -11398,6 +11398,13 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   open: 0
+  boardController: {fileID: 1845161032}
+  menuPanel: {fileID: 87761765}
+  gameModeManager: {fileID: 2017151770}
+  menuBtn: {fileID: 1003665808}
+  scoreTxt: {fileID: 415179608}
+  scoreEndTxt: {fileID: 362254529}
+  readyStart: {fileID: 1804453516}
 --- !u!1 &1804453512
 GameObject:
   m_ObjectHideFlags: 0
@@ -11479,6 +11486,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: b1b4f8ac445eaaa459bd83bb161f46f1, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  gameModeManager: {fileID: 2017151770}
+  board: {fileID: 1845161030}
 --- !u!1 &1823068900
 GameObject:
   m_ObjectHideFlags: 0
@@ -11702,12 +11711,12 @@ MonoBehaviour:
   tilePrefab: {fileID: 1179319931414950, guid: 04ee9d35898a9b74698097f23063fee0, type: 2}
   prophecyTilePrefab: {fileID: 1884890833285650, guid: 223bdf5fb13a14c4d9c44458f5300a63,
     type: 2}
+  menuOpener: {fileID: 1788273435}
   scoreText: {fileID: 415179608}
   ghostTiles:
   - {fileID: 0}
   - {fileID: 0}
   isDestroying: 0
-  menuOpener: {fileID: 0}
 --- !u!1 &2017151768
 GameObject:
   m_ObjectHideFlags: 0

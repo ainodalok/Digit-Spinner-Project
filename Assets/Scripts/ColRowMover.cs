@@ -202,7 +202,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
 
         if (overallMovement != 0)
         {
-            List<Vector2Int> tilesToRemove = bc.GetBoardLogic().Move(number, overallMovement, isColumnMoving);
+            List<Vector2Int> tilesToRemove = bc.boardLogic.Move(number, overallMovement, isColumnMoving);
 
             if (tilesToRemove.Count == 0 || tilesToRemove == null)
             {
@@ -268,9 +268,9 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         int[] fallDistances = new int[BoardLogic.BOARD_SIZE];
         bool particlesPlaying = false;
 
-        if (bc.GetGameModeManager().mode == GameMode.LimitedTurns)
+        if (bc.gameModeManager.mode == GameMode.LimitedTurns)
         {
-            (bc.GetGameModeManager().tracker as TurnCounter).UpdateTurns();
+            (bc.gameModeManager.tracker as TurnCounter).UpdateTurns();
         }
 
         while (tilesToRemove.Count > 0)
@@ -348,7 +348,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 }
             }
 
-            tilesToRemove = bc.GetBoardLogic().DestroyTiles(tilesToRemove);
+            tilesToRemove = bc.boardLogic.DestroyTiles(tilesToRemove);
             bc.UpdateDigitsBasic();
             scalingSequence.Play();
             yield return scalingSequence.WaitForCompletion();

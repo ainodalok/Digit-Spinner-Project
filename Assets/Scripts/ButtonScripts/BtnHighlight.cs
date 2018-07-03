@@ -10,7 +10,7 @@ public class BtnHighlight : MonoBehaviour, IPointerEnterHandler, IPointerExitHan
  
      private void Awake()
      {
-         _btn = this.gameObject.GetComponent<Button>();
+         _btn = GetComponent<Button>();
      }
  
      public void OnPointerEnter(PointerEventData eventData)

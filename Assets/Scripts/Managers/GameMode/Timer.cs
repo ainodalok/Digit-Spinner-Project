@@ -8,9 +8,8 @@ public class Timer : ObjectiveTracker {
     private bool paused = false;
     private Coroutine counter;
 
-    new void Start()
+    void Start()
     {
-        base.Start();
         gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Time left:\n{0}.{1}", time / 10, time % 10);
     }
 

@@ -7,8 +7,7 @@ public class TurnCounter : ObjectiveTracker {
     private int turnsLeft = 20;
 
 	// Use this for initialization
-	new void Start() {
-        base.Start();
+	void Start() {
         gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Turns left:\n{0}", turnsLeft);
 	}
 

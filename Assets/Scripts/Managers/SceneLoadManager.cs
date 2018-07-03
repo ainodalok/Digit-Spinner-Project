@@ -7,7 +7,7 @@ public class SceneLoadManager : MonoBehaviour
 {
     public string currentScene = "";
     public GameMode currentGameMode = GameMode.None;
-    public static AudioManager audioManager;
+    public AudioManager audioManager;
     private bool loading = false;
 
     void Awake()
@@ -20,11 +20,6 @@ public class SceneLoadManager : MonoBehaviour
         {
             currentScene = SceneManager.GetActiveScene().name;
         }
-    }
-
-    void Start()
-    {
-        audioManager = Util.FindRootGameObjectByName("AudioManager", "Managers").GetComponent<AudioManager>();
     }
 
     public void WrapLoadCoroutine(string sceneName, GameMode gameMode = GameMode.None)
