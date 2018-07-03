@@ -8,7 +8,6 @@ public abstract class ObjectiveTracker : MonoBehaviour {
 
     protected IEnumerator EndGame()
     {
-        Debug.Log(bc);
         while (bc.isDestroying)
         {
             yield return null;

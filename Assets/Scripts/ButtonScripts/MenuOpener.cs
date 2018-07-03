@@ -6,6 +6,7 @@ using TMPro;
 using DG.Tweening;
 
 public class MenuOpener : MonoBehaviour {
+    [HideInInspector]
     public bool open = false;
 
     public BoardController boardController;
@@ -15,6 +16,7 @@ public class MenuOpener : MonoBehaviour {
     public GameObject scoreTxt;
     public GameObject scoreEndTxt;
     public ReadyStart readyStart;
+    public GameObject scoreEnd;
 
     public void ToggleMenu()
     {
@@ -47,6 +49,7 @@ public class MenuOpener : MonoBehaviour {
         menuBtn.SetActive(false);
         scoreEndTxt.GetComponent<TextMeshProUGUI>().text = scoreTxt.GetComponent<TextMeshProUGUI>().text;
         scoreTxt.SetActive(false);
+        scoreEnd.SetActive(true);
         scoreEndTxt.SetActive(true);
     }
 }
