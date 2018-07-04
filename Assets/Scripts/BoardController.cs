@@ -15,8 +15,7 @@ public class BoardController : MonoBehaviour {
     public GameObject prophecyTilePrefab;
     public MenuOpener menuOpener;
 
-    [HideInInspector]
-    public GameObject scoreText;
+    public TextMeshProUGUI scoreText;
     [HideInInspector]
     public GameObject[][] prophecyTileObjects = new GameObject[BoardLogic.BOARD_SIZE][];
     [HideInInspector]
@@ -103,6 +102,7 @@ public class BoardController : MonoBehaviour {
         {
             ghostTiles[i].transform.localScale = ACTIVE_SIZE;
             Destroy(ghostTiles[i].GetComponent<ColRowMover>());
+            Destroy(ghostTiles[i].GetComponent<ParticleSystem>());
         }
     }
 
@@ -227,11 +227,27 @@ public class BoardController : MonoBehaviour {
         }
     }
 
-    public void AddScore(int add)
+    private void AddScore(int add, int combo)
     {
-        score += add;
+        score += add * combo;
 
-        scoreText.GetComponent<TextMeshProUGUI>().text = string.Format("Score: \n{0}", score);
+        if (combo > 1)
+        {
+            StartCoroutine(ShowCombo(combo));
+        }
+        else
+        {
+            scoreText.text = string.Format("Score: \n{0}", score);
+        }
+    }
+
+    private IEnumerator ShowCombo(int combo)
+    {
+        scoreText.text = string.Format("Combo {0}X!", combo);
+
+        yield return new WaitForSeconds(1.0f);
+
+        scoreText.text = string.Format("Score: \n{0}", score);
     }
 
     private GameObject CreateGhostTile(GameObject tile, Vector3 offset)
@@ -327,6 +343,125 @@ public class BoardController : MonoBehaviour {
         foreach (BoxCollider2D comp in colliders)
         {
             comp.enabled = enable;
+        }
+    }
+
+    public IEnumerator DestroyMatchedTiles(List<Vector2Int> tilesToRemove)
+    {
+        isDestroying = true;
+        int maxDistance = 0;
+        int[] fallDistances = new int[BoardLogic.BOARD_SIZE];
+        bool particlesPlaying = false;
+        int combo = 0;
+
+        if (gameModeManager.mode == GameMode.LimitedTurns)
+        {
+            (gameModeManager.tracker as TurnCounter).UpdateTurns();
+        }
+
+        while (tilesToRemove.Count > 0)
+        {
+            //Calculating score
+            combo++;
+            AddScore(tilesToRemove.Count * 10, combo);
+
+            //Hiding disappearing tiles
+            tilesToRemove.ForEach((t) =>
+            {
+                activeTileObjects[t.x][t.y].GetComponent<ColRowMover>().tileToRemove = true;
+                activeTileObjects[t.x][t.y].transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
+                activeTileObjects[t.x][t.y].transform.GetChild(1).GetComponent<SpriteRenderer>().enabled = false;
+                activeTileObjects[t.x][t.y].transform.GetChild(2).GetComponent<ParticleSystem>().Play();
+                particlesPlaying = true;
+            });
+
+            while (particlesPlaying)
+            {
+                particlesPlaying = false;
+                for (int i = 0; (i < tilesToRemove.Count) && (!particlesPlaying); i++)
+                {
+                    particlesPlaying = activeTileObjects[tilesToRemove[i].x][tilesToRemove[i].y].transform.GetChild(2).GetComponent<ParticleSystem>().IsAlive();
+                }
+                yield return null;
+            };
+
+            //Falling down and scaling falling prophecy tiles animation
+            Sequence fallingSequence = DOTween.Sequence();
+            Vector3 newSize;
+
+            for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
+            {
+                for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
+                {
+                    fallDistances[i] = tilesToRemove.FindAll(t => (t.x == i) && (t.y < j)).Count;
+
+                    fallingSequence.Join(activeTileObjects[i][j].transform.DOLocalMoveY(j - fallDistances[i], (float)Math.Sqrt(fallDistances[i]) / 2.0f));
+                }
+
+                fallDistances[i] = tilesToRemove.FindAll(t => (t.x == i) && (t.y < BoardLogic.BOARD_SIZE)).Count;
+
+                for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
+                {
+                    fallingSequence.Join(prophecyTileObjects[i][j].transform.DOLocalMoveY(BoardLogic.BOARD_SIZE + j - fallDistances[i], (float)Math.Sqrt(fallDistances[i]) / 2.0f));
+
+                    //Adding scaling tweens for prophecy tiles
+                    newSize = prophecyTileObjects[i][j].transform.localScale + (fallDistances[i] * SIZE_STEP);
+                    if (newSize.x > 1)
+                    {
+                        newSize = ACTIVE_SIZE;
+                    }
+                    fallingSequence.Join(prophecyTileObjects[i][j].transform.DOScale(newSize, (float)Math.Sqrt(fallDistances[i]) / 2.0f));
+                }
+
+                if (maxDistance < fallDistances[i])
+                {
+                    maxDistance = fallDistances[i];
+                }
+            }
+            fallingSequence.Play();
+            yield return fallingSequence.WaitForCompletion();
+
+            //Showing hidden tiles and scaling newly appeared prophecy tiles
+            Sequence scalingSequence = DOTween.Sequence();
+            for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
+            {
+                for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
+                {
+                    activeTileObjects[i][j].transform.localPosition = new Vector3(i, j, 0);
+                    activeTileObjects[i][j].GetComponent<ColRowMover>().tileToRemove = false;
+                    if (!menuOpener.open)
+                    {
+                        activeTileObjects[i][j].transform.GetChild(0).GetComponent<MeshRenderer>().enabled = true;
+                        activeTileObjects[i][j].transform.GetChild(1).GetComponent<SpriteRenderer>().enabled = true;
+                    }
+                }
+
+                for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
+                {
+                    prophecyTileObjects[i][j].transform.localPosition = new Vector3(i, j + BoardLogic.BOARD_SIZE, 0);
+                    if (BoardLogic.PROPHECY_HEIGHT - j <= fallDistances[i])
+                    {
+                        prophecyTileObjects[i][j].transform.localScale = SPAWN_SIZE;
+                        scalingSequence.Join(prophecyTileObjects[i][j].transform.DOScale(ACTIVE_SIZE - j * SIZE_STEP, 0.1f));
+                    }
+                    else
+                    {
+                        prophecyTileObjects[i][j].transform.localScale = ACTIVE_SIZE - j * SIZE_STEP;
+                    }
+                }
+            }
+
+            tilesToRemove = boardLogic.DestroyTiles(tilesToRemove);
+            UpdateDigitsBasic();
+            scalingSequence.SetEase(Ease.Linear);
+            scalingSequence.Play();
+            yield return scalingSequence.WaitForCompletion();
+        }
+
+        isDestroying = false;
+        if (!menuOpener.open)
+        {
+            SetEnableTileColliders(true);
         }
     }
 }

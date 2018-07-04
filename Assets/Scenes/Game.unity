@@ -11782,7 +11782,7 @@ MonoBehaviour:
   prophecyTilePrefab: {fileID: 1884890833285650, guid: 223bdf5fb13a14c4d9c44458f5300a63,
     type: 2}
   menuOpener: {fileID: 1788273435}
-  scoreText: {fileID: 415179608}
+  scoreText: {fileID: 415179610}
   ghostTiles:
   - {fileID: 0}
   - {fileID: 0}
