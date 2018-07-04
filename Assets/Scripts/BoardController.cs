@@ -61,11 +61,10 @@ public class BoardController : MonoBehaviour {
                 newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = boardLogic.activeTiles[i][j].ToString();
 
                 activeTileObjects[i][j] = newTile;
-                scalingSequence.Join(newTile.transform.DOScale(ACTIVE_SIZE, INITIAL_SCALE_DURATION));
+                scalingSequence.Join(newTile.transform.DOScale(ACTIVE_SIZE, INITIAL_SCALE_DURATION).SetEase(Ease.InOutSine));
             }
         }
 
-        scalingSequence.SetEase(Ease.Linear);
         scalingSequence.Play();
     }
 
@@ -87,12 +86,11 @@ public class BoardController : MonoBehaviour {
                 newTile.transform.rotation = Quaternion.identity;
                 newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = boardLogic.prophecyTiles[i][j].ToString();
 
-                scalingSequence.Join(newTile.transform.DOScale(ACTIVE_SIZE - j * SIZE_STEP, INITIAL_SCALE_DURATION));
+                scalingSequence.Join(newTile.transform.DOScale(ACTIVE_SIZE - j * SIZE_STEP, INITIAL_SCALE_DURATION).SetEase(Ease.InOutSine));
                 prophecyTileObjects[i][j] = newTile;
             }
         }
 
-        scalingSequence.SetEase(Ease.Linear);
         scalingSequence.Play();
     }
 
