@@ -23,7 +23,8 @@ public class BoardController : MonoBehaviour {
     [HideInInspector]
     public GameObject[] ghostTiles = new GameObject[2];
 
-    private int score;
+    [HideInInspector]
+    public int score;
 
     [HideInInspector]
     public bool isDestroying = false;
@@ -227,10 +228,19 @@ public class BoardController : MonoBehaviour {
         }
     }
 
+
+
     private void AddScore(int add, int combo)
     {
-        score += add * combo;
-
+        float modifier = 1.0f;
+        if (add > 3)
+        {
+            for (int i = 0; i < (add - 3); i++)
+            {
+                modifier += 0.2f * (i + 1);
+            }
+        }
+        score += (int) (add * 10 * combo * modifier);
         if (combo > 1)
         {
             StartCoroutine(ShowCombo(combo));
@@ -244,9 +254,11 @@ public class BoardController : MonoBehaviour {
     private IEnumerator ShowCombo(int combo)
     {
         scoreText.text = string.Format("Combo {0}X!", combo);
+        scoreText.color = new Color(combo*0.2f, 1.0f - combo * 0.2f, 1.0f - combo * 0.2f, 1.0f);
 
-        yield return new WaitForSeconds(1.0f);
+        yield return scoreText.transform.DOShakePosition(1.0f, combo*15.0f, 1000, 90.0f, false, false).WaitForCompletion();
 
+        scoreText.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         scoreText.text = string.Format("Score: \n{0}", score);
     }
 
@@ -362,7 +374,7 @@ public class BoardController : MonoBehaviour {
         {
             //Calculating score
             combo++;
-            AddScore(tilesToRemove.Count * 10, combo);
+            AddScore(tilesToRemove.Count, combo);
 
             //Hiding disappearing tiles
             tilesToRemove.ForEach((t) =>

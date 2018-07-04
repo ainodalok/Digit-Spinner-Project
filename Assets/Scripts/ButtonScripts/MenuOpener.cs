@@ -47,7 +47,7 @@ public class MenuOpener : MonoBehaviour {
     public void EndGame()
     {
         menuBtn.SetActive(false);
-        scoreEndTxt.GetComponent<TextMeshProUGUI>().text = scoreTxt.GetComponent<TextMeshProUGUI>().text;
+        scoreEndTxt.GetComponent<TextMeshProUGUI>().text = "Score:\n" + boardController.score;
         scoreTxt.SetActive(false);
         scoreEnd.SetActive(true);
         scoreEndTxt.SetActive(true);
