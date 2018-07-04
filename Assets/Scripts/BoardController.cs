@@ -102,7 +102,7 @@ public class BoardController : MonoBehaviour {
         {
             ghostTiles[i].transform.localScale = ACTIVE_SIZE;
             Destroy(ghostTiles[i].GetComponent<ColRowMover>());
-            Destroy(ghostTiles[i].GetComponent<ParticleSystem>());
+            Destroy(ghostTiles[i].transform.GetChild(2).gameObject);
         }
     }
 
@@ -265,8 +265,7 @@ public class BoardController : MonoBehaviour {
         foreach (ParticleSystem comp in particleSystem)
         {
             comp.gameObject.GetComponent<ParticleSystemRenderer>().enabled = enable;
-            ColRowMover colRowMover = comp.transform.parent.gameObject.GetComponent<ColRowMover>();
-            if (colRowMover != null)
+            if (comp.gameObject.name == "CircleElectricity" || comp.gameObject.name == "Sparks")
             {
                 if (enable)
                 {
@@ -380,7 +379,7 @@ public class BoardController : MonoBehaviour {
                 particlesPlaying = false;
                 for (int i = 0; (i < tilesToRemove.Count) && (!particlesPlaying); i++)
                 {
-                    particlesPlaying = activeTileObjects[tilesToRemove[i].x][tilesToRemove[i].y].transform.GetChild(2).GetComponent<ParticleSystem>().IsAlive();
+                    particlesPlaying = activeTileObjects[tilesToRemove[i].x][tilesToRemove[i].y].transform.GetChild(2).GetComponent<ParticleSystem>().isPlaying;
                 }
                 yield return null;
             };
