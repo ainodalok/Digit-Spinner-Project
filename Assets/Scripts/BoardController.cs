@@ -101,8 +101,11 @@ public class BoardController : MonoBehaviour {
         ghostTiles[0] = CreateGhostTile(activeTileObjects[0][0], new Vector3(0, BoardLogic.BOARD_SIZE, 0));
         ghostTiles[1] = CreateGhostTile(activeTileObjects[0][BoardLogic.BOARD_SIZE - 1], new Vector3(0, -BoardLogic.BOARD_SIZE, 0));
 
-        ghostTiles[0].transform.localScale = ACTIVE_SIZE;
-        ghostTiles[1].transform.localScale = ACTIVE_SIZE;
+        for (int i = 0; i < ghostTiles.Length; i++)
+        {
+            ghostTiles[i].transform.localScale = ACTIVE_SIZE;
+            Destroy(ghostTiles[i].GetComponent<ColRowMover>());
+        }
     }
 
     public void ShiftInsert(int number, bool isFirstElement, bool isColumn)
