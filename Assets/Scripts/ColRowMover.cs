@@ -290,7 +290,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 particlesPlaying = false;
                 for (int i = 0; (i < tilesToRemove.Count) && (!particlesPlaying); i++)
                 {
-                    particlesPlaying = bc.activeTileObjects[tilesToRemove[i].x][tilesToRemove[i].y].transform.GetChild(2).GetComponent<ParticleSystem>().IsAlive();
+                    particlesPlaying = bc.activeTileObjects[tilesToRemove[i].x][tilesToRemove[i].y].transform.GetChild(2).GetComponent<ParticleSystem>().isPlaying;
                 }
                 yield return null;
             };
