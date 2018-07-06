@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using DG.Tweening;
+using TMPro;
 using UnityEngine.SceneManagement;
 
 public class ReadyStart : MonoBehaviour {
@@ -20,6 +21,8 @@ public class ReadyStart : MonoBehaviour {
     public void TogglePause()
     {
         paused = !paused;
+        gameObject.GetComponentInChildren<TextMeshProUGUI>().enabled = !paused;
+        gameObject.GetComponent<UnityEngine.UI.Image>().enabled = !paused;
     }
 
     private IEnumerator ReadyAnimation()

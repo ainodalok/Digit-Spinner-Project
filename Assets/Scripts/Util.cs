@@ -46,7 +46,26 @@ public class Util {
 
         return System.Array.Find<GameObject>(gameObjects, g => g.name == name);
     }
-    
+
+    public static GameObject[] FindRootGameObjectsByName_SceneIndex(string name, int sceneIndex)
+    {
+        GameObject[] gameObjects = SceneManager.GetSceneAt(sceneIndex).GetRootGameObjects();
+
+        return System.Array.FindAll<GameObject>(gameObjects, g => g.name.Contains(name));
+    }
+
+    public static GameObject[] FindRootGameObjectsByName(string name, string sceneName = "")
+    {
+        if (sceneName == "")
+        {
+            sceneName = SceneManager.GetActiveScene().name;
+        }
+
+        GameObject[] gameObjects = SceneManager.GetSceneByName(sceneName).GetRootGameObjects();
+
+        return System.Array.FindAll<GameObject>(gameObjects, g => g.name.Contains(name));
+    }
+
     //Knuth's shuffle
     public static void ShuffleArray(int[] numbers)
     {
