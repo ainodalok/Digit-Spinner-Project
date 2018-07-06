@@ -27,7 +27,7 @@ public class Banner {
         bannerView = new BannerView(adUnitId, AdSize.SmartBanner, AdPosition.Top);
         bannerView.OnAdFailedToLoad += HandleOnAdFailedToLoad;
         bannerView.OnAdLoaded += HandleOnAdLoaded;
-        bannerView.OnAdClosed += HandleOnAdClosed;
+        bannerView.OnAdOpening += HandleOnAdOpening;
         LoadNew();
     }
 
@@ -68,7 +68,7 @@ public class Banner {
         loaded = true;
     }
 
-    public void HandleOnAdClosed(object sender, EventArgs args)
+    public void HandleOnAdOpening(object sender, EventArgs args)
     {
         LoadNew();
     }
