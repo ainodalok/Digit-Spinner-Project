@@ -20,6 +20,7 @@ public class SceneLoadManager : MonoBehaviour
 
     void Awake()
     {
+        Input.multiTouchEnabled = false;
         if (SceneManager.sceneCount < 2)
         {
             StartCoroutine(LoadScene("Menu"));
