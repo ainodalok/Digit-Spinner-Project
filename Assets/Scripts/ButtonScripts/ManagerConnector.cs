@@ -15,19 +15,19 @@ public class ManagerConnector : MonoBehaviour
         {
             button.onClick.AddListener(() => LoaderScript.WrapLoadCoroutine("Game", GameMode.TimeAttack));
         }
-        if (button.name == "LimitedTurnsBtn")
+        else if (button.name == "LimitedTurnsBtn")
         {
             button.onClick.AddListener(() => LoaderScript.WrapLoadCoroutine("Game", GameMode.LimitedTurns));
         }
-        if (button.name == "RestartBtn")
+        else if (button.name == "RestartBtn")
         {
             button.onClick.AddListener(() => LoaderScript.ReloadScene());
         }
-        if (button.name == "MainMenuBtn")
+        else if (button.name == "MainMenuBtn")
         {
             button.onClick.AddListener(() => LoaderScript.WrapLoadCoroutine("Menu"));
         }
-        if (button.name == "MuteBtn")
+        else if (button.name == "MuteBtn")
         {
             button.onClick.AddListener(() => AudioManagerScript.MuteSounds());
         }
