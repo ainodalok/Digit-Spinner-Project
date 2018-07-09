@@ -29,10 +29,12 @@ public class BoardController : MonoBehaviour {
     [HideInInspector]
     public bool isDestroying = false;
 
+    public Sequence scalingSequence;
+
     public static Vector3 SPAWN_SIZE = new Vector3(0, 0, 1);
     public static Vector3 ACTIVE_SIZE = new Vector3(1, 1, 1);
     public static Vector3 SIZE_STEP = new Vector3(0.1f, 0.1f);
-    const float INITIAL_SCALE_DURATION = 0.7f;
+    const float INITIAL_SCALE_DURATION = 0.2f;
     
     void Awake ()
     {
@@ -40,12 +42,11 @@ public class BoardController : MonoBehaviour {
         SetupActiveTiles();
         SetupProphecyTiles();
         SetupGhostTiles();
+        ScaleTilesUp();
     }
 
     private void SetupActiveTiles()
     {
-        Sequence scalingSequence = DOTween.Sequence();
-
         for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
         {
             activeTileObjects[i] = new GameObject[BoardLogic.BOARD_SIZE];
@@ -59,19 +60,13 @@ public class BoardController : MonoBehaviour {
                 newTile.transform.localPosition = position;
                 newTile.transform.rotation = Quaternion.identity;
                 newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = boardLogic.activeTiles[i][j].ToString();
-
                 activeTileObjects[i][j] = newTile;
-                scalingSequence.Join(newTile.transform.DOScale(ACTIVE_SIZE, INITIAL_SCALE_DURATION).SetEase(Ease.InOutSine));
             }
         }
-
-        scalingSequence.Play();
     }
 
     private void SetupProphecyTiles()
     {
-        Sequence scalingSequence = DOTween.Sequence();
-
         for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
         {
             prophecyTileObjects[i] = new GameObject[BoardLogic.PROPHECY_HEIGHT];
@@ -85,13 +80,55 @@ public class BoardController : MonoBehaviour {
                 newTile.transform.localPosition = position;
                 newTile.transform.rotation = Quaternion.identity;
                 newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = boardLogic.prophecyTiles[i][j].ToString();
-
-                scalingSequence.Join(newTile.transform.DOScale(ACTIVE_SIZE - j * SIZE_STEP, INITIAL_SCALE_DURATION).SetEase(Ease.InOutSine));
                 prophecyTileObjects[i][j] = newTile;
             }
         }
+    }
 
-        scalingSequence.Play();
+    public void ScaleTilesUp()
+    {
+        if (scalingSequence != null)
+        {
+            scalingSequence.Kill();
+            scalingSequence = DOTween.Sequence();
+        }
+        else
+        {
+            scalingSequence = DOTween.Sequence();
+        }
+        for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
+        {
+            for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
+            {
+                scalingSequence.Join(prophecyTileObjects[i][j].transform.DOScale(ACTIVE_SIZE - j * SIZE_STEP, INITIAL_SCALE_DURATION).SetEase(Ease.InOutSine));
+            }
+            for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
+            {
+                scalingSequence.Join(activeTileObjects[i][j].transform.DOScale(ACTIVE_SIZE, INITIAL_SCALE_DURATION).SetEase(Ease.InOutSine));
+            }
+            scalingSequence.Play();
+        }
+    }
+
+    public void ScaleTilesDown()
+    {
+        if (scalingSequence != null)
+        {
+            scalingSequence.Kill();
+            scalingSequence = DOTween.Sequence();
+        }
+        for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
+        {
+            for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
+            {
+                scalingSequence.Join(prophecyTileObjects[i][j].transform.DOScale(0, INITIAL_SCALE_DURATION).SetEase(Ease.InOutSine));
+            }
+            for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
+            {
+                scalingSequence.Join(activeTileObjects[i][j].transform.DOScale(0, INITIAL_SCALE_DURATION).SetEase(Ease.InOutSine));
+            }
+            scalingSequence.Play();
+        }
     }
 
     private void SetupGhostTiles()

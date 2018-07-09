@@ -14,7 +14,7 @@ public abstract class ObjectiveTracker : MonoBehaviour {
         }
 
         MenuOpener menuOpener = transform.GetComponentInParent<MenuOpener>();
-        menuOpener.ToggleMenu();
+        yield return StartCoroutine(menuOpener.ToggleMenu());
         menuOpener.EndGame();
     }
 }

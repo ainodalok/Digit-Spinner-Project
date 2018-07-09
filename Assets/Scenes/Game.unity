@@ -5722,7 +5722,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 1788273435}
-        m_MethodName: ToggleMenu
+        m_MethodName: ToggleMenuCoroutine
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}

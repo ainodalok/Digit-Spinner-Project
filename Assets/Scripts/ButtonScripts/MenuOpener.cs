@@ -18,7 +18,22 @@ public class MenuOpener : MonoBehaviour {
     public ReadyStart readyStart;
     public GameObject scoreEnd;
 
-    public void ToggleMenu()
+    private Coroutine toggleMenuCoroutine;
+
+    public void ToggleMenuCoroutine()
+    {
+        if (toggleMenuCoroutine == null)
+        {
+            toggleMenuCoroutine = StartCoroutine(ToggleMenu());
+        }
+        else
+        {
+            StopCoroutine(toggleMenuCoroutine);
+            toggleMenuCoroutine = StartCoroutine(ToggleMenu());
+        }
+    }
+
+    public IEnumerator ToggleMenu()
     {
         if ((gameModeManager.mode == GameMode.TimeAttack) && readyStart.ready)
         {
@@ -29,18 +44,34 @@ public class MenuOpener : MonoBehaviour {
         {
             open = false;
             menuPanel.SetActive(false);
-            boardController.SetEnableBoard(true);
+            if (readyStart.ready)
+            {
+                boardController.SetEnableBoard(true);
+                boardController.ScaleTilesUp();
+                yield return boardController.scalingSequence.WaitForCompletion();
+            }
+            else
+            {
+                readyStart.TogglePause();
+            }
             DOTween.PlayAll();
-            readyStart.TogglePause();
         }
         //Opens menu
         else
         {
             open = true;
-            boardController.SetEnableBoard(false);
-            menuPanel.SetActive(true);
             DOTween.PauseAll();
-            readyStart.TogglePause();
+            if (readyStart.ready)
+            {
+                boardController.ScaleTilesDown();
+                yield return boardController.scalingSequence.WaitForCompletion();
+                boardController.SetEnableBoard(false);
+            }
+            else
+            {
+                readyStart.TogglePause();
+            }
+            menuPanel.SetActive(true);
         }
     }
 
