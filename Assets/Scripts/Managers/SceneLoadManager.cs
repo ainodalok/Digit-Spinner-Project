@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.SceneManagement;
 using System.Linq;
 using System;
+using DG.Tweening;
 
 public class SceneLoadManager : MonoBehaviour
 {
@@ -20,6 +21,7 @@ public class SceneLoadManager : MonoBehaviour
 
     void Awake()
     {
+        DOTween.SetTweensCapacity(500, 50);
         Input.multiTouchEnabled = false;
         if (SceneManager.sceneCount < 2)
         {

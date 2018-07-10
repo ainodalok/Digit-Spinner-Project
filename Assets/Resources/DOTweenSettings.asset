@@ -29,5 +29,5 @@ MonoBehaviour:
   defaultAutoKill: 1
   defaultLoopType: 0
   storeSettingsLocation: 0
-  showPlayingTweens: 0
-  showPausedTweens: 0
+  showPlayingTweens: 1
+  showPausedTweens: 1

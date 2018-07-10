@@ -117,6 +117,10 @@ public class BoardController : MonoBehaviour {
             scalingSequence.Kill();
             scalingSequence = DOTween.Sequence();
         }
+        else
+        {
+            scalingSequence = DOTween.Sequence();
+        }
         for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
         {
             for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
