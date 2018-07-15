@@ -3,8 +3,7 @@ using UnityEngine;
 using TMPro;
 
 public class Timer : ObjectiveTracker {
-    private int time = 1200;
-    private bool paused = false;
+    private int time = 10;
     private Coroutine counter;
 
     void Start()
@@ -22,16 +21,14 @@ public class Timer : ObjectiveTracker {
         StopCoroutine(counter);
     }
 
-    public void ToggleTimer()
+    public void SetEnableTimer(bool enabled)
     {
-        if (paused)
+        if (enabled)
         {
-            paused = false;
-            counter = StartCoroutine(MsCounter());
+            StartTimer();
         }
         else
         {
-            paused = true;
             StopTimer();
         }
     }

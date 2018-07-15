@@ -11558,6 +11558,7 @@ MonoBehaviour:
   ready: 0
   gameModeManager: {fileID: 2017151770}
   board: {fileID: 1845161030}
+  menuOpener: {fileID: 1788273435}
 --- !u!1 &1823068900
 GameObject:
   m_ObjectHideFlags: 0

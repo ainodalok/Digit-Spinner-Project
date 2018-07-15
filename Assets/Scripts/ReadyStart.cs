@@ -6,23 +6,48 @@ using TMPro;
 using UnityEngine.SceneManagement;
 
 public class ReadyStart : MonoBehaviour {
-    private bool paused = false;
-
+    [HideInInspector]
     public bool ready = false;
+
 
     public GameModeManager gameModeManager;
     public GameObject board;
+    public MenuOpener menuOpener;
+
+    [HideInInspector]
+    public Tween scalingTween;
+
+    const float INITIAL_SCALE_DURATION = 0.2f;
 
     // Use this for initialization
     void Start () {
         StartCoroutine(ReadyAnimation());
 	}
 
-    public void TogglePause()
+    public void ScaleReadyUp()
     {
-        paused = !paused;
-        gameObject.GetComponentInChildren<TextMeshProUGUI>().enabled = !paused;
-        gameObject.GetComponent<UnityEngine.UI.Image>().enabled = !paused;
+        if (scalingTween != null)
+        {
+            scalingTween.Kill();
+        }
+        scalingTween = transform.DOScale(new Vector3(1.0f, 1.0f, 1.0f), INITIAL_SCALE_DURATION).SetEase(Ease.InOutSine);
+        scalingTween.Play();
+    }
+
+    public void ScaleReadyDown()
+    {
+        if (scalingTween != null)
+        {
+            scalingTween.Kill();
+        }
+        scalingTween = transform.DOScale(0, INITIAL_SCALE_DURATION).SetEase(Ease.InOutSine);
+        scalingTween.Play();
+    }
+
+    public void SetEnableReadyPanel(bool enabled)
+    {
+        gameObject.GetComponentInChildren<TextMeshProUGUI>().enabled = enabled;
+        gameObject.GetComponent<UnityEngine.UI.Image>().enabled = enabled;
     }
 
     private IEnumerator ReadyAnimation()
@@ -31,7 +56,7 @@ public class ReadyStart : MonoBehaviour {
         while (time < 0.5f)
         {
             yield return null;
-            if (!paused)
+            if (!menuOpener.open)
                 time += Time.deltaTime;
         }
 
@@ -44,7 +69,7 @@ public class ReadyStart : MonoBehaviour {
         while (time < 0.7f)
         {
             yield return null;
-            if (!paused)
+            if (!menuOpener.open)
                 time += Time.deltaTime;
         }
 
@@ -57,9 +82,10 @@ public class ReadyStart : MonoBehaviour {
         while (time < 0.5f)
         {
             yield return null;
-            if (!paused)
+            if (!menuOpener.open)
                 time += Time.deltaTime;
         }
+        ready = true;
 
         board.SetActive(true);
         if (gameModeManager.mode == GameMode.TimeAttack)
@@ -67,7 +93,6 @@ public class ReadyStart : MonoBehaviour {
             (gameModeManager.tracker as Timer).StartTimer();
         }
 
-        ready = true;
         gameObject.SetActive(false);
     }
 }

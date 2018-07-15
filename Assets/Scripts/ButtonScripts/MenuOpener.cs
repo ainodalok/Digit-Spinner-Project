@@ -37,22 +37,24 @@ public class MenuOpener : MonoBehaviour {
     {
         if ((gameModeManager.mode == GameMode.TimeAttack) && readyStart.ready)
         {
-            (gameModeManager.tracker as Timer).ToggleTimer();
+            (gameModeManager.tracker as Timer).SetEnableTimer(open);
         }
         //Closes menu
         if (open)
         {
             open = false;
-            menuPanel.SetActive(false);
+            menuPanel.SetActive(open);
             if (readyStart.ready)
             {
-                boardController.SetEnableBoard(true);
+                boardController.SetEnableBoard(!open);
                 boardController.ScaleTilesUp();
                 yield return boardController.scalingSequence.WaitForCompletion();
             }
             else
             {
-                readyStart.TogglePause();
+                readyStart.SetEnableReadyPanel(!open);
+                readyStart.ScaleReadyUp();
+                yield return readyStart.scalingTween.WaitForCompletion();
             }
             DOTween.PlayAll();
         }
@@ -65,13 +67,15 @@ public class MenuOpener : MonoBehaviour {
             {
                 boardController.ScaleTilesDown();
                 yield return boardController.scalingSequence.WaitForCompletion();
-                boardController.SetEnableBoard(false);
+                boardController.SetEnableBoard(!open);
             }
             else
             {
-                readyStart.TogglePause();
+                readyStart.ScaleReadyDown();
+                yield return readyStart.scalingTween.WaitForCompletion();
+                readyStart.SetEnableReadyPanel(!open);
             }
-            menuPanel.SetActive(true);
+            menuPanel.SetActive(open);
         }
     }
 
