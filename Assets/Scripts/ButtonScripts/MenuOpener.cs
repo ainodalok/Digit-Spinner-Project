@@ -42,13 +42,6 @@ public class MenuOpener : MonoBehaviour {
 
     public IEnumerator ToggleMenu()
     {
-        if ((gameModeManager.mode == GameMode.TimeAttack) && readyStart.ready)
-        {
-            if ((gameModeManager.tracker as Timer).time > 0)
-            {
-                (gameModeManager.tracker as Timer).SetEnableTimer(open);
-            }
-        }
         //Closes menu
         if (open)
         {
@@ -59,6 +52,13 @@ public class MenuOpener : MonoBehaviour {
                 boardController.SetEnableBoard(!open);
                 boardController.ScaleTilesUp();
                 yield return boardController.scalingSequence.WaitForCompletion();
+                if (gameModeManager.mode == GameMode.TimeAttack)
+                {
+                    if ((gameModeManager.tracker as Timer).time > 0)
+                    {
+                        (gameModeManager.tracker as Timer).SetEnableTimer(!open);
+                    }
+                }
             }
             else
             {
@@ -75,6 +75,13 @@ public class MenuOpener : MonoBehaviour {
             DOTween.PauseAll();
             if (readyStart.ready)
             {
+                if (gameModeManager.mode == GameMode.TimeAttack)
+                {
+                    if ((gameModeManager.tracker as Timer).time > 0)
+                    {
+                        (gameModeManager.tracker as Timer).SetEnableTimer(!open);
+                    }
+                }
                 boardController.ScaleTilesDown();
                 yield return boardController.scalingSequence.WaitForCompletion();
                 boardController.SetEnableBoard(!open);
