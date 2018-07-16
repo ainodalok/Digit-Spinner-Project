@@ -22,6 +22,13 @@ public class MenuOpener : MonoBehaviour {
 
     public void ToggleMenuCoroutine()
     {
+        if ((gameModeManager.mode == GameMode.TimeAttack) && readyStart.ready)
+        {
+            if ((gameModeManager.tracker as Timer).time == 0)
+            {
+                return;
+            }
+        }
         if (toggleMenuCoroutine == null)
         {
             toggleMenuCoroutine = StartCoroutine(ToggleMenu());
@@ -37,7 +44,10 @@ public class MenuOpener : MonoBehaviour {
     {
         if ((gameModeManager.mode == GameMode.TimeAttack) && readyStart.ready)
         {
-            (gameModeManager.tracker as Timer).SetEnableTimer(open);
+            if ((gameModeManager.tracker as Timer).time > 0)
+            {
+                (gameModeManager.tracker as Timer).SetEnableTimer(open);
+            }
         }
         //Closes menu
         if (open)
