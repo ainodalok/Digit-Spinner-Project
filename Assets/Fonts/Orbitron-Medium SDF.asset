@@ -1059,12 +1059,12 @@ Material:
     - _GlowColor: {r: 0, g: 0.10618591, b: 1, a: 0.5176471}
     - _MaskCoord: {r: 0, g: 0, b: 1, a: 1}
     - _MaskEdgeColor: {r: 1, g: 1, b: 1, a: 1}
-    - _OutlineColor: {r: 0.28222314, g: 0.19339621, b: 1, a: 0.49803922}
+    - _OutlineColor: {r: 0.28235295, g: 0.19215687, b: 1, a: 0.49803922}
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
-    - _UnderlayColor: {r: 1, g: 0, b: 0, a: 0.5}
+    - _UnderlayColor: {r: 0.28235295, g: 0.19215687, b: 1, a: 0.5}
 --- !u!28 &28815001633559114
 Texture2D:
   m_ObjectHideFlags: 0

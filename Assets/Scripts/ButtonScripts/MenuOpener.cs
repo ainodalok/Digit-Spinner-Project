@@ -120,7 +120,7 @@ public class MenuOpener : MonoBehaviour {
         menuSlides = false;
     }
 
-    private IEnumerator SlideOffScreenAnimation()
+    public IEnumerator SlideOffScreenAnimation()
     {
         menuSlides = true;
         Sequence slideMenuPanel = DOTween.Sequence();
@@ -135,7 +135,7 @@ public class MenuOpener : MonoBehaviour {
         if (gameModeManager.tracker.gameOver)
         {
             Tweener scoreEndSlide = scoreEnd.transform.DOLocalMoveX(-scoreEnd.transform.parent.localPosition.x - 
-                                                                    (transform.parent.GetComponent<RectTransform>().rect.width + 
+                                                                    (transform.GetComponent<RectTransform>().rect.width + 
                                                                     scoreEnd.transform.GetComponent<RectTransform>().rect.width) / 2.0f, 
                                                                     SLIDE_DURATION).SetEase(Ease.InBack);
             restartBtnSlide.SetDelay(scoreEndSlide.Duration() / 6.0f);
