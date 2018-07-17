@@ -107,9 +107,9 @@ public class AudioManager : MonoBehaviour
 		s.source.Play();
 	}
 
-    public void MuteSounds()
+    public void MuteSounds(bool mute)
     {
-        if (!muted)
+        if (mute)
         {
             string currentScene = SceneManager.GetActiveScene().name;
             Sound s = null;
@@ -123,6 +123,6 @@ public class AudioManager : MonoBehaviour
             }
             s.source.Stop();
         }
-        muted = !muted;
+        muted = mute;
     }
 }

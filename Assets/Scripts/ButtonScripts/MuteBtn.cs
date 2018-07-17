@@ -13,7 +13,6 @@ public class MuteBtn : MonoBehaviour {
     public Material red;
 
     private AudioManager AudioManagerScript;
-    private bool toggling = false;
 
     void Awake()
     {
@@ -40,34 +39,28 @@ public class MuteBtn : MonoBehaviour {
 
     public void MuteBtnWrapper()
     {
-        if (toggling)
-        {
-            return;
-        }
         StartCoroutine(AnimateMuteBtn());
     }
 
     private IEnumerator AnimateMuteBtn()
     {
-        toggling = true;
         if (AudioManagerScript.muted)
         {
+            AudioManagerScript.MuteSounds(false);
             gameObject.GetComponent<Image>().sprite = blueBorderPref;
             muteTxt.text = "Mute";
             muteTxt.fontMaterial = blue;
             Tweener widener = DOTween.To(x => transform.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, x), 315, 250, 0.2f).SetEase(Ease.OutQuart);
             yield return widener.WaitForCompletion();
-            AudioManagerScript.MuteSounds();
         }
         else
         {
+            AudioManagerScript.MuteSounds(true);
             gameObject.GetComponent<Image>().sprite = burgundyBorderPref;
             muteTxt.text = "Unmute";
             muteTxt.fontMaterial = red;
             Tweener widener = DOTween.To(x => transform.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, x), 250, 315, 0.2f).SetEase(Ease.OutQuart);
             yield return widener.WaitForCompletion();
-            AudioManagerScript.MuteSounds();
         }
-        toggling = false;
     }
 }
