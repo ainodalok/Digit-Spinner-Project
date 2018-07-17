@@ -15,7 +15,7 @@ public class ReadyStart : MonoBehaviour {
     public MenuOpener menuOpener;
 
     [HideInInspector]
-    public Tween scalingTween;
+    public Tweener scalingTween;
 
     const float INITIAL_SCALE_DURATION = 0.2f;
 
@@ -60,7 +60,7 @@ public class ReadyStart : MonoBehaviour {
                 time += Time.deltaTime;
         }
 
-        Tween slideToCenter = transform.DOMoveX(0, 0.5f);
+        Tweener slideToCenter = transform.DOMoveX(0, 0.5f);
         slideToCenter.SetEase(Ease.OutBack);
         slideToCenter.Play();
         yield return slideToCenter.WaitForCompletion();
@@ -73,7 +73,7 @@ public class ReadyStart : MonoBehaviour {
                 time += Time.deltaTime;
         }
 
-        Tween slideToRight = transform.DOLocalMoveX((transform.parent.GetComponent<RectTransform>().rect.width + transform.GetComponent<RectTransform>().rect.width) / 2.0f, 0.5f);
+        Tweener slideToRight = transform.DOLocalMoveX((transform.parent.GetComponent<RectTransform>().rect.width + transform.GetComponent<RectTransform>().rect.width) / 2.0f, 0.5f);
         slideToRight.SetEase(Ease.InBack);
         slideToRight.Play();
         yield return slideToRight.WaitForCompletion();
@@ -85,6 +85,7 @@ public class ReadyStart : MonoBehaviour {
             if (!menuOpener.open)
                 time += Time.deltaTime;
         }
+        
         ready = true;
 
         board.SetActive(true);
@@ -92,6 +93,7 @@ public class ReadyStart : MonoBehaviour {
         {
             (gameModeManager.tracker as Timer).StartTimer();
         }
+        
 
         gameObject.SetActive(false);
     }

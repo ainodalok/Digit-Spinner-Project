@@ -4,7 +4,7 @@ using TMPro;
 
 public class Timer : ObjectiveTracker {
     [HideInInspector]
-    public int time = 10;
+    public int time = 1200;
     private Coroutine counter;
 
     void Start()

@@ -34,7 +34,7 @@ public class BoardController : MonoBehaviour {
     public static Vector3 SPAWN_SIZE = new Vector3(0, 0, 1);
     public static Vector3 ACTIVE_SIZE = new Vector3(1, 1, 1);
     public static Vector3 SIZE_STEP = new Vector3(0.1f, 0.1f);
-    const float INITIAL_SCALE_DURATION = 0.2f;
+    const float INITIAL_SCALE_DURATION = 0.3f;
     
     void Awake ()
     {

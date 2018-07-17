@@ -5,16 +5,18 @@ using UnityEngine.SceneManagement;
 
 public abstract class ObjectiveTracker : MonoBehaviour {
     public BoardController bc;
+    public bool gameOver = false;
 
     protected IEnumerator EndGame()
     {
+        gameOver = true;
         while (bc.isDestroying)
         {
             yield return null;
         }
 
         MenuOpener menuOpener = transform.GetComponentInParent<MenuOpener>();
-        yield return StartCoroutine(menuOpener.ToggleMenu());
         menuOpener.EndGame();
+        yield return StartCoroutine(menuOpener.ToggleMenu());
     }
 }
