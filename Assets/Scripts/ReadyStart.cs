@@ -16,6 +16,8 @@ public class ReadyStart : MonoBehaviour {
 
     [HideInInspector]
     public Tweener scalingTween;
+    [HideInInspector]
+    public Tweener slideTween;
 
     const float INITIAL_SCALE_DURATION = 0.2f;
 
@@ -60,10 +62,10 @@ public class ReadyStart : MonoBehaviour {
                 time += Time.deltaTime;
         }
 
-        Tweener slideToCenter = transform.DOMoveX(0, 0.5f);
-        slideToCenter.SetEase(Ease.OutBack);
-        slideToCenter.Play();
-        yield return slideToCenter.WaitForCompletion();
+        slideTween = transform.DOMoveX(0, 0.5f);
+        slideTween.SetEase(Ease.OutBack);
+        slideTween.Play();
+        yield return slideTween.WaitForCompletion();
 
         time = 0;
         while (time < 0.7f)
@@ -73,10 +75,10 @@ public class ReadyStart : MonoBehaviour {
                 time += Time.deltaTime;
         }
 
-        Tweener slideToRight = transform.DOLocalMoveX((transform.parent.GetComponent<RectTransform>().rect.width + transform.GetComponent<RectTransform>().rect.width) / 2.0f, 0.5f);
-        slideToRight.SetEase(Ease.InBack);
-        slideToRight.Play();
-        yield return slideToRight.WaitForCompletion();
+        slideTween = transform.DOLocalMoveX((transform.parent.GetComponent<RectTransform>().rect.width + transform.GetComponent<RectTransform>().rect.width) / 2.0f, 0.5f);
+        slideTween.SetEase(Ease.InBack);
+        slideTween.Play();
+        yield return slideTween.WaitForCompletion();
 
         time = 0;
         while (time < 0.5f)
@@ -85,15 +87,13 @@ public class ReadyStart : MonoBehaviour {
             if (!menuOpener.open)
                 time += Time.deltaTime;
         }
-        
-        ready = true;
 
         board.SetActive(true);
-        if (gameModeManager.mode == GameMode.TimeAttack)
+        ready = true;
+        if ((gameModeManager.mode == GameMode.TimeAttack) && !menuOpener.open)
         {
             (gameModeManager.tracker as Timer).StartTimer();
         }
-        
 
         gameObject.SetActive(false);
     }

@@ -29,7 +29,10 @@ public class BoardController : MonoBehaviour {
     [HideInInspector]
     public bool isDestroying = false;
 
+    [HideInInspector]
     public Sequence scalingSequence;
+    [HideInInspector]
+    public Sequence fallingSequence;
 
     public static Vector3 SPAWN_SIZE = new Vector3(0, 0, 1);
     public static Vector3 ACTIVE_SIZE = new Vector3(1, 1, 1);
@@ -90,12 +93,8 @@ public class BoardController : MonoBehaviour {
         if (scalingSequence != null)
         {
             scalingSequence.Kill();
-            scalingSequence = DOTween.Sequence();
         }
-        else
-        {
-            scalingSequence = DOTween.Sequence();
-        }
+        scalingSequence = DOTween.Sequence();
         for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
         {
             for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
@@ -115,12 +114,8 @@ public class BoardController : MonoBehaviour {
         if (scalingSequence != null)
         {
             scalingSequence.Kill();
-            scalingSequence = DOTween.Sequence();
         }
-        else
-        {
-            scalingSequence = DOTween.Sequence();
-        }
+        scalingSequence = DOTween.Sequence();
         for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
         {
             for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
@@ -438,7 +433,7 @@ public class BoardController : MonoBehaviour {
             };
 
             //Falling down and scaling falling prophecy tiles animation
-            Sequence fallingSequence = DOTween.Sequence();
+            fallingSequence = DOTween.Sequence();
             Vector3 newSize;
 
             for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
@@ -474,7 +469,7 @@ public class BoardController : MonoBehaviour {
             yield return fallingSequence.WaitForCompletion();
 
             //Showing hidden tiles and scaling newly appeared prophecy tiles
-            Sequence scalingSequence = DOTween.Sequence();
+            scalingSequence = DOTween.Sequence();
             for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
             {
                 for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)

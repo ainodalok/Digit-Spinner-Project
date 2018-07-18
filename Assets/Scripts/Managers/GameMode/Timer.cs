@@ -5,6 +5,9 @@ using TMPro;
 public class Timer : ObjectiveTracker {
     [HideInInspector]
     public int time = 1200;
+    [HideInInspector]
+    public bool playing = false;
+
     private Coroutine counter;
 
     void Start()
@@ -14,11 +17,21 @@ public class Timer : ObjectiveTracker {
 
     public void StartTimer()
     {
+        if (playing)
+        {
+            return;
+        }
+        playing = true;
         counter = StartCoroutine(MsCounter());
     }
 
     public void StopTimer()
     {
+        if (!playing)
+        {
+            return;
+        }
+        playing = false;
         StopCoroutine(counter);
     }
 

@@ -31,7 +31,7 @@ public class ManagerConnector : MonoBehaviour
         }
         else if (button.name == "MuteBtn")
         {
-            button.onClick.AddListener(() => gameObject.GetComponent<MuteBtn>().MuteBtnWrapper());
+            button.onClick.AddListener(() => gameObject.GetComponent<MuteBtn>().MuteBtnAction());
         }
     }
 }

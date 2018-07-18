@@ -8,6 +8,7 @@ using DG.Tweening;
 public class MenuOpener : MonoBehaviour {
     [HideInInspector]
     public bool open = false;
+    public bool menuToggles = false;
 
     public BoardController boardController;
     public GameObject menuPanel;
@@ -21,7 +22,6 @@ public class MenuOpener : MonoBehaviour {
     public GameObject mainMenuBtn;
 
     private Coroutine toggleMenuCoroutine;
-    private bool menuSlides = false;
 
     private const float SLIDE_DURATION = 0.2f;
 
@@ -35,7 +35,7 @@ public class MenuOpener : MonoBehaviour {
             }
         }
 
-        if (menuSlides)
+        if (menuToggles)
         {
             return;
         }
@@ -53,9 +53,11 @@ public class MenuOpener : MonoBehaviour {
 
     public IEnumerator ToggleMenu()
     {
+        menuToggles = true;
         //Closes menu
         if (open)
         {
+            Debug.Log("Closing");
             yield return StartCoroutine(SlideOffScreenAnimation());
             menuPanel.SetActive(!open);
             if (readyStart.ready)
@@ -64,23 +66,36 @@ public class MenuOpener : MonoBehaviour {
                 boardController.ScaleTilesUp();
                 yield return boardController.scalingSequence.WaitForCompletion();
                 TimerPauseSafe(!open);
+                if (boardController.fallingSequence != null)
+                {
+                    boardController.fallingSequence.Play();
+                }
             }
             else
             {
                 readyStart.SetEnableReadyPanel(open);
                 readyStart.ScaleReadyUp();
                 yield return readyStart.scalingTween.WaitForCompletion();
+                if (readyStart.slideTween != null)
+                {
+                    readyStart.slideTween.Play();
+                }
             }
             open = false;
-            DOTween.PlayAll();
+            
+            Debug.Log("Closed");
         }
         //Opens menu
         else
         {
+            Debug.Log("Opening");
             open = true;
-            DOTween.PauseAll();
             if (readyStart.ready)
             {
+                if (boardController.fallingSequence != null)
+                {
+                    boardController.fallingSequence.Pause();
+                }
                 TimerPauseSafe(open);
                 boardController.ScaleTilesDown();
                 yield return boardController.scalingSequence.WaitForCompletion();
@@ -88,6 +103,10 @@ public class MenuOpener : MonoBehaviour {
             }
             else
             {
+                if (readyStart.slideTween != null)
+                {
+                    readyStart.slideTween.Pause();
+                }
                 readyStart.ScaleReadyDown();
                 yield return readyStart.scalingTween.WaitForCompletion();
                 readyStart.SetEnableReadyPanel(!open);
@@ -95,11 +114,11 @@ public class MenuOpener : MonoBehaviour {
             menuPanel.SetActive(open);
             yield return StartCoroutine(SlideToCenterAnimation());
         }
+        menuToggles = false;
     }
 
     private IEnumerator SlideToCenterAnimation()
     {
-        menuSlides = true;
         Sequence slideMenuPanel = DOTween.Sequence();
         Tweener restartBtnSlide = restartBtn.transform.DOMoveX(0, SLIDE_DURATION).SetEase(Ease.OutBack);
         Tweener mainMenuBtnSlide = mainMenuBtn.transform.DOMoveX(0, SLIDE_DURATION).SetEase(Ease.OutBack);
@@ -116,13 +135,12 @@ public class MenuOpener : MonoBehaviour {
         }
         slideMenuPanel.Join(restartBtnSlide);
         slideMenuPanel.Join(mainMenuBtnSlide);
+        slideMenuPanel.Play();
         yield return slideMenuPanel.WaitForCompletion();
-        menuSlides = false;
     }
 
     public IEnumerator SlideOffScreenAnimation()
     {
-        menuSlides = true;
         Sequence slideMenuPanel = DOTween.Sequence();
         Tweener restartBtnSlide = restartBtn.transform.DOLocalMoveX(-restartBtn.transform.parent.localPosition.x - 
                                                                     (transform.GetComponent<RectTransform>().rect.width + 
@@ -148,20 +166,21 @@ public class MenuOpener : MonoBehaviour {
         }
         slideMenuPanel.Join(restartBtnSlide);
         slideMenuPanel.Join(mainMenuBtnSlide);
+        slideMenuPanel.Play();
         yield return slideMenuPanel.WaitForCompletion();
         slideMenuPanel = null;
         restartBtn.transform.localPosition = new Vector3(0.0f, restartBtn.transform.localPosition.y, restartBtn.transform.localPosition.z);
         mainMenuBtn.transform.localPosition = new Vector3(0.0f, mainMenuBtn.transform.localPosition.y, mainMenuBtn.transform.localPosition.z);
-        menuSlides = false;
     }
 
-    private void TimerPauseSafe(bool pausing)
+    private void TimerPauseSafe(bool enabled)
     {
         if (gameModeManager.mode == GameMode.TimeAttack)
         {
             if ((gameModeManager.tracker as Timer).time > 0)
             {
-                (gameModeManager.tracker as Timer).SetEnableTimer(!pausing);
+                Debug.Log("Only if later");
+                (gameModeManager.tracker as Timer).SetEnableTimer(!enabled);
             }
         }
     }

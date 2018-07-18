@@ -11,6 +11,7 @@ public class MuteBtn : MonoBehaviour {
     public TextMeshProUGUI muteTxt;
     public Material blue;
     public Material red;
+    public Tweener widener;
 
     private AudioManager AudioManagerScript;
 
@@ -26,7 +27,7 @@ public class MuteBtn : MonoBehaviour {
             gameObject.GetComponent<Image>().sprite = burgundyBorderPref;
             muteTxt.text = "Unmute";
             muteTxt.fontMaterial = red;
-            transform.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 315);
+            transform.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 335);
         }
         else
         {
@@ -37,21 +38,19 @@ public class MuteBtn : MonoBehaviour {
         }
     }
 
-    public void MuteBtnWrapper()
+    public void MuteBtnAction()
     {
-        StartCoroutine(AnimateMuteBtn());
-    }
-
-    private IEnumerator AnimateMuteBtn()
-    {
+        if (widener != null)
+        {
+            DOTween.Kill(widener);
+        }
         if (AudioManagerScript.muted)
         {
             AudioManagerScript.MuteSounds(false);
             gameObject.GetComponent<Image>().sprite = blueBorderPref;
             muteTxt.text = "Mute";
             muteTxt.fontMaterial = blue;
-            Tweener widener = DOTween.To(x => transform.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, x), 315, 250, 0.2f).SetEase(Ease.OutQuart);
-            yield return widener.WaitForCompletion();
+            widener = DOTween.To(x => transform.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, x), 335, 250, 0.2f).SetEase(Ease.OutQuart);
         }
         else
         {
@@ -59,8 +58,7 @@ public class MuteBtn : MonoBehaviour {
             gameObject.GetComponent<Image>().sprite = burgundyBorderPref;
             muteTxt.text = "Unmute";
             muteTxt.fontMaterial = red;
-            Tweener widener = DOTween.To(x => transform.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, x), 250, 315, 0.2f).SetEase(Ease.OutQuart);
-            yield return widener.WaitForCompletion();
+            widener = DOTween.To(x => transform.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, x), 250, 335, 0.2f).SetEase(Ease.OutQuart);
         }
     }
 }
