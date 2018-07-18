@@ -57,7 +57,6 @@ public class MenuOpener : MonoBehaviour {
         //Closes menu
         if (open)
         {
-            Debug.Log("Closing");
             yield return StartCoroutine(SlideOffScreenAnimation());
             menuPanel.SetActive(!open);
             if (readyStart.ready)
@@ -82,13 +81,10 @@ public class MenuOpener : MonoBehaviour {
                 }
             }
             open = false;
-            
-            Debug.Log("Closed");
         }
         //Opens menu
         else
         {
-            Debug.Log("Opening");
             open = true;
             if (readyStart.ready)
             {
@@ -179,7 +175,6 @@ public class MenuOpener : MonoBehaviour {
         {
             if ((gameModeManager.tracker as Timer).time > 0)
             {
-                Debug.Log("Only if later");
                 (gameModeManager.tracker as Timer).SetEnableTimer(!enabled);
             }
         }
