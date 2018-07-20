@@ -14,6 +14,10 @@ public class BoardController : MonoBehaviour {
     public GameObject tilePrefab;
     public GameObject prophecyTilePrefab;
     public MenuOpener menuOpener;
+    
+    /* Materials used to color tiles depending on the digit */
+    public Material[] tileMaterials = new Material[10];
+    public Material[] prophecyTileMaterials = new Material[10];
 
     public TextMeshProUGUI scoreText;
     [HideInInspector]
@@ -63,6 +67,7 @@ public class BoardController : MonoBehaviour {
                 newTile.transform.localPosition = position;
                 newTile.transform.rotation = Quaternion.identity;
                 newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = boardLogic.activeTiles[i][j].ToString();
+                newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial = tileMaterials[boardLogic.activeTiles[i][j]];
                 activeTileObjects[i][j] = newTile;
             }
         }
@@ -83,6 +88,7 @@ public class BoardController : MonoBehaviour {
                 newTile.transform.localPosition = position;
                 newTile.transform.rotation = Quaternion.identity;
                 newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = boardLogic.prophecyTiles[i][j].ToString();
+                newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial = prophecyTileMaterials[boardLogic.prophecyTiles[i][j]];
                 prophecyTileObjects[i][j] = newTile;
             }
         }
@@ -254,17 +260,19 @@ public class BoardController : MonoBehaviour {
             {
                 activeTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text =
                     boardLogic.activeTiles[i][j].ToString();
+                activeTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial = 
+                    tileMaterials[boardLogic.activeTiles[i][j]];
             }
 
             for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
             {
                 prophecyTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text =
                     boardLogic.prophecyTiles[i][j].ToString();
+                prophecyTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial =
+                    prophecyTileMaterials[boardLogic.prophecyTiles[i][j]];
             }
         }
     }
-
-
 
     private void AddScore(int add, int combo)
     {

@@ -271,7 +271,10 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         ghost.transform.SetParent(bc.transform);
         ghost.transform.localPosition = tile.transform.localPosition + offset;
         ghost.name = string.Concat(tile.name, " Ghost");
-        ghost.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = tile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text;
+        ghost.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text =
+            tile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text;
+        ghost.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial =
+            bc.tileMaterials[Int32.Parse(tile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text)];
     }
 
     private void ChangeGhostTiles()
