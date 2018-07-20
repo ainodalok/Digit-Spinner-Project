@@ -111,8 +111,9 @@ public class BoardController : MonoBehaviour {
             {
                 scalingSequence.Join(activeTileObjects[i][j].transform.DOScale(ACTIVE_SIZE, INITIAL_SCALE_DURATION).SetEase(Ease.InOutSine));
             }
-            scalingSequence.Play();
         }
+        Debug.Log("Scaling tiles up");
+        scalingSequence.Play();
     }
 
     public void ScaleTilesDown()
@@ -132,8 +133,9 @@ public class BoardController : MonoBehaviour {
             {
                 scalingSequence.Join(activeTileObjects[i][j].transform.DOScale(0, INITIAL_SCALE_DURATION).SetEase(Ease.InOutSine));
             }
-            scalingSequence.Play();
         }
+        Debug.Log("Scaling tiles down");
+        scalingSequence.Play();
     }
 
     private void SetupGhostTiles()
@@ -419,7 +421,7 @@ public class BoardController : MonoBehaviour {
             //Calculating score
             combo++;
             AddScore(tilesToRemove.Count, combo);
-
+            Debug.Log("Combo - " + combo);
             //Hiding disappearing tiles
             tilesToRemove.ForEach((t) =>
             {
@@ -439,9 +441,10 @@ public class BoardController : MonoBehaviour {
                 }
                 yield return null;
             };
-
+            Debug.Log("Iniitializing fallingSequence");
             //Falling down and scaling falling prophecy tiles animation
             fallingSequence = DOTween.Sequence();
+            fallingSequence.Pause();
             Vector3 newSize;
 
             for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
@@ -473,9 +476,13 @@ public class BoardController : MonoBehaviour {
                     maxDistance = fallDistances[i];
                 }
             }
-            fallingSequence.Play();
+            if(!menuOpener.open)
+            {
+                fallingSequence.Play();
+                Debug.Log("Playing fallingSequence");
+            }
             yield return fallingSequence.WaitForCompletion();
-
+            Debug.Log("Initializing scalingSequence");
             //Showing hidden tiles and scaling newly appeared prophecy tiles
             scalingSequence = DOTween.Sequence();
             for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
@@ -508,8 +515,12 @@ public class BoardController : MonoBehaviour {
 
             tilesToRemove = boardLogic.DestroyTiles(tilesToRemove);
             UpdateDigitsBasic();
-            scalingSequence.SetEase(Ease.Linear);
-            scalingSequence.Play();
+            scalingSequence.SetEase(Ease.InOutSine);
+            if (!menuOpener.open)
+            {
+                scalingSequence.Play();
+                Debug.Log("Playing scalingSequence");
+            }
             yield return scalingSequence.WaitForCompletion();
         }
 

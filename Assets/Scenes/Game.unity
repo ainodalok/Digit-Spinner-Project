@@ -11388,7 +11388,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   bc: {fileID: 1845161032}
   gameOver: 0
-  time: 10
+  time: 1200
   playing: 0
 --- !u!114 &1775675600
 MonoBehaviour:
