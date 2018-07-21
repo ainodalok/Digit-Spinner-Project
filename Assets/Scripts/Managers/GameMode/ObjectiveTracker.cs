@@ -5,6 +5,7 @@ using UnityEngine.SceneManagement;
 
 public abstract class ObjectiveTracker : MonoBehaviour {
     public BoardController bc;
+    public Material red;
     public bool gameOver = false;
 
     protected IEnumerator EndGame()

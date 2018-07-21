@@ -67,7 +67,23 @@ public class MenuOpener : MonoBehaviour {
                 TimerPauseSafe(!open);
                 if (boardController.fallingSequence != null)
                 {
-                    boardController.fallingSequence.Play();
+                    if (boardController.fallingSequence.IsActive())
+                    {
+                        if (!boardController.fallingSequence.IsComplete())
+                        {
+                            boardController.fallingSequence.Play();
+                        }
+                    }
+                }
+                if (boardController.scalingHiddenSequence != null)
+                {
+                    if (boardController.scalingHiddenSequence.IsActive())
+                    {
+                        if (!boardController.scalingHiddenSequence.IsComplete())
+                        {
+                            boardController.scalingHiddenSequence.Play();
+                        }
+                    }
                 }
             }
             else
@@ -77,7 +93,13 @@ public class MenuOpener : MonoBehaviour {
                 yield return readyStart.scalingTween.WaitForCompletion();
                 if (readyStart.slideTween != null)
                 {
-                    readyStart.slideTween.Play();
+                    if (readyStart.slideTween.IsActive())
+                    {
+                        if (!readyStart.slideTween.IsComplete())
+                        {
+                            readyStart.slideTween.Play();
+                        }
+                    }
                 }
             }
             open = false;
@@ -90,8 +112,24 @@ public class MenuOpener : MonoBehaviour {
             {
                 if (boardController.fallingSequence != null)
                 {
-                    boardController.fallingSequence.Pause();
+                    if (boardController.fallingSequence.IsActive())
+                    {
+                        if (boardController.fallingSequence.IsPlaying())
+                        {
+                            boardController.fallingSequence.Pause();
+                        }
+                    }
                 }
+                if (boardController.scalingHiddenSequence != null)
+                {
+                    if (boardController.scalingHiddenSequence.IsActive())
+                    {
+                        if (boardController.scalingHiddenSequence.IsPlaying())
+                        {
+                            boardController.scalingHiddenSequence.Pause();
+                        }
+                    }
+                }    
                 TimerPauseSafe(open);
                 boardController.ScaleTilesDown();
                 yield return boardController.scalingSequence.WaitForCompletion();
@@ -101,7 +139,13 @@ public class MenuOpener : MonoBehaviour {
             {
                 if (readyStart.slideTween != null)
                 {
-                    readyStart.slideTween.Pause();
+                    if (readyStart.slideTween.IsActive())
+                    {
+                        if (readyStart.slideTween.IsPlaying())
+                        {
+                            readyStart.slideTween.Pause();
+                        }
+                    }
                 }
                 readyStart.ScaleReadyDown();
                 yield return readyStart.scalingTween.WaitForCompletion();

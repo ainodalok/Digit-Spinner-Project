@@ -37,12 +37,16 @@ public class BoardController : MonoBehaviour {
     public Sequence scalingSequence;
     [HideInInspector]
     public Sequence fallingSequence;
+    [HideInInspector]
+    public Sequence scalingHiddenSequence;
 
     public static Vector3 SPAWN_SIZE = new Vector3(0, 0, 1);
     public static Vector3 ACTIVE_SIZE = new Vector3(1, 1, 1);
     public static Vector3 SIZE_STEP = new Vector3(0.1f, 0.1f);
     const float INITIAL_SCALE_DURATION = 0.3f;
-    
+
+    private Vector3[][] prophecyTileScale = new Vector3[BoardLogic.BOARD_SIZE][];
+
     void Awake ()
     {
         boardLogic = new BoardLogic();
@@ -78,6 +82,7 @@ public class BoardController : MonoBehaviour {
         for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
         {
             prophecyTileObjects[i] = new GameObject[BoardLogic.PROPHECY_HEIGHT];
+            prophecyTileScale[i] = new Vector3[BoardLogic.PROPHECY_HEIGHT];
 
             for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
             {
@@ -90,6 +95,7 @@ public class BoardController : MonoBehaviour {
                 newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = boardLogic.prophecyTiles[i][j].ToString();
                 newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial = prophecyTileMaterials[boardLogic.prophecyTiles[i][j]];
                 prophecyTileObjects[i][j] = newTile;
+                prophecyTileScale[i][j] = ACTIVE_SIZE - j * SIZE_STEP;
             }
         }
     }
@@ -98,35 +104,40 @@ public class BoardController : MonoBehaviour {
     {
         if (scalingSequence != null)
         {
-            scalingSequence.Kill();
+            if (scalingSequence.IsActive())
+            {
+                scalingSequence.Kill();
+            }
         }
         scalingSequence = DOTween.Sequence();
         for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
         {
             for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
             {
-                scalingSequence.Join(prophecyTileObjects[i][j].transform.DOScale(ACTIVE_SIZE - j * SIZE_STEP, INITIAL_SCALE_DURATION).SetEase(Ease.InOutSine));
+                scalingSequence.Join(prophecyTileObjects[i][j].transform.DOScale(prophecyTileScale[i][j], INITIAL_SCALE_DURATION).SetEase(Ease.InOutSine));
             }
             for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
             {
                 scalingSequence.Join(activeTileObjects[i][j].transform.DOScale(ACTIVE_SIZE, INITIAL_SCALE_DURATION).SetEase(Ease.InOutSine));
             }
         }
-        Debug.Log("Scaling tiles up");
         scalingSequence.Play();
     }
 
     public void ScaleTilesDown()
-    {
-        if (scalingSequence != null)
+    {   if (scalingSequence != null)
         {
-            scalingSequence.Kill();
+            if (scalingSequence.IsActive())
+            {
+                scalingSequence.Kill();
+            }
         }
         scalingSequence = DOTween.Sequence();
         for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
         {
             for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
             {
+                prophecyTileScale[i][j] = prophecyTileObjects[i][j].transform.localScale;
                 scalingSequence.Join(prophecyTileObjects[i][j].transform.DOScale(0, INITIAL_SCALE_DURATION).SetEase(Ease.InOutSine));
             }
             for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
@@ -134,7 +145,6 @@ public class BoardController : MonoBehaviour {
                 scalingSequence.Join(activeTileObjects[i][j].transform.DOScale(0, INITIAL_SCALE_DURATION).SetEase(Ease.InOutSine));
             }
         }
-        Debug.Log("Scaling tiles down");
         scalingSequence.Play();
     }
 
@@ -421,7 +431,6 @@ public class BoardController : MonoBehaviour {
             //Calculating score
             combo++;
             AddScore(tilesToRemove.Count, combo);
-            Debug.Log("Combo - " + combo);
             //Hiding disappearing tiles
             tilesToRemove.ForEach((t) =>
             {
@@ -440,8 +449,7 @@ public class BoardController : MonoBehaviour {
                     particlesPlaying = activeTileObjects[tilesToRemove[i].x][tilesToRemove[i].y].transform.GetChild(2).GetComponent<ParticleSystem>().isPlaying;
                 }
                 yield return null;
-            };
-            Debug.Log("Iniitializing fallingSequence");
+            }
             //Falling down and scaling falling prophecy tiles animation
             fallingSequence = DOTween.Sequence();
             fallingSequence.Pause();
@@ -463,7 +471,7 @@ public class BoardController : MonoBehaviour {
                     fallingSequence.Join(prophecyTileObjects[i][j].transform.DOLocalMoveY(BoardLogic.BOARD_SIZE + j - fallDistances[i], (float)Math.Sqrt(fallDistances[i]) / 2.0f));
 
                     //Adding scaling tweens for prophecy tiles
-                    newSize = prophecyTileObjects[i][j].transform.localScale + (fallDistances[i] * SIZE_STEP);
+                    newSize = ACTIVE_SIZE + (fallDistances[i] - j) * SIZE_STEP;
                     if (newSize.x > 1)
                     {
                         newSize = ACTIVE_SIZE;
@@ -479,12 +487,11 @@ public class BoardController : MonoBehaviour {
             if(!menuOpener.open)
             {
                 fallingSequence.Play();
-                Debug.Log("Playing fallingSequence");
             }
             yield return fallingSequence.WaitForCompletion();
-            Debug.Log("Initializing scalingSequence");
             //Showing hidden tiles and scaling newly appeared prophecy tiles
-            scalingSequence = DOTween.Sequence();
+            scalingHiddenSequence = DOTween.Sequence();
+            scalingHiddenSequence.Pause();
             for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
             {
                 for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
@@ -504,7 +511,7 @@ public class BoardController : MonoBehaviour {
                     if (BoardLogic.PROPHECY_HEIGHT - j <= fallDistances[i])
                     {
                         prophecyTileObjects[i][j].transform.localScale = SPAWN_SIZE;
-                        scalingSequence.Join(prophecyTileObjects[i][j].transform.DOScale(ACTIVE_SIZE - j * SIZE_STEP, 0.1f));
+                        scalingHiddenSequence.Join(prophecyTileObjects[i][j].transform.DOScale(ACTIVE_SIZE - j * SIZE_STEP, 0.1f).SetEase(Ease.InOutSine));
                     }
                     else
                     {
@@ -515,13 +522,11 @@ public class BoardController : MonoBehaviour {
 
             tilesToRemove = boardLogic.DestroyTiles(tilesToRemove);
             UpdateDigitsBasic();
-            scalingSequence.SetEase(Ease.InOutSine);
             if (!menuOpener.open)
             {
-                scalingSequence.Play();
-                Debug.Log("Playing scalingSequence");
+                scalingHiddenSequence.Play();
             }
-            yield return scalingSequence.WaitForCompletion();
+            yield return scalingHiddenSequence.WaitForCompletion();
         }
 
         isDestroying = false;

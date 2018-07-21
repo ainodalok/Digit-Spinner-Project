@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using DG.Tweening;
 
 public class TurnCounter : ObjectiveTracker {
     private int turnsLeft = 20;
@@ -19,6 +20,22 @@ public class TurnCounter : ObjectiveTracker {
         if (turnsLeft <= 0)
         {
             StartCoroutine(EndGame());
+        }
+        if (turnsLeft == 3)
+        {
+            gameObject.GetComponent<TextMeshProUGUI>().fontMaterial = red;
+        }
+        if (turnsLeft == 5)
+        {
+            StartShakeTween();
+        }
+    }
+
+    private void StartShakeTween()
+    {
+        if (turnsLeft > 0)
+        {
+            transform.GetComponent<RectTransform>().DOShakeAnchorPos(1.0f, 5, 50, 90, false, false).OnComplete(StartShakeTween);
         }
     }
 }
