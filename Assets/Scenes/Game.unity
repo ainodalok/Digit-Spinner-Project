@@ -11389,7 +11389,7 @@ MonoBehaviour:
   bc: {fileID: 1845161032}
   red: {fileID: 2100000, guid: 3361cafdb00f309449aa30b43f419a00, type: 2}
   gameOver: 0
-  time: 200
+  time: 1200
   playing: 0
 --- !u!114 &1775675600
 MonoBehaviour:
