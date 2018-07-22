@@ -19,6 +19,9 @@ public class BoardController : MonoBehaviour {
     public Material[] tileMaterials = new Material[10];
     public Material[] prophecyTileMaterials = new Material[10];
 
+    public Material comboRed;
+    public Material defaultMaterial;
+
     public TextMeshProUGUI scoreText;
     [HideInInspector]
     public GameObject[][] prophecyTileObjects = new GameObject[BoardLogic.BOARD_SIZE][];
@@ -310,11 +313,15 @@ public class BoardController : MonoBehaviour {
     private IEnumerator ShowCombo(int combo)
     {
         scoreText.text = string.Format("Combo {0}X!", combo);
-        scoreText.color = new Color(combo*0.2f, 1.0f - combo * 0.2f, 1.0f - combo * 0.2f, 1.0f);
+        scoreText.fontSharedMaterial = comboRed;
+        scoreText.fontSharedMaterial.SetColor(ShaderUtilities.ID_GlowColor, new Color32((byte) (51 * combo), 0, 0, 255));
+        scoreText.fontSharedMaterial.SetColor(ShaderUtilities.ID_OutlineColor, new Color32((byte) (51 * combo), 0, 0, 255));
+        //scoreText.color = new Color(combo*0.2f, 1.0f - combo * 0.2f, 1.0f - combo * 0.2f, 1.0f);
 
         yield return scoreText.transform.DOShakePosition(1.0f, combo*15.0f, 1000, 90.0f, false, false).WaitForCompletion();
 
-        scoreText.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        //scoreText.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
+        scoreText.fontSharedMaterial = defaultMaterial;
         scoreText.text = string.Format("Score: \n{0}", score);
     }
 

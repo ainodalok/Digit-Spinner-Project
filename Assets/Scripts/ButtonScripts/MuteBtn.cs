@@ -26,14 +26,14 @@ public class MuteBtn : MonoBehaviour {
         {
             gameObject.GetComponent<Image>().sprite = burgundyBorderPref;
             muteTxt.text = "Unmute";
-            muteTxt.fontMaterial = red;
+            muteTxt.fontSharedMaterial = red;
             transform.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 335);
         }
         else
         {
             gameObject.GetComponent<Image>().sprite = blueBorderPref;
             muteTxt.text = "Mute";
-            muteTxt.fontMaterial = blue;
+            muteTxt.fontSharedMaterial = blue;
             transform.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, 250);
         }
     }
@@ -49,7 +49,7 @@ public class MuteBtn : MonoBehaviour {
             AudioManagerScript.MuteSounds(false);
             gameObject.GetComponent<Image>().sprite = blueBorderPref;
             muteTxt.text = "Mute";
-            muteTxt.fontMaterial = blue;
+            muteTxt.fontSharedMaterial = blue;
             widener = DOTween.To(x => transform.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, x), 335, 250, 0.2f).SetEase(Ease.OutQuart);
         }
         else
@@ -57,7 +57,7 @@ public class MuteBtn : MonoBehaviour {
             AudioManagerScript.MuteSounds(true);
             gameObject.GetComponent<Image>().sprite = burgundyBorderPref;
             muteTxt.text = "Unmute";
-            muteTxt.fontMaterial = red;
+            muteTxt.fontSharedMaterial = red;
             widener = DOTween.To(x => transform.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, x), 250, 335, 0.2f).SetEase(Ease.OutQuart);
         }
     }

@@ -11857,6 +11857,9 @@ MonoBehaviour:
   - {fileID: 2100000, guid: fc33e7ae9bd8f9540a99a979f403a5e0, type: 2}
   - {fileID: 2100000, guid: 87c3f61f7dc0c464db4e222eb9433cbe, type: 2}
   - {fileID: 2100000, guid: effbdb48d3345f648a756b16cc510e64, type: 2}
+  comboRed: {fileID: 2100000, guid: eb73bcbbe92362e48a5ed22750e042cb, type: 2}
+  defaultMaterial: {fileID: 21800180849670330, guid: 0bed7c49c9987634ebb8624b525da8c4,
+    type: 2}
   scoreText: {fileID: 415179610}
   ghostTiles:
   - {fileID: 0}
