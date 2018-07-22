@@ -61,11 +61,11 @@ public class SceneLoadManager : MonoBehaviour
             // Stopping rain gracefully
             if (currentScene == "Menu")
             {
+                Util.FindRootGameObjectByName("Rain Camera").GetComponent<RainCameraController>().Stop();
                 yield return Util.FindRootGameObjectByName("Menu Camera").transform.GetChild(0).GetChild(0)
                     .DOScale(BoardController.SPAWN_SIZE, MainMenuPanelController.fadeDuration)
                     .SetEase(Ease.InCubic)
                     .WaitForCompletion();
-                Util.FindRootGameObjectByName("Rain Camera").GetComponent<RainCameraController>().Stop();
             }
 
             yield return WaitForBackgroundMovement(sceneName);
