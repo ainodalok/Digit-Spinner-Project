@@ -62,11 +62,7 @@ public class SceneLoadManager : MonoBehaviour
             if (currentScene == "Menu")
             {
                 Util.FindRootGameObjectByName("Rain Camera").GetComponent<RainCameraController>().Stop();
-                yield return Util.FindRootGameObjectByName("Menu Camera").transform.GetChild(0).GetChild(0)
-                    .DOScale(BoardController.SPAWN_SIZE, MainMenuPanelController.fadeDuration)
-                    .SetEase(Ease.InCubic)
-                    .WaitForCompletion();
-                
+                yield return WaitForCanvasScale();
             }
 
             yield return WaitForBackgroundMovement(sceneName);
@@ -120,6 +116,14 @@ public class SceneLoadManager : MonoBehaviour
             bgMoverRect = Util.FindRootGameObjectByName_SceneIndex("BG Camera", SceneManager.sceneCount - 1).
                 transform.GetChild(0).GetChild(0).gameObject.GetComponent<RectTransform>();
         }
+    }
+
+    private YieldInstruction WaitForCanvasScale()
+    {
+        return Util.FindRootGameObjectByName("Menu Camera").transform.GetChild(0).GetChild(0)
+                    .DOScale(BoardController.SPAWN_SIZE, MainMenuPanelController.fadeDuration)
+                    .SetEase(Ease.InCubic)
+                    .WaitForCompletion();
     }
 
     private YieldInstruction WaitForBackgroundMovement(string sceneName)
