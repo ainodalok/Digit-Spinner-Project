@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class StoreOpener : MonoBehaviour {
     public GameObject mainMenuPanel;
@@ -13,17 +14,26 @@ public class StoreOpener : MonoBehaviour {
     public Sprite burgundyBorderPref;
     public Sprite blueBorderPref;
 
-
 	public void OpenStore()
     {
-        storePanel.SetActive(true);
-        mainMenuPanel.SetActive(false);
+        StartCoroutine(SwitchPanels(mainMenuPanel, storePanel));
     }
 
     public void CloseStore()
     {
-        mainMenuPanel.SetActive(true);
-        storePanel.SetActive(false);
+        StartCoroutine(SwitchPanels(storePanel, mainMenuPanel));
+    }
+
+    private IEnumerator SwitchPanels(GameObject panelToHide, GameObject panelToShow)
+    {
+        yield return panelToHide.transform.DOScale(BoardController.SPAWN_SIZE, MainMenuPanelController.fadeDuration)
+            .SetEase(Ease.InCubic)
+            .WaitForCompletion();
+
+        panelToHide.SetActive(false);
+        panelToShow.SetActive(true);
+        panelToShow.transform.DOScale(BoardController.ACTIVE_SIZE, MainMenuPanelController.fadeDuration)
+            .SetEase(Ease.OutCubic);
     }
 
     public void OpenIAP()

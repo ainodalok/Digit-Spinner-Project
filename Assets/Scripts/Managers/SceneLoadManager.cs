@@ -9,7 +9,6 @@ public class SceneLoadManager : MonoBehaviour
 {
     public AudioManager audioManager;
     public AdManager adManager;
-    public RectTransform bgMoverRect;
 
     [HideInInspector]
     public string currentScene = "";
@@ -18,6 +17,7 @@ public class SceneLoadManager : MonoBehaviour
 
     private bool loading = false;
     private bool viewportBanner = false;
+    private RectTransform bgMoverRect;
 
     void Awake()
     {
@@ -58,7 +58,17 @@ public class SceneLoadManager : MonoBehaviour
     {
         if (currentScene != sceneName && currentScene != "")
         {
-            yield return WaitBackgroundMovement(sceneName);
+            // Stopping rain gracefully
+            if (currentScene == "Menu")
+            {
+                yield return Util.FindRootGameObjectByName("Menu Camera").transform.GetChild(0).GetChild(0)
+                    .DOScale(BoardController.SPAWN_SIZE, MainMenuPanelController.fadeDuration)
+                    .SetEase(Ease.InCubic)
+                    .WaitForCompletion();
+                Util.FindRootGameObjectByName("Rain Camera").GetComponent<RainCameraController>().Stop();
+            }
+
+            yield return WaitForBackgroundMovement(sceneName);
         }
 
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
@@ -111,7 +121,7 @@ public class SceneLoadManager : MonoBehaviour
         }
     }
 
-    private YieldInstruction WaitBackgroundMovement(string sceneName)
+    private YieldInstruction WaitForBackgroundMovement(string sceneName)
     {
         float target = 0f;
 
@@ -120,17 +130,11 @@ public class SceneLoadManager : MonoBehaviour
             target = 620f;
         }
 
-        // Stopping rain gracefully
-        if (currentScene == "Menu")
-        {
-            Util.FindRootGameObjectByName("Rain Camera").GetComponent<RainCameraController>().Stop();
-        }
-
         return DOTween.To(
                 () => bgMoverRect.offsetMax.x, // this is actually the RectTransform's Right value
                 (val) => bgMoverRect.offsetMax = new Vector2(val, bgMoverRect.offsetMax.y),
                 target,
-                1.0f //make sure it is equal to rain fading times (called either fade time or duration in rain controller variables)
+                1.0f //make sure this plus menu scaling duration is equal to rain fading times (called either fade time or duration in rain controller variables)
             ).SetEase(Ease.InOutCubic)
             .WaitForCompletion();
     }
