@@ -35,7 +35,7 @@ public class TurnCounter : ObjectiveTracker {
     {
         if (turnsLeft > 0)
         {
-            transform.GetComponent<RectTransform>().DOShakeAnchorPos(1.0f, 5, 50, 90, false, false).OnComplete(StartShakeTween);
+            transform.GetComponent<RectTransform>().DOShakeAnchorPos(0.1f, 5, 50, 90, false, false).OnComplete(StartShakeTween);
         }
     }
 }
