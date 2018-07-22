@@ -66,6 +66,7 @@ public class SceneLoadManager : MonoBehaviour
                     .DOScale(BoardController.SPAWN_SIZE, MainMenuPanelController.fadeDuration)
                     .SetEase(Ease.InCubic)
                     .WaitForCompletion();
+                
             }
 
             yield return WaitForBackgroundMovement(sceneName);

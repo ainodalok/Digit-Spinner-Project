@@ -55,33 +55,33 @@ public class ReadyStart : MonoBehaviour {
     private IEnumerator ReadyAnimation()
     {
         float time = 0;
-        while (time < 0.5f)
+        while (time < 0.3f)
         {
             yield return null;
             if (!menuOpener.open)
                 time += Time.deltaTime;
         }
 
-        slideTween = transform.DOMoveX(0, 0.5f);
+        slideTween = transform.DOMoveX(0, 0.4f);
         slideTween.SetEase(Ease.OutBack);
         slideTween.Play();
         yield return slideTween.WaitForCompletion();
 
         time = 0;
-        while (time < 0.7f)
+        while (time < 0.5f)
         {
             yield return null;
             if (!menuOpener.open)
                 time += Time.deltaTime;
         }
 
-        slideTween = transform.DOLocalMoveX((transform.parent.GetComponent<RectTransform>().rect.width + transform.GetComponent<RectTransform>().rect.width) / 2.0f, 0.5f);
+        slideTween = transform.DOLocalMoveX((transform.parent.GetComponent<RectTransform>().rect.width + transform.GetComponent<RectTransform>().rect.width) / 2.0f, 0.4f);
         slideTween.SetEase(Ease.InBack);
         slideTween.Play();
         yield return slideTween.WaitForCompletion();
 
         time = 0;
-        while (time < 0.5f)
+        while (time < 0.3f)
         {
             yield return null;
             if (!menuOpener.open)
