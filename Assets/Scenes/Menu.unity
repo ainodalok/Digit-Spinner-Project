@@ -5843,7 +5843,7 @@ Prefab:
     - target: {fileID: 114697500592149106, guid: 8d4d0d3eb938f7242a32a636102030b1,
         type: 2}
       propertyPath: Variables.Duration
-      value: 3
+      value: 1
       objectReference: {fileID: 0}
     - target: {fileID: 114697500592149106, guid: 8d4d0d3eb938f7242a32a636102030b1,
         type: 2}
@@ -5952,6 +5952,11 @@ Prefab:
         type: 2}
       propertyPath: m_BackGroundColor.a
       value: 0
+      objectReference: {fileID: 0}
+    - target: {fileID: 114546828862365186, guid: 8d4d0d3eb938f7242a32a636102030b1,
+        type: 2}
+      propertyPath: Variables.fadeTime
+      value: 1
       objectReference: {fileID: 0}
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8d4d0d3eb938f7242a32a636102030b1, type: 2}

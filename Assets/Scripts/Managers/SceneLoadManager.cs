@@ -9,6 +9,7 @@ public class SceneLoadManager : MonoBehaviour
 {
     public AudioManager audioManager;
     public AdManager adManager;
+    public RectTransform bgMoverRect;
 
     [HideInInspector]
     public string currentScene = "";
@@ -17,7 +18,6 @@ public class SceneLoadManager : MonoBehaviour
 
     private bool loading = false;
     private bool viewportBanner = false;
-
 
     void Awake()
     {
@@ -56,6 +56,11 @@ public class SceneLoadManager : MonoBehaviour
     // Load a scene with a specified string name
     IEnumerator LoadScene(string sceneName, GameMode gameMode = GameMode.None)
     {
+        if (currentScene != sceneName && currentScene != "")
+        {
+            yield return WaitBackgroundMovement(sceneName);
+        }
+
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
 
         while (!async.isDone)
@@ -69,6 +74,7 @@ public class SceneLoadManager : MonoBehaviour
             StopAudioInCurrentScene();
         }
         SceneManager.SetActiveScene(SceneManager.GetSceneAt(SceneManager.sceneCount - 1));
+        GetBgMoverRect(sceneName);
         if (currentScene != "")
         {
             SceneManager.UnloadSceneAsync(currentScene);
@@ -89,6 +95,44 @@ public class SceneLoadManager : MonoBehaviour
         }
 #endif
         loading = false;
+    }
+
+    private void GetBgMoverRect(string sceneName)
+    {
+        if (sceneName == "Game")
+        {
+            bgMoverRect = Util.FindRootGameObjectByName_SceneIndex("HUDCanvas", SceneManager.sceneCount - 1).
+                transform.GetChild(0).gameObject.GetComponent<RectTransform>();
+        }
+        else if (sceneName == "Menu")
+        {
+            bgMoverRect = Util.FindRootGameObjectByName_SceneIndex("BG Camera", SceneManager.sceneCount - 1).
+                transform.GetChild(0).GetChild(0).gameObject.GetComponent<RectTransform>();
+        }
+    }
+
+    private YieldInstruction WaitBackgroundMovement(string sceneName)
+    {
+        float target = 0f;
+
+        if (sceneName == "Menu")
+        {
+            target = 620f;
+        }
+
+        // Stopping rain gracefully
+        if (currentScene == "Menu")
+        {
+            Util.FindRootGameObjectByName("Rain Camera").GetComponent<RainCameraController>().Stop();
+        }
+
+        return DOTween.To(
+                () => bgMoverRect.offsetMax.x, // this is actually the RectTransform's Right value
+                (val) => bgMoverRect.offsetMax = new Vector2(val, bgMoverRect.offsetMax.y),
+                target,
+                1.0f //make sure it is equal to rain fading times (called either fade time or duration in rain controller variables)
+            ).SetEase(Ease.InOutCubic)
+            .WaitForCompletion();
     }
 
     private void StopAudioInCurrentScene()
