@@ -22,7 +22,7 @@ public class MainMenuBtn : MonoBehaviour {
 
     private IEnumerator MainMenuBtnSceneLoad()
     {
-        hudController.Minimize();
+        StartCoroutine(hudController.Minimize());
         yield return StartCoroutine(menuOpener.SlideOffScreenAnimation());
         yield return StartCoroutine(bgMover.MoveBackground());
         LoaderScript.WrapLoadCoroutine("Menu");
