@@ -12,6 +12,7 @@ public class RestartBtn : MonoBehaviour {
     void Awake()
     {
         LoaderScript = GameObject.FindWithTag("SceneLoadManager").GetComponent<SceneLoadManager>();
+        GetComponent<Button>().onClick.AddListener(() => RestartBtnWrapper());
     }
 
     public void RestartBtnWrapper()

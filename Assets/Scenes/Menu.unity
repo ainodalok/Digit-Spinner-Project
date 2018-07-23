@@ -2179,7 +2179,6 @@ GameObject:
   - component: {fileID: 495572313}
   - component: {fileID: 495572312}
   - component: {fileID: 495572311}
-  - component: {fileID: 495572310}
   - component: {fileID: 495572315}
   m_Layer: 5
   m_Name: LimitedTurnsBtn
@@ -2208,17 +2207,6 @@ RectTransform:
   m_AnchoredPosition: {x: 0.5, y: 0}
   m_SizeDelta: {x: -1, y: 128}
   m_Pivot: {x: 0.5, y: 0.5}
---- !u!114 &495572310
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 495572308}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8ad936535e8aed489765e9778dfdd5b, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
 --- !u!114 &495572311
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6195,7 +6183,6 @@ GameObject:
   - component: {fileID: 1632388499}
   - component: {fileID: 1632388500}
   - component: {fileID: 1632388502}
-  - component: {fileID: 1632388503}
   - component: {fileID: 1632388504}
   m_Layer: 5
   m_Name: TimeAttackBtn
@@ -6322,17 +6309,6 @@ MonoBehaviour:
   m_Enabled: 1
   m_EditorHideFlags: 0
   m_Script: {fileID: 11500000, guid: d8d01cce0a3d02c4f8353b95ca76747f, type: 3}
-  m_Name: 
-  m_EditorClassIdentifier: 
---- !u!114 &1632388503
-MonoBehaviour:
-  m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
-  m_GameObject: {fileID: 1632388497}
-  m_Enabled: 1
-  m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: d8ad936535e8aed489765e9778dfdd5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
 --- !u!114 &1632388504

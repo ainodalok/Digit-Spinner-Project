@@ -1,6 +1,7 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using UnityEngine.UI;
 
 public class LimitedTurnsBtn : MonoBehaviour {
     public ScalingObjectController menuController;
@@ -12,6 +13,7 @@ public class LimitedTurnsBtn : MonoBehaviour {
     void Awake()
     {
         LoaderScript = GameObject.FindWithTag("SceneLoadManager").GetComponent<SceneLoadManager>();
+        GetComponent<Button>().onClick.AddListener(() => LimitedTurnsBtnWrapper());
     }
 
     public void LimitedTurnsBtnWrapper()
