@@ -1,17 +1,32 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
+using DG.Tweening;
 
 public class GamePanelController : MonoBehaviour {
-    public ScalingObjectController[] scalingObjects;
+    // MenuBtn, MuteBtn, ScoreTxt, ObjectiveTxt
+    public Transform[] scalingObjects;
+    public const float fadeDuration = 0.5f;
 
     public IEnumerator Minimize()
     {
-        for (int i = 0; i < scalingObjects.Length - 1; i++)
+        Sequence minimization = DOTween.Sequence();
+        for (int i = 0; i < scalingObjects.Length; i++)
         {
-            StartCoroutine(scalingObjects[i].ScaleOut());
+            minimization.Join(scalingObjects[i].DOScale(BoardController.SPAWN_SIZE, fadeDuration).SetEase(Ease.OutCubic));
         }
 
-        yield return StartCoroutine(scalingObjects[scalingObjects.Length - 1].ScaleOut());
+        minimization.Play();
+        yield return minimization.WaitForCompletion();
+    }
+
+    public Vector3[] GetObjectScales()
+    {
+        Vector3[] scales = new Vector3[4];
+        for (int i = 0; i < scalingObjects.Length; i++)
+        {
+            scales[i] = scalingObjects[i].localScale;
+        }
+        return scales;
     }
 }

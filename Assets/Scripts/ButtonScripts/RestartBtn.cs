@@ -22,8 +22,7 @@ public class RestartBtn : MonoBehaviour {
 
     private IEnumerator RestartBtnSceneLoad()
     {
-        StartCoroutine(menuOpener.SlideOffScreenAnimation());
-        yield return gamePanel.Minimize();
+        yield return StartCoroutine(menuOpener.SlideOffScreenAnimation());
         LoaderScript.ReloadScene();
     }
 }

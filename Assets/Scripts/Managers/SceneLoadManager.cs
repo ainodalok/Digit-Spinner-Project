@@ -15,8 +15,12 @@ public class SceneLoadManager : MonoBehaviour
     [HideInInspector]
     public GameMode currentGameMode = GameMode.None;
 
+    // MenuBtn, MuteBtn, ScoreTxt, ObjectiveTxt
+    public Vector3[] gamePanelScales;
+
     private bool loading = false;
     private bool viewportBanner = false;
+    private GamePanelController gamePanelController;
 
     void Awake()
     {
@@ -55,6 +59,7 @@ public class SceneLoadManager : MonoBehaviour
     // Load a scene with a specified string name
     IEnumerator LoadScene(string sceneName, GameMode gameMode = GameMode.None)
     {
+        UpdateGamePanelScales();
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
 
         while (!async.isDone)
@@ -88,6 +93,18 @@ public class SceneLoadManager : MonoBehaviour
         }
 #endif
         loading = false;
+    }
+
+    private void UpdateGamePanelScales()
+    {
+        if (currentScene == "Menu")
+        {
+            gamePanelScales = new Vector3[4]{ new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f) };
+        }
+        else if (currentScene == "Game")
+        {
+            gamePanelScales = Util.FindRootGameObjectByName_SceneIndex("HUDCanvas", SceneManager.sceneCount - 1).transform.GetChild(1).GetComponent<GamePanelController>().GetObjectScales();
+        }
     }
 
     private void StopAudioInCurrentScene()

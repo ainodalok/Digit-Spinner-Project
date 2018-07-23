@@ -5,12 +5,8 @@ TagManager:
   serializedVersion: 2
   tags:
   - SceneLoadManager
-  - MainCameraGame
-  - MainCameraMenu
-  - ScoreTxt
   - AudioManager
-  - Header
-  - Board
+  - GamePanel
   layers:
   - Default
   - TransparentFX

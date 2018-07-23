@@ -5479,7 +5479,7 @@ GameObject:
   - component: {fileID: 854433352}
   m_Layer: 5
   m_Name: GamePanel
-  m_TagString: Untagged
+  m_TagString: GamePanel
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -5516,10 +5516,10 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   scalingObjects:
-  - {fileID: 1003665814}
-  - {fileID: 1157339786}
-  - {fileID: 1775675601}
-  - {fileID: 415179612}
+  - {fileID: 1003665809}
+  - {fileID: 1157339779}
+  - {fileID: 415179609}
+  - {fileID: 1775675596}
 --- !u!1 &959373374
 GameObject:
   m_ObjectHideFlags: 0
@@ -11830,7 +11830,7 @@ GameObject:
   - component: {fileID: 1845161032}
   m_Layer: 0
   m_Name: Board
-  m_TagString: Board
+  m_TagString: Untagged
   m_Icon: {fileID: -964228994112308473, guid: 0000000000000000d000000000000000, type: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
@@ -11869,7 +11869,6 @@ MonoBehaviour:
   menuOpener: {fileID: 1788273435}
   tileMaterials:
   - {fileID: 2100000, guid: f148841af4599ed489cfdb28e84cdf18, type: 2}
-  - {fileID: 2100000, guid: 1e3186b4f1981524dabf13aa4c500f8f, type: 2}
   - {fileID: 2100000, guid: c42573fd8fed00b459aa3a47cf736b18, type: 2}
   - {fileID: 2100000, guid: bb916efb2f55f064884c431de4f71573, type: 2}
   - {fileID: 2100000, guid: 3231d0d27d6d6be45af9633626d9bce5, type: 2}
@@ -11878,9 +11877,9 @@ MonoBehaviour:
   - {fileID: 2100000, guid: 68dc6b4e4483f3e46ad300bd50c3f7fd, type: 2}
   - {fileID: 2100000, guid: d6231bd5458a1af4f937051bff535567, type: 2}
   - {fileID: 2100000, guid: f94493ba53a1fa6489df573e3ac43fc9, type: 2}
+  - {fileID: 2100000, guid: 1e3186b4f1981524dabf13aa4c500f8f, type: 2}
   prophecyTileMaterials:
   - {fileID: 2100000, guid: 84c425ca459cdc74f91b4fc2f07dc115, type: 2}
-  - {fileID: 2100000, guid: 0e86e38a31993dd4b83596e36f02f872, type: 2}
   - {fileID: 2100000, guid: 6a4eb0ba61ded7945a233a0a147f6168, type: 2}
   - {fileID: 2100000, guid: 63d8286da2a84b147b729eba9febd559, type: 2}
   - {fileID: 2100000, guid: e6915b2234bd52043bd6db1b24cc958a, type: 2}
@@ -11889,6 +11888,7 @@ MonoBehaviour:
   - {fileID: 2100000, guid: fc33e7ae9bd8f9540a99a979f403a5e0, type: 2}
   - {fileID: 2100000, guid: 87c3f61f7dc0c464db4e222eb9433cbe, type: 2}
   - {fileID: 2100000, guid: effbdb48d3345f648a756b16cc510e64, type: 2}
+  - {fileID: 2100000, guid: 0e86e38a31993dd4b83596e36f02f872, type: 2}
   comboRed: {fileID: 2100000, guid: eb73bcbbe92362e48a5ed22750e042cb, type: 2}
   defaultMaterial: {fileID: 21800180849670330, guid: 0bed7c49c9987634ebb8624b525da8c4,
     type: 2}
@@ -11909,7 +11909,7 @@ GameObject:
   - component: {fileID: 2017151770}
   m_Layer: 5
   m_Name: Header
-  m_TagString: Header
+  m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
