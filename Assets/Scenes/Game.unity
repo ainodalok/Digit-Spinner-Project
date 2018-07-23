@@ -471,6 +471,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuOpener: {fileID: 1788273435}
+  gamePanel: {fileID: 854433352}
 --- !u!1 &415179608
 GameObject:
   m_ObjectHideFlags: 0

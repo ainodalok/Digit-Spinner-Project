@@ -5,6 +5,7 @@ using UnityEngine.UI;
 
 public class RestartBtn : MonoBehaviour {
     public MenuOpener menuOpener;
+    public GamePanelController gamePanel;
 
     private SceneLoadManager LoaderScript;
 
@@ -20,7 +21,8 @@ public class RestartBtn : MonoBehaviour {
 
     private IEnumerator RestartBtnSceneLoad()
     {
-        yield return StartCoroutine(menuOpener.SlideOffScreenAnimation());
+        StartCoroutine(menuOpener.SlideOffScreenAnimation());
+        yield return gamePanel.Minimize();
         LoaderScript.ReloadScene();
     }
 }
