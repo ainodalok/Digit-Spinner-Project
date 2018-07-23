@@ -4,7 +4,7 @@ using TMPro;
 using DG.Tweening;
 
 public class Timer : ObjectiveTracker {
-    public int time = 200;
+    public int time = 1200;
     [HideInInspector]
     public bool playing = false;
 

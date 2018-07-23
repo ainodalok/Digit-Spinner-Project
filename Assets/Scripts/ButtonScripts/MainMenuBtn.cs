@@ -6,6 +6,7 @@ using UnityEngine.UI;
 public class MainMenuBtn : MonoBehaviour {
     public MenuOpener menuOpener;
     public BackgroundMover bgMover;
+    public GamePanelController hudController;
 
     private SceneLoadManager LoaderScript;
 
@@ -21,6 +22,7 @@ public class MainMenuBtn : MonoBehaviour {
 
     private IEnumerator MainMenuBtnSceneLoad()
     {
+        hudController.Minimize();
         yield return StartCoroutine(menuOpener.SlideOffScreenAnimation());
         yield return StartCoroutine(bgMover.MoveBackground());
         LoaderScript.WrapLoadCoroutine("Menu");

@@ -226,9 +226,9 @@ public class MenuOpener : MonoBehaviour {
 
     public void EndGame()
     {
-        menuBtn.SetActive(false);
         scoreEndTxt.GetComponent<TextMeshProUGUI>().text = "Score:\n" + boardController.score;
-        scoreTxt.SetActive(false);
+        StartCoroutine(menuBtn.GetComponent<ScalingObjectController>().ScaleOut());
+        StartCoroutine(scoreTxt.GetComponent<ScalingObjectController>().ScaleOut());
         scoreEnd.SetActive(true);
         scoreEndTxt.SetActive(true);
     }
