@@ -15,11 +15,11 @@ public class ManagerConnector : MonoBehaviour
         button = GetComponent<Button>();
         if (button.name == "TimeAttackBtn")
         {
-            button.onClick.AddListener(() => LoaderScript.WrapLoadCoroutine("Game", GameMode.TimeAttack));
+            button.onClick.AddListener(() => gameObject.GetComponent<TimeAttackBtn>().TimeAttackBtnWrapper());
         }
         else if (button.name == "LimitedTurnsBtn")
         {
-            button.onClick.AddListener(() => LoaderScript.WrapLoadCoroutine("Game", GameMode.LimitedTurns));
+            button.onClick.AddListener(() => gameObject.GetComponent<LimitedTurnsBtn>().LimitedTurnsBtnWrapper());
         }
         else if (button.name == "RestartBtn")
         {

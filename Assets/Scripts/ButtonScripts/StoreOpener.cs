@@ -5,8 +5,8 @@ using UnityEngine.UI;
 using DG.Tweening;
 
 public class StoreOpener : MonoBehaviour {
-    public GameObject mainMenuPanel;
-    public GameObject storePanel;
+    public ScalingObjectController mainMenuPanel;
+    public ScalingObjectController storePanel;
     public GameObject IAPTab;
     public GameObject coinTab;
     public Image IAPBtn;
@@ -24,16 +24,12 @@ public class StoreOpener : MonoBehaviour {
         StartCoroutine(SwitchPanels(storePanel, mainMenuPanel));
     }
 
-    private IEnumerator SwitchPanels(GameObject panelToHide, GameObject panelToShow)
+    private IEnumerator SwitchPanels(ScalingObjectController panelToHide, ScalingObjectController panelToShow)
     {
-        yield return panelToHide.transform.DOScale(BoardController.SPAWN_SIZE, MainMenuPanelController.fadeDuration)
-            .SetEase(Ease.InCubic)
-            .WaitForCompletion();
-
-        panelToHide.SetActive(false);
-        panelToShow.SetActive(true);
-        panelToShow.transform.DOScale(BoardController.ACTIVE_SIZE, MainMenuPanelController.fadeDuration)
-            .SetEase(Ease.OutCubic);
+        yield return StartCoroutine(panelToHide.ScaleOut());
+        panelToHide.gameObject.SetActive(false);
+        panelToShow.gameObject.SetActive(true);
+        StartCoroutine(panelToShow.ScaleIn());
     }
 
     public void OpenIAP()
@@ -42,7 +38,6 @@ public class StoreOpener : MonoBehaviour {
         IAPBtn.sprite = burgundyBorderPref;
         coinBtn.sprite = blueBorderPref;
         IAPTab.SetActive(true);
-
     }
 
     public void OpenCoin()

@@ -2180,6 +2180,7 @@ GameObject:
   - component: {fileID: 495572312}
   - component: {fileID: 495572311}
   - component: {fileID: 495572310}
+  - component: {fileID: 495572315}
   m_Layer: 5
   m_Name: LimitedTurnsBtn
   m_TagString: Untagged
@@ -2318,6 +2319,20 @@ CanvasRenderer:
     type: 2}
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 495572308}
+--- !u!114 &495572315
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 495572308}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 09c896737cb77284097e952b9077da17, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuController: {fileID: 1537637447}
+  bgMover: {fileID: 1574261502}
+  rainController: {fileID: 1607647423}
 --- !u!1 &538452145
 GameObject:
   m_ObjectHideFlags: 0
@@ -5520,6 +5535,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1512913388}
+  - component: {fileID: 1512913389}
   m_Layer: 5
   m_Name: StorePanel
   m_TagString: Untagged
@@ -5550,6 +5566,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1512913389
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1512913387}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: eef37d465984db54a9b04dd68d80227a, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &1537637445
 GameObject:
   m_ObjectHideFlags: 0
@@ -5607,6 +5634,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 1574261501}
+  - component: {fileID: 1574261502}
   m_Layer: 5
   m_Name: BGMover
   m_TagString: Untagged
@@ -5633,6 +5661,18 @@ RectTransform:
   m_AnchoredPosition: {x: 310, y: 0}
   m_SizeDelta: {x: 620, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &1574261502
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1574261500}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b48762fd01e66f44e8b8a2bd96333c62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: 0
 --- !u!1 &1591300081
 GameObject:
   m_ObjectHideFlags: 0
@@ -5978,6 +6018,12 @@ Prefab:
     m_RemovedComponents: []
   m_ParentPrefab: {fileID: 100100000, guid: 8d4d0d3eb938f7242a32a636102030b1, type: 2}
   m_IsPrefabParent: 0
+--- !u!114 &1607647423 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114838501450283254, guid: 8d4d0d3eb938f7242a32a636102030b1,
+    type: 2}
+  m_PrefabInternal: {fileID: 1607647422}
+  m_Script: {fileID: 11500000, guid: fc2899542295348408e9791e324df38f, type: 3}
 --- !u!1 &1608451237
 GameObject:
   m_ObjectHideFlags: 0
@@ -6150,6 +6196,7 @@ GameObject:
   - component: {fileID: 1632388500}
   - component: {fileID: 1632388502}
   - component: {fileID: 1632388503}
+  - component: {fileID: 1632388504}
   m_Layer: 5
   m_Name: TimeAttackBtn
   m_TagString: Untagged
@@ -6288,6 +6335,20 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: d8ad936535e8aed489765e9778dfdd5b, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+--- !u!114 &1632388504
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 1632388497}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0327e745b4fb852439e549978b826744, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  menuController: {fileID: 1537637447}
+  bgMover: {fileID: 1574261502}
+  rainController: {fileID: 1607647423}
 --- !u!1 &1678932689
 GameObject:
   m_ObjectHideFlags: 0
@@ -6400,8 +6461,8 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 7aeecd92deaa7ca4ca8dc6dc19e88e95, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  mainMenuPanel: {fileID: 1537637445}
-  storePanel: {fileID: 1512913387}
+  mainMenuPanel: {fileID: 1537637447}
+  storePanel: {fileID: 1512913389}
   IAPTab: {fileID: 705809589}
   coinTab: {fileID: 1186757572}
   IAPBtn: {fileID: 755929590}

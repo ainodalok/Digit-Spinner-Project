@@ -496,7 +496,7 @@ RectTransform:
   m_GameObject: {fileID: 415179608}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 1}
   m_Children: []
   m_Father: {fileID: 2017151769}
   m_RootOrder: 0
@@ -5475,6 +5475,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 854433351}
+  - component: {fileID: 854433352}
   m_Layer: 5
   m_Name: GamePanel
   m_TagString: Untagged
@@ -5502,6 +5503,17 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &854433352
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 854433350}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 49aff72e53064234ea600f94e6a19442, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1 &959373374
 GameObject:
   m_ObjectHideFlags: 0
@@ -10591,7 +10603,7 @@ RectTransform:
   m_GameObject: {fileID: 1157339778}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 1}
   m_Children:
   - {fileID: 594032292}
   m_Father: {fileID: 1491940964}
@@ -11001,6 +11013,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   menuOpener: {fileID: 1788273435}
+  bgMover: {fileID: 2082173707}
 --- !u!1 &1711843802
 GameObject:
   m_ObjectHideFlags: 0
@@ -11245,7 +11258,7 @@ RectTransform:
   m_GameObject: {fileID: 1775675595}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 1}
   m_Children: []
   m_Father: {fileID: 2017151769}
   m_RootOrder: 1
@@ -11923,6 +11936,7 @@ GameObject:
   serializedVersion: 5
   m_Component:
   - component: {fileID: 2082173706}
+  - component: {fileID: 2082173707}
   m_Layer: 5
   m_Name: BGMover
   m_TagString: Untagged
@@ -11949,6 +11963,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &2082173707
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 2082173705}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: b48762fd01e66f44e8b8a2bd96333c62, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  target: 620
 --- !u!1 &2090539802
 GameObject:
   m_ObjectHideFlags: 0
