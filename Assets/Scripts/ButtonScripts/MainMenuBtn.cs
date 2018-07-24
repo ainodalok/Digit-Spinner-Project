@@ -13,7 +13,6 @@ public class MainMenuBtn : MonoBehaviour {
     void Awake()
     {
         LoaderScript = GameObject.FindWithTag("SceneLoadManager").GetComponent<SceneLoadManager>();
-        GetComponent<Button>().onClick.AddListener(() => MainMenuBtnWrapper());
     }
 
     public void MainMenuBtnWrapper()

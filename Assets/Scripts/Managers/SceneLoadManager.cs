@@ -47,8 +47,6 @@ public class SceneLoadManager : MonoBehaviour
 
     public void WrapLoadCoroutine(string sceneName, GameMode gameMode = GameMode.None)
     {
-        currentGameMode = gameMode;
-
         if (!loading)
         {
             loading = true;
@@ -59,6 +57,7 @@ public class SceneLoadManager : MonoBehaviour
     // Load a scene with a specified string name
     IEnumerator LoadScene(string sceneName, GameMode gameMode = GameMode.None)
     {
+        currentGameMode = gameMode;
         UpdateGamePanelScales();
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
 
@@ -81,6 +80,8 @@ public class SceneLoadManager : MonoBehaviour
         viewportBanner = false;
         CheckViewport();
         ActivateCamerasInLastScene();
+        //Uncomment to enable INTERSTITIALS
+        
 #if !UNITY_EDITOR
         if (adManager.interstitial.IsLoaded() && currentScene != "")
         {
@@ -190,7 +191,7 @@ public class SceneLoadManager : MonoBehaviour
         if (!loading)
         {
             loading = true;
-            StartCoroutine(LoadScene(SceneManager.GetActiveScene().name));
+            StartCoroutine(LoadScene(SceneManager.GetActiveScene().name, currentGameMode));
         }
     }
 }
