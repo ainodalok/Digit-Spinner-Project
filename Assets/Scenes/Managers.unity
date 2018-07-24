@@ -186,6 +186,7 @@ MonoBehaviour:
   adManager: {fileID: 994294121}
   currentScene: 
   currentGameMode: 0
+  gamePanelScales: []
 --- !u!4 &1602385748
 Transform:
   m_ObjectHideFlags: 0

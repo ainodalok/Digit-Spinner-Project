@@ -85,6 +85,16 @@ public class MenuOpener : MonoBehaviour {
                         }
                     }
                 }
+                if (boardController.shakingSequence != null)
+                {
+                    if (boardController.shakingSequence.IsActive())
+                    {
+                        if (!boardController.shakingSequence.IsComplete())
+                        {
+                            boardController.shakingSequence.Play();
+                        }
+                    }
+                }
             }
             else
             {
@@ -129,7 +139,17 @@ public class MenuOpener : MonoBehaviour {
                             boardController.scalingHiddenSequence.Pause();
                         }
                     }
-                }    
+                }
+                if (boardController.shakingSequence != null)
+                {
+                    if (boardController.shakingSequence.IsActive())
+                    {
+                        if (boardController.shakingSequence.IsPlaying())
+                        {
+                            boardController.shakingSequence.Pause();
+                        }
+                    }
+                }
                 TimerPauseSafe(open);
                 boardController.ScaleTilesDown();
                 yield return boardController.scalingSequence.WaitForCompletion();

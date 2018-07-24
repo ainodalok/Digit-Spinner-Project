@@ -54,7 +54,7 @@ public class Timer : ObjectiveTracker {
             yield return new WaitForSeconds(0.1f);
             time--;
             gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Time left:\n{0}.{1}", time / 10, time % 10);
-            if (time == 50)
+            if (time == 200)
             {
                 gameObject.GetComponent<TextMeshProUGUI>().fontMaterial = red;
             }

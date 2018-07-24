@@ -42,6 +42,8 @@ public class BoardController : MonoBehaviour {
     public Sequence fallingSequence;
     [HideInInspector]
     public Sequence scalingHiddenSequence;
+    [HideInInspector]
+    public Sequence shakingSequence;
 
     public static Vector3 SPAWN_SIZE = new Vector3(0, 0, 1);
     public static Vector3 ACTIVE_SIZE = new Vector3(1, 1, 1);
@@ -438,12 +440,43 @@ public class BoardController : MonoBehaviour {
             //Calculating score
             combo++;
             AddScore(tilesToRemove.Count, combo);
+
+            /*
+            float time = 0;
+            while (time < 1.0f)
+            {
+                yield return null;
+                if (!menuOpener.open)
+                    time += Time.deltaTime;
+                tilesToRemove.ForEach((t) =>
+                {
+                    activeTileObjects[t.x][t.y].transform.GetChild(0).GetComponent<TextMeshPro>().color =
+                    new Color(1.0f, 1.0f, 1.0f) * (1.0f - time) + 
+                    time * activeTileObjects[t.x][t.y].transform.GetChild(0).GetComponent<TextMeshPro>().fontSharedMaterial.GetColor(ShaderUtilities.ID_OutlineColor);
+                });
+            }
+            */
+
+            shakingSequence = DOTween.Sequence();
+            shakingSequence.Pause();
+            tilesToRemove.ForEach((t) =>
+            {
+                shakingSequence.Join(activeTileObjects[t.x][t.y].transform.DOShakePosition(0.5f, 0.1f, 10000, 90.0f, false, false));
+            });
+
+            if (!menuOpener.open)
+            {
+                shakingSequence.Play();
+            }
+            yield return shakingSequence.WaitForCompletion();
+
             //Hiding disappearing tiles
             tilesToRemove.ForEach((t) =>
             {
                 activeTileObjects[t.x][t.y].GetComponent<ColRowMover>().tileToRemove = true;
                 activeTileObjects[t.x][t.y].transform.GetChild(0).GetComponent<MeshRenderer>().enabled = false;
                 activeTileObjects[t.x][t.y].transform.GetChild(1).GetComponent<SpriteRenderer>().enabled = false;
+                //activeTileObjects[t.x][t.y].transform.GetChild(0).GetComponent<TextMeshPro>().color = new Color32(255, 255, 255, 255);
                 activeTileObjects[t.x][t.y].transform.GetChild(2).GetComponent<ParticleSystem>().Play();
                 particlesPlaying = true;
             });
