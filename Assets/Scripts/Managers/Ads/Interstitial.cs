@@ -24,7 +24,6 @@ public class Interstitial {
 
         // Initialize an InterstitialAd.
         interstitial = new InterstitialAd(adUnitId);
-        interstitial.OnAdFailedToLoad += HandleOnAdFailedToLoad;
         interstitial.OnAdClosed += HandleOnAdClosed;
         // Create an empty ad request.
         Debug.Log("About to build request");
@@ -49,11 +48,6 @@ public class Interstitial {
         {
             interstitial.Destroy();
         }
-    }
-
-    public void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
-    {
-        RequestAndLoad();
     }
 
     public void Show()
@@ -84,5 +78,4 @@ public class Interstitial {
         shown = false;
         RequestAndLoad();
     }
-
 }

@@ -39,7 +39,7 @@ public class SceneLoadManager : MonoBehaviour
 
     void Update()
     {
-        //CheckViewport();
+        CheckViewport();
     }
 
     public void WrapLoadCoroutine(string sceneName, GameMode gameMode = GameMode.None)
@@ -56,6 +56,7 @@ public class SceneLoadManager : MonoBehaviour
     {
         currentGameMode = gameMode;
         UpdateGamePanelScales();
+        adManager.ReloadAdsIfNecessary();
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
 
         while (!async.isDone)
@@ -75,22 +76,23 @@ public class SceneLoadManager : MonoBehaviour
         }
         currentScene = sceneName;
         viewportBanner = false;
-        //CheckViewport();
+        CheckViewport();
         ActivateCamerasInLastScene();
         //Uncomment to enable INTERSTITIALS
-        /*
 #if !UNITY_EDITOR
-        if (adManager.interstitial.IsLoaded() && currentScene != "")
+        if (adManager.interstitial.IsLoaded())
         {
-            GL.Clear(false, true, new Color (0.0f, 0.0f, 0.0f, 1.0f));
-            adManager.interstitial.Show();
-            while (adManager.interstitial.IsShown())
+            if (currentScene != "")
             {
-                yield return null;
+                GL.Clear(false, true, new Color (0.0f, 0.0f, 0.0f, 1.0f));
+                adManager.interstitial.Show();
+                while (adManager.interstitial.IsShown())
+                {
+                    yield return null;
+                }
             }
         }
 #endif
-        */
         loading = false;
     }
 
@@ -175,7 +177,6 @@ public class SceneLoadManager : MonoBehaviour
             {
                 adManager.banner.Show();
                 ChangeViewportFitBanner();
-                
             }
         }
         else if (!(adManager.banner.IsLoaded() || adManager.banner.IsShown()))

@@ -21,9 +21,17 @@ public class AdManager : MonoBehaviour {
 
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize(appId);
+    }
 
-        //Ad start
-        banner.Request();
-        interstitial.RequestAndLoad();
+    public void ReloadAdsIfNecessary()
+    {
+        if (!banner.IsLoaded())
+        {
+            banner.Request();
+        }
+        if (!interstitial.IsLoaded())
+        {
+            interstitial.RequestAndLoad();
+        }
     }
 }

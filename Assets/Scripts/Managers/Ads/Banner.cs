@@ -25,7 +25,6 @@ public class Banner {
 
         // Create a 320x50 banner at the top of the screen.
         bannerView = new BannerView(adUnitId, AdSize.SmartBanner, AdPosition.Top);
-        bannerView.OnAdFailedToLoad += HandleOnAdFailedToLoad;
         bannerView.OnAdLoaded += HandleOnAdLoaded;
         bannerView.OnAdOpening += HandleOnAdOpening;
         LoadNew();
@@ -56,11 +55,6 @@ public class Banner {
     public float GetHeight()
     {
         return bannerView.GetHeightInPixels();
-    }
-
-    public void HandleOnAdFailedToLoad(object sender, AdFailedToLoadEventArgs args)
-    {
-        LoadNew();
     }
 
     public void HandleOnAdLoaded(object sender, EventArgs args)
