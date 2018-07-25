@@ -27,9 +27,20 @@ public class Interstitial {
         interstitial.OnAdFailedToLoad += HandleOnAdFailedToLoad;
         interstitial.OnAdClosed += HandleOnAdClosed;
         // Create an empty ad request.
+        Debug.Log("About to build request");
         AdRequest request = new AdRequest.Builder().Build();
+        Debug.Log("Request built");
+        if (request == null)
+        {
+            Debug.Log("HaHa");
+        }
+        if (interstitial == null)
+        {
+            Debug.Log("HoHo");
+        }
         // Load the interstitial with the request.
         interstitial.LoadAd(request);
+        Debug.Log("Ad loaded");
     }
 
     public void Destroy()
@@ -53,7 +64,14 @@ public class Interstitial {
 
     public bool IsLoaded()
     {
-        return interstitial.IsLoaded();
+        if (interstitial != null)
+        {
+            return interstitial.IsLoaded();
+        }
+        else
+        {
+            return false;
+        }
     }
 
     public bool IsShown()

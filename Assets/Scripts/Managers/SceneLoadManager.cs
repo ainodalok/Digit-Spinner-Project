@@ -26,6 +26,7 @@ public class SceneLoadManager : MonoBehaviour
     {
         DOTween.SetTweensCapacity(500, 50);
         Input.multiTouchEnabled = false;
+        Application.targetFrameRate = 60;
         if (SceneManager.sceneCount < 2)
         {
             StartCoroutine(LoadScene("Menu"));
@@ -38,11 +39,7 @@ public class SceneLoadManager : MonoBehaviour
 
     void Update()
     {
-        if (!adManager.banner.IsShown() && adManager.banner.IsLoaded())
-        {
-            adManager.banner.Show();
-        }
-        CheckViewport();
+        //CheckViewport();
     }
 
     public void WrapLoadCoroutine(string sceneName, GameMode gameMode = GameMode.None)
@@ -78,10 +75,10 @@ public class SceneLoadManager : MonoBehaviour
         }
         currentScene = sceneName;
         viewportBanner = false;
-        CheckViewport();
+        //CheckViewport();
         ActivateCamerasInLastScene();
         //Uncomment to enable INTERSTITIALS
-        
+        /*
 #if !UNITY_EDITOR
         if (adManager.interstitial.IsLoaded() && currentScene != "")
         {
@@ -93,6 +90,7 @@ public class SceneLoadManager : MonoBehaviour
             }
         }
 #endif
+        */
         loading = false;
     }
 
@@ -175,8 +173,9 @@ public class SceneLoadManager : MonoBehaviour
             }
             else if (adManager.banner.IsLoaded())
             {
-                ChangeViewportFitBanner();
                 adManager.banner.Show();
+                ChangeViewportFitBanner();
+                
             }
         }
         else if (!(adManager.banner.IsLoaded() || adManager.banner.IsShown()))
