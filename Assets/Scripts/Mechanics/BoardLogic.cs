@@ -14,7 +14,7 @@ public class BoardLogic {
     public BoardLogic()
     {
         GenerateActiveTiles();
-        EnsureNoMatchOnStart();
+        //EnsureNoMatchOnStart();
         GenerateProphecyTiles();
     }
 
@@ -157,34 +157,25 @@ public class BoardLogic {
 
     private void GenerateActiveTiles()
     {
-        for (int i = 0; i <= BOARD_SIZE - 1; i++)
+        int i;
+
+        for (i = 0; i <= BOARD_SIZE - 1; i++)
         {
             activeTiles[i] = new int[BOARD_SIZE];
+        }
 
+        for (i = 0; i <= BOARD_SIZE - 1; i++)
+        {
             for (int j = 0; j <= BOARD_SIZE - 1; j++)
             {
                 activeTiles[i][j] = randObj.Next(9) + 1;
+
+                while (MatchFinder.CheckForInitialMatches(activeTiles, i, j))
+                {
+                    activeTiles[i][j] = randObj.Next(9) + 1;
+                }
             }
         }
-    }
-
-    /*
-     * This one finds all the matches and deletes them, then fills 
-     * empty tiles with random numbers. Repeat until no matches found.
-     */
-    private void EnsureNoMatchOnStart()
-    {
-        List<Vector2Int> tilesToRemove = MatchFinder.FindMatchingTiles(activeTiles);
-
-        do
-        {
-            tilesToRemove.ForEach((t) =>
-            {
-                activeTiles[t[0]][t[1]] = randObj.Next(9) + 1;
-            });
-
-            tilesToRemove = MatchFinder.FindMatchingTiles(activeTiles);
-        } while (tilesToRemove.Count > 0);
     }
 
     private void GenerateProphecyTiles()

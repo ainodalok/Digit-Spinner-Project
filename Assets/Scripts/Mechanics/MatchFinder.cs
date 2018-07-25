@@ -90,4 +90,74 @@ public class MatchFinder
         //remove current tile from the current match
         currentMatch.RemoveAt(currentMatch.Count - 1);
     }
+
+    //run when generating board to check for matches around a certain tile
+    public static bool CheckForInitialMatches(int[][] b, int x, int y)
+    {
+        board = b;
+        bool result = false;
+        //List of coordinates of tiles that are by 1 greater than tile (x, y);
+        List<Vector2Int> greater = SearchAround(x, y, board[x][y] + 1);
+        //List of coordinates of tiles that are by 1 lesser than tile (x, y);
+        List<Vector2Int> lesser = SearchAround(x, y, board[x][y] - 1);
+
+        if (greater.Count > 0 && lesser.Count > 0)
+        {
+            result = true;
+        }
+
+        if (!result)
+        {
+            greater.ForEach((t) =>
+            {
+                if (SearchAround(t.x, t.y, board[t.x][t.y] + 1).Count > 0)
+                {
+                    result = true;
+                }
+            });
+        }
+
+        if (!result)
+        {
+            lesser.ForEach((t) =>
+            {
+                if (SearchAround(t.x, t.y, board[t.x][t.y] - 1).Count > 0)
+                {
+                    result = true;
+                }
+            });
+        }
+
+        return result;
+    }
+
+    //looks for goal in neighbours of tile (x, y) and tells if it was found
+    private static List<Vector2Int> SearchAround(int x, int y, int goal)
+    {
+        List<Vector2Int> result = new List<Vector2Int>();
+
+        if (goal < 1 || goal > 9)
+        {
+            return result;
+        }
+
+        if (x > 0 && board[x - 1][y] == goal)
+        {
+            result.Add(new Vector2Int(x - 1, y));
+        }
+        if (y > 0 && board[x][y - 1] == goal)
+        {
+            result.Add(new Vector2Int(x, y - 1));
+        }
+        if (x < 6 && board[x + 1][y] == goal)
+        {
+            result.Add(new Vector2Int(x + 1, y));
+        }
+        if (y < 6 && board[x][y + 1] == goal)
+        {
+            result.Add(new Vector2Int(x, y + 1));
+        }    
+
+        return result;
+    }
 }
