@@ -13,6 +13,7 @@ public class BoardController : MonoBehaviour {
 
     public GameObject tilePrefab;
     public GameObject prophecyTilePrefab;
+    public GameObject ghostTilePrefab;
     public MenuOpener menuOpener;
     
     /* Materials used to color tiles depending on the digit */
@@ -45,8 +46,8 @@ public class BoardController : MonoBehaviour {
     [HideInInspector]
     public Sequence shakingSequence;
 
-    public static Vector3 SPAWN_SIZE = new Vector3(0, 0, 1);
-    public static Vector3 ACTIVE_SIZE = new Vector3(1, 1, 1);
+    public static Vector3 SPAWN_SIZE = new Vector3(0.0f, 0.0f, 1.0f);
+    public static Vector3 ACTIVE_SIZE = new Vector3(1.0f, 1.0f, 1.0f);
     public static Vector3 SIZE_STEP = new Vector3(0.1f, 0.1f);
     const float INITIAL_SCALE_DURATION = 0.3f;
 
@@ -58,7 +59,6 @@ public class BoardController : MonoBehaviour {
         SetupActiveTiles();
         SetupProphecyTiles();
         SetupGhostTiles();
-        ScaleTilesUp();
     }
 
     private void SetupActiveTiles()
@@ -157,13 +157,6 @@ public class BoardController : MonoBehaviour {
     {
         ghostTiles[0] = CreateGhostTile(activeTileObjects[0][0], new Vector3(0, BoardLogic.BOARD_SIZE, 0));
         ghostTiles[1] = CreateGhostTile(activeTileObjects[0][BoardLogic.BOARD_SIZE - 1], new Vector3(0, -BoardLogic.BOARD_SIZE, 0));
-
-        for (int i = 0; i < ghostTiles.Length; i++)
-        {
-            ghostTiles[i].transform.localScale = ACTIVE_SIZE;
-            Destroy(ghostTiles[i].GetComponent<ColRowMover>());
-            Destroy(ghostTiles[i].transform.GetChild(2).gameObject);
-        }
     }
 
     public void ShiftInsert(int number, bool isFirstElement, bool isColumn)
@@ -329,10 +322,13 @@ public class BoardController : MonoBehaviour {
 
     private GameObject CreateGhostTile(GameObject tile, Vector3 offset)
     {
-        GameObject newTile = Instantiate(tile);
+        GameObject newTile = Instantiate(ghostTilePrefab);
         newTile.transform.SetParent(gameObject.transform);
         newTile.transform.localPosition = tile.transform.localPosition + offset;
         newTile.name = string.Concat(tile.name, " Ghost");
+        newTile.transform.rotation = Quaternion.identity;
+        newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = tile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text;
+        newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial = tile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial;
         return newTile;
     }
 

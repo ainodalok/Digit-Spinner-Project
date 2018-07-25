@@ -13,6 +13,7 @@ public class ReadyStart : MonoBehaviour {
     public GameModeManager gameModeManager;
     public GameObject board;
     public MenuOpener menuOpener;
+    public BoardController boardController;
 
     [HideInInspector]
     public Tweener scalingTween;
@@ -88,7 +89,8 @@ public class ReadyStart : MonoBehaviour {
                 time += Time.deltaTime;
         }
 
-        board.SetActive(true);
+        boardController.SetEnableBoard(true);
+        boardController.ScaleTilesUp();
         ready = true;
         if ((gameModeManager.mode == GameMode.TimeAttack) && !menuOpener.open)
         {
