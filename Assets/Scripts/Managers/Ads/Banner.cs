@@ -8,9 +8,11 @@ public class Banner {
     private BannerView bannerView;
     private bool loaded = false;
     private bool shown = false;
+    private bool loadNeed = true;
 
     public void Request()
     {
+        loadNeed = false;
         Destroy();
 
 #if UNITY_ANDROID
@@ -27,6 +29,7 @@ public class Banner {
         bannerView = new BannerView(adUnitId, AdSize.SmartBanner, AdPosition.Top);
         bannerView.OnAdLoaded += HandleOnAdLoaded;
         bannerView.OnAdOpening += HandleOnAdOpening;
+        bannerView.OnAdFailedToLoad += HandleOnAdFailedToLoad;
         LoadNew();
     }
 
@@ -67,6 +70,11 @@ public class Banner {
         LoadNew();
     }
 
+    public void HandleOnAdFailedToLoad(object sender, EventArgs args)
+    {
+        loadNeed = true;
+    }
+
     public bool IsLoaded()
     {
         return loaded;
@@ -81,5 +89,10 @@ public class Banner {
     {
         bannerView.Show();
         shown = true;
+    }
+
+    public bool IsLoadNeed()
+    {
+        return loadNeed;
     }
 }

@@ -25,11 +25,11 @@ public class AdManager : MonoBehaviour {
 
     public void ReloadAdsIfNecessary()
     {
-        if (!banner.IsLoaded())
+        if (!banner.IsLoaded() && banner.IsLoadNeed())
         {
             banner.Request();
         }
-        if (!interstitial.IsLoaded())
+        if (!interstitial.IsLoaded() && interstitial.IsLoadNeed())
         {
             interstitial.RequestAndLoad();
         }

@@ -7,9 +7,11 @@ using System;
 public class Interstitial {
     private InterstitialAd interstitial;
     private bool shown = false;
+    private bool loadNeed = true;
 
     public void RequestAndLoad()
     {
+        loadNeed = false;
 #if UNITY_ANDROID
         string adUnitId = "ca-app-pub-3940256099942544/1033173712";
         //NASHE
@@ -25,21 +27,11 @@ public class Interstitial {
         // Initialize an InterstitialAd.
         interstitial = new InterstitialAd(adUnitId);
         interstitial.OnAdClosed += HandleOnAdClosed;
+        interstitial.OnAdFailedToLoad += HandleOnAdFailedToLoad;
         // Create an empty ad request.
-        Debug.Log("About to build request");
         AdRequest request = new AdRequest.Builder().Build();
-        Debug.Log("Request built");
-        if (request == null)
-        {
-            Debug.Log("HaHa");
-        }
-        if (interstitial == null)
-        {
-            Debug.Log("HoHo");
-        }
         // Load the interstitial with the request.
         interstitial.LoadAd(request);
-        Debug.Log("Ad loaded");
     }
 
     public void Destroy()
@@ -77,5 +69,14 @@ public class Interstitial {
     {
         shown = false;
         RequestAndLoad();
+    }
+
+    public void HandleOnAdFailedToLoad(object sender, EventArgs args)
+    {
+        loadNeed = true;
+    }
+    public bool IsLoadNeed()
+    {
+        return loadNeed;
     }
 }
