@@ -131,7 +131,7 @@ public class MatchFinder
         return result;
     }
 
-    //looks for goal in neighbours of tile (x, y) and tells if it was found
+    //looks for goal in neighbours of tile (x, y) and tells its coordinates
     private static List<Vector2Int> SearchAround(int x, int y, int goal)
     {
         List<Vector2Int> result = new List<Vector2Int>();
@@ -149,15 +149,269 @@ public class MatchFinder
         {
             result.Add(new Vector2Int(x, y - 1));
         }
-        if (x < 6 && board[x + 1][y] == goal)
+        if (x < board.Length - 1 && board[x + 1][y] == goal)
         {
             result.Add(new Vector2Int(x + 1, y));
         }
-        if (y < 6 && board[x][y + 1] == goal)
+        if (y < board.Length - 1 && board[x][y + 1] == goal)
         {
             result.Add(new Vector2Int(x, y + 1));
         }    
 
         return result;
+    }
+
+    //searches for goal around a certain tile, but at a 1 tile distance from the tile
+    private static List<Vector2Int> SearchOneTileAway(int x, int y, int goal)
+    {
+        List<Vector2Int> result = new List<Vector2Int>();
+
+        if (goal < 1 || goal > 9)
+        {
+            return result;
+        }
+
+        if (x > 1 && board[x - 2][y] == goal)
+        {
+            result.Add(new Vector2Int(x - 2, y));
+        }
+        if (y > 1 && board[x][y - 2] == goal)
+        {
+            result.Add(new Vector2Int(x, y - 2));
+        }
+        if (x < board.Length - 2 && board[x + 2][y] == goal)
+        {
+            result.Add(new Vector2Int(x + 2, y));
+        }
+        if (y < board.Length - 2 && board[x][y + 2] == goal)
+        {
+            result.Add(new Vector2Int(x, y + 2));
+        }
+
+        return result;
+    }
+
+    /* checks if there is a possible move with current active tiles */
+    public static bool IsGameOver(int[][] b)
+    {
+        board = b;
+        bool result = true;
+
+        for (int i = 0; i < board.Length; i++)
+        {
+            for (int j = 0; j < board[0].Length; j++)
+            {
+                if (CheckTileForMatches(i, j))
+                {
+                    result = false;
+
+                    break;
+                }
+            }
+
+            if (!result)
+            {
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    private static bool CheckTileForMatches(int i, int j)
+    {
+        bool result = false;
+
+        //search board for matches of 2 and two to find them a friend 
+        SearchAround(i, j, board[i][j] + 1).ForEach((t) =>
+        {
+            //if tiles stand vertically
+            if (t.x == i)
+            {
+                //check left column
+                if (t.x > 1)
+                {
+                    if (board[t.x - 1].Contains(board[i][j] - 1) ||
+                        board[t.x - 1].Contains(board[t.x][t.y] + 1))
+                    {
+                        result = true;
+                    }
+                }
+
+                //check right column
+                if (t.x < board[0].Length - 1)
+                {
+                    if (board[t.x + 1].Contains(board[i][j] - 1) ||
+                        board[t.x + 1].Contains(board[t.x][t.y] + 1))
+                    {
+                        result = true;
+                    }
+                }
+
+                //check row below
+                if (j > t.y)
+                {
+                    if (t.y > 1)
+                    {
+                        if (RowContains(t.y - 1, board[t.x][t.y] + 1))
+                        {
+                            result = true;
+                        }
+                    }
+                }
+                else
+                {
+                    if (j > 1)
+                    {
+                        if (RowContains(j - 1, board[i][j] - 1))
+                        {
+                            result = true;
+                        }
+                    }
+                }
+
+                //check row above
+                if (j > t.y)
+                {
+                    if (j < board.Length - 1)
+                    {
+                        if (RowContains(j + 1, board[i][j] - 1))
+                        {
+                            result = true;
+                        }
+                    }
+                }
+                else
+                {
+                    if (t.y < board.Length - 1)
+                    {
+                        if (RowContains(t.y + 1, board[t.x][t.y] + 1))
+                        {
+                            result = true;
+                        }
+                    }
+                }
+            }
+            //if tiles stand horizontally
+            else
+            {
+                //check left column
+                if (i < t.x)
+                {
+                    if (i > 1)
+                    {
+                        if (board[i - 1].Contains(board[i][j] - 1))
+                        {
+                            result = true;
+                        }
+                    }
+                }
+                else
+                {
+                    if (t.x > 1)
+                    {
+                        if (board[t.x - 1].Contains(board[t.x][t.y] + 1))
+                        {
+                            result = true;
+                        }
+                    }
+                }
+
+                //check right column
+                if (i < t.x)
+                {
+                    if (t.x < board.Length - 1)
+                    {
+                        if (board[t.x + 1].Contains(board[t.x][t.y] + 1))
+                        {
+                            result = true;
+                        }
+                    }
+                }
+                else
+                {
+                    if (i < board.Length - 1)
+                    {
+                        if (board[i + 1].Contains(board[i][j] - 1))
+                        {
+                            result = true;
+                        }
+                    }
+                }
+
+                //check row below
+                if (t.y > 1)
+                {
+                    if (RowContains(t.y - 1, board[i][j] - 1) ||
+                        RowContains(t.y - 1, board[t.x][t.y] + 1))
+                    {
+                        result = true;
+                    }
+                }
+
+                //check row above
+                if (t.y < board.Length - 1)
+                {
+                    if (RowContains(t.y + 1, board[i][j] - 1) ||
+                        RowContains(t.y + 1, board[t.x][t.y] + 1))
+                    {
+                        result = true;
+                    }
+                }
+            }
+        });
+
+        SearchOneTileAway(i, j, board[i][j] + 2).ForEach((t) =>
+        {
+            int requiredDigit = (board[i][j] + board[t.x][t.y]) / 2;
+
+            //if tiles stand vertically
+            if (t.x == i)
+            {
+                if (RowContains((j + t.y) / 2, requiredDigit))
+                {
+                    result = true;
+                }
+            }
+            //if tiles stand horizontally
+            else
+            {
+                if (board[(i + t.x) / 2].Contains(requiredDigit))
+                {
+                    result = true;
+                }
+            }
+        });
+
+        return result;
+    }
+
+    private static bool RowContains(int row, int search)
+    {
+        bool result = false;
+
+        for (int i = 0; i < board.Length; i++)
+        {
+            if (board[i][row] == search)
+            {
+                result = true;
+
+                break;
+            }
+        }
+
+        return result;
+    }
+
+    public static bool TestGameOverCondition()
+    {
+        int[][] board = new int[3][]
+        {
+            new int[]{1, 9, 9},
+            new int[]{9, 2, 9},
+            new int[]{3, 9, 9}
+        };
+
+        return IsGameOver(board);
     }
 }
