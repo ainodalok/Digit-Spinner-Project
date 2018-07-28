@@ -15,6 +15,7 @@ public class BoardController : MonoBehaviour {
     public GameObject prophecyTilePrefab;
     public GameObject ghostTilePrefab;
     public MenuOpener menuOpener;
+    public Transform gameOverPanelTransform;
     
     /* Materials used to color tiles depending on the digit */
     public Material[] tileMaterials = new Material[10];
@@ -570,5 +571,48 @@ public class BoardController : MonoBehaviour {
         {
             SetEnableTileColliders(true);
         }
+
+        if (MatchFinder.IsGameOver(boardLogic.activeTiles))
+        {
+            StartCoroutine(AnimateGameOverNotification());
+        }
+    }
+
+    private IEnumerator AnimateGameOverNotification()
+    {
+        Sequence scaling = DOTween.Sequence();
+
+        for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
+        {
+            for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
+            {
+                scaling.Join(activeTileObjects[i][j].transform.DOScale(SPAWN_SIZE, 0.5f).SetEase(Ease.InOutSine));
+            }
+
+            for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
+            {
+                scaling.Join(prophecyTileObjects[i][j].transform.DOScale(SPAWN_SIZE, 0.5f).SetEase(Ease.InOutSine));
+            }
+        }
+
+        yield return scaling.Play().WaitForCompletion();
+        yield return gameOverPanelTransform.DOScale(ACTIVE_SIZE, 0.5f).SetEase(Ease.OutCubic).Play().WaitForCompletion();
+        yield return new WaitForSeconds(1.0f);
+        yield return gameOverPanelTransform.DOScale(SPAWN_SIZE, 0.5f).SetEase(Ease.InCubic).Play().WaitForCompletion();
+     
+        for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
+        {
+            for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
+            {
+                scaling.Join(activeTileObjects[i][j].transform.DOScale(ACTIVE_SIZE, 0.5f).SetEase(Ease.InOutSine));
+            }
+
+            for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
+            {
+                scaling.Join(prophecyTileObjects[i][j].transform.DOScale(ACTIVE_SIZE, 0.5f).SetEase(Ease.InOutSine));
+            }
+        }
+
+        scaling.Play();
     }
 }

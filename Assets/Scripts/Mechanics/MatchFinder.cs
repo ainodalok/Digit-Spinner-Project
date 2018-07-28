@@ -405,11 +405,12 @@ public class MatchFinder
 
     public static bool TestGameOverCondition()
     {
-        int[][] board = new int[3][]
+        int[][] board = new int[4][]
         {
-            new int[]{1, 9, 9},
-            new int[]{9, 2, 9},
-            new int[]{3, 9, 9}
+            new int[]{9, 9, 9, 9},
+            new int[]{9, 9, 9, 2},
+            new int[]{9, 3, 9, 9},
+            new int[]{9, 4, 9, 9}
         };
 
         return IsGameOver(board);

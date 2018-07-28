@@ -14,7 +14,10 @@ public class BoardLogic {
     public BoardLogic()
     {
         GenerateActiveTiles();
-        //EnsureNoMatchOnStart();
+        while (MatchFinder.IsGameOver(activeTiles))
+        {
+            GenerateActiveTiles();
+        }
         GenerateProphecyTiles();
     }
 
