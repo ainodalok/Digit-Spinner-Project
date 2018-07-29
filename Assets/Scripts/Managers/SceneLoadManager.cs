@@ -24,7 +24,6 @@ public class SceneLoadManager : MonoBehaviour
 
     void Awake()
     {
-        Debug.Log(MatchFinder.TestGameOverCondition());
         DOTween.SetTweensCapacity(500, 50);
         Input.multiTouchEnabled = false;
         Application.targetFrameRate = 60;

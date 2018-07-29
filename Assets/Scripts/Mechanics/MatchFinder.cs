@@ -10,9 +10,9 @@ public class MatchFinder
     static private List<List<Vector2Int>> matchList;
     //A match that is currently being added to and found new members for
     static private List<Vector2Int> currentMatch;
-    static private int[][] board;
+    static private string[][] board;
 
-    public static List<Vector2Int> FindMatchingTiles(int[][] b)
+    public static List<Vector2Int> FindMatchingTiles(string[][] b)
     {
         matchList = new List<List<Vector2Int>>();
         board = b;
@@ -46,7 +46,7 @@ public class MatchFinder
     {
         bool nothingFound = true;
         int boardSize = board[0].Length;
-        int currentNumber = board[x][y];
+        int currentNumber = B64X.DecodeInt(board[x][y]);
 
         Vector2Int currentTile = new Vector2Int(x, y);
 
@@ -57,25 +57,25 @@ public class MatchFinder
 
         currentMatch.Add(currentTile);
          
-        if (x + 1 < boardSize && board[x + 1][y] - currentNumber == 1)
+        if (x + 1 < boardSize && B64X.DecodeInt(board[x + 1][y]) - currentNumber == 1)
         {
             nothingFound = false;
             Look(x + 1, y);
         }
 
-        if (y + 1 < boardSize && board[x][y + 1] - currentNumber == 1)
+        if (y + 1 < boardSize && B64X.DecodeInt(board[x][y + 1]) - currentNumber == 1)
         {
             nothingFound = false;
             Look(x, y + 1);
         }
 
-        if (x - 1 >= 0 && board[x - 1][y] - currentNumber == 1)
+        if (x - 1 >= 0 && B64X.DecodeInt(board[x - 1][y]) - currentNumber == 1)
         {
             nothingFound = false;
             Look(x - 1, y);
         }
 
-        if (y - 1 >= 0 && board[x][y - 1] - currentNumber == 1)
+        if (y - 1 >= 0 && B64X.DecodeInt(board[x][y - 1]) - currentNumber == 1)
         {
             nothingFound = false;
             Look(x, y - 1);
@@ -92,14 +92,14 @@ public class MatchFinder
     }
 
     //run when generating board to check for matches around a certain tile
-    public static bool CheckForInitialMatches(int[][] b, int x, int y)
+    public static bool CheckForInitialMatches(string[][] b, int x, int y)
     {
         board = b;
         bool result = false;
         //List of coordinates of tiles that are by 1 greater than tile (x, y);
-        List<Vector2Int> greater = SearchAround(x, y, board[x][y] + 1);
+        List<Vector2Int> greater = SearchAround(x, y, B64X.DecodeInt(board[x][y]) + 1);
         //List of coordinates of tiles that are by 1 lesser than tile (x, y);
-        List<Vector2Int> lesser = SearchAround(x, y, board[x][y] - 1);
+        List<Vector2Int> lesser = SearchAround(x, y, B64X.DecodeInt(board[x][y]) - 1);
 
         if (greater.Count > 0 && lesser.Count > 0)
         {
@@ -110,7 +110,7 @@ public class MatchFinder
         {
             greater.ForEach((t) =>
             {
-                if (SearchAround(t.x, t.y, board[t.x][t.y] + 1).Count > 0)
+                if (SearchAround(t.x, t.y, B64X.DecodeInt(board[t.x][t.y]) + 1).Count > 0)
                 {
                     result = true;
                 }
@@ -121,7 +121,7 @@ public class MatchFinder
         {
             lesser.ForEach((t) =>
             {
-                if (SearchAround(t.x, t.y, board[t.x][t.y] - 1).Count > 0)
+                if (SearchAround(t.x, t.y, B64X.DecodeInt(board[t.x][t.y]) - 1).Count > 0)
                 {
                     result = true;
                 }
@@ -141,19 +141,19 @@ public class MatchFinder
             return result;
         }
 
-        if (x > 0 && board[x - 1][y] == goal)
+        if (x > 0 && B64X.DecodeInt(board[x - 1][y]) == goal)
         {
             result.Add(new Vector2Int(x - 1, y));
         }
-        if (y > 0 && board[x][y - 1] == goal)
+        if (y > 0 && B64X.DecodeInt(board[x][y - 1]) == goal)
         {
             result.Add(new Vector2Int(x, y - 1));
         }
-        if (x < board.Length - 1 && board[x + 1][y] == goal)
+        if (x < board.Length - 1 && B64X.DecodeInt(board[x + 1][y]) == goal)
         {
             result.Add(new Vector2Int(x + 1, y));
         }
-        if (y < board.Length - 1 && board[x][y + 1] == goal)
+        if (y < board.Length - 1 && B64X.DecodeInt(board[x][y + 1]) == goal)
         {
             result.Add(new Vector2Int(x, y + 1));
         }    
@@ -171,19 +171,19 @@ public class MatchFinder
             return result;
         }
 
-        if (x > 1 && board[x - 2][y] == goal)
+        if (x > 1 && B64X.DecodeInt(board[x - 2][y]) == goal)
         {
             result.Add(new Vector2Int(x - 2, y));
         }
-        if (y > 1 && board[x][y - 2] == goal)
+        if (y > 1 && B64X.DecodeInt(board[x][y - 2]) == goal)
         {
             result.Add(new Vector2Int(x, y - 2));
         }
-        if (x < board.Length - 2 && board[x + 2][y] == goal)
+        if (x < board.Length - 2 && B64X.DecodeInt(board[x + 2][y]) == goal)
         {
             result.Add(new Vector2Int(x + 2, y));
         }
-        if (y < board.Length - 2 && board[x][y + 2] == goal)
+        if (y < board.Length - 2 && B64X.DecodeInt(board[x][y + 2]) == goal)
         {
             result.Add(new Vector2Int(x, y + 2));
         }
@@ -192,7 +192,7 @@ public class MatchFinder
     }
 
     /* checks if there is a possible move with current active tiles */
-    public static bool IsGameOver(int[][] b)
+    public static bool IsGameOver(string[][] b)
     {
         board = b;
         bool result = true;
@@ -223,7 +223,7 @@ public class MatchFinder
         bool result = false;
 
         //search board for matches of 2 and two to find them a friend 
-        SearchAround(i, j, board[i][j] + 1).ForEach((t) =>
+        SearchAround(i, j, B64X.DecodeInt(board[i][j]) + 1).ForEach((t) =>
         {
             //if tiles stand vertically
             if (t.x == i)
@@ -231,8 +231,8 @@ public class MatchFinder
                 //check left column
                 if (t.x > 1)
                 {
-                    if (board[t.x - 1].Contains(board[i][j] - 1) ||
-                        board[t.x - 1].Contains(board[t.x][t.y] + 1))
+                    if (board[t.x - 1].Contains(B64X.EncodeInt(B64X.DecodeInt(board[i][j]) - 1)) ||
+                        board[t.x - 1].Contains(B64X.EncodeInt(B64X.DecodeInt(board[t.x][t.y]) + 1)))
                     {
                         result = true;
                     }
@@ -241,8 +241,8 @@ public class MatchFinder
                 //check right column
                 if (t.x < board[0].Length - 1)
                 {
-                    if (board[t.x + 1].Contains(board[i][j] - 1) ||
-                        board[t.x + 1].Contains(board[t.x][t.y] + 1))
+                    if (board[t.x + 1].Contains(B64X.EncodeInt(B64X.DecodeInt(board[i][j]) - 1)) ||
+                        board[t.x + 1].Contains(B64X.EncodeInt(B64X.DecodeInt(board[t.x][t.y]) + 1)))
                     {
                         result = true;
                     }
@@ -253,7 +253,7 @@ public class MatchFinder
                 {
                     if (t.y > 1)
                     {
-                        if (RowContains(t.y - 1, board[t.x][t.y] + 1))
+                        if (RowContains(t.y - 1, B64X.EncodeInt(B64X.DecodeInt(board[t.x][t.y]) + 1)))
                         {
                             result = true;
                         }
@@ -263,7 +263,7 @@ public class MatchFinder
                 {
                     if (j > 1)
                     {
-                        if (RowContains(j - 1, board[i][j] - 1))
+                        if (RowContains(j - 1, B64X.EncodeInt(B64X.DecodeInt(board[i][j]) - 1)))
                         {
                             result = true;
                         }
@@ -275,7 +275,7 @@ public class MatchFinder
                 {
                     if (j < board.Length - 1)
                     {
-                        if (RowContains(j + 1, board[i][j] - 1))
+                        if (RowContains(j + 1, B64X.EncodeInt(B64X.DecodeInt(board[i][j]) - 1)))
                         {
                             result = true;
                         }
@@ -285,7 +285,7 @@ public class MatchFinder
                 {
                     if (t.y < board.Length - 1)
                     {
-                        if (RowContains(t.y + 1, board[t.x][t.y] + 1))
+                        if (RowContains(t.y + 1, B64X.EncodeInt(B64X.DecodeInt(board[t.x][t.y]) + 1)))
                         {
                             result = true;
                         }
@@ -300,7 +300,7 @@ public class MatchFinder
                 {
                     if (i > 1)
                     {
-                        if (board[i - 1].Contains(board[i][j] - 1))
+                        if (board[i - 1].Contains(B64X.EncodeInt(B64X.DecodeInt(board[i][j]) - 1)))
                         {
                             result = true;
                         }
@@ -310,7 +310,7 @@ public class MatchFinder
                 {
                     if (t.x > 1)
                     {
-                        if (board[t.x - 1].Contains(board[t.x][t.y] + 1))
+                        if (board[t.x - 1].Contains(B64X.EncodeInt(B64X.DecodeInt(board[t.x][t.y]) + 1)))
                         {
                             result = true;
                         }
@@ -322,7 +322,7 @@ public class MatchFinder
                 {
                     if (t.x < board.Length - 1)
                     {
-                        if (board[t.x + 1].Contains(board[t.x][t.y] + 1))
+                        if (board[t.x + 1].Contains(B64X.EncodeInt(B64X.DecodeInt(board[t.x][t.y]) + 1)))
                         {
                             result = true;
                         }
@@ -332,7 +332,7 @@ public class MatchFinder
                 {
                     if (i < board.Length - 1)
                     {
-                        if (board[i + 1].Contains(board[i][j] - 1))
+                        if (board[i + 1].Contains(B64X.EncodeInt(B64X.DecodeInt(board[i][j]) - 1)))
                         {
                             result = true;
                         }
@@ -342,8 +342,8 @@ public class MatchFinder
                 //check row below
                 if (t.y > 1)
                 {
-                    if (RowContains(t.y - 1, board[i][j] - 1) ||
-                        RowContains(t.y - 1, board[t.x][t.y] + 1))
+                    if (RowContains(t.y - 1, B64X.EncodeInt(B64X.DecodeInt(board[i][j]) - 1)) ||
+                        RowContains(t.y - 1, B64X.EncodeInt(B64X.DecodeInt(board[t.x][t.y]) + 1)))
                     {
                         result = true;
                     }
@@ -352,8 +352,8 @@ public class MatchFinder
                 //check row above
                 if (t.y < board.Length - 1)
                 {
-                    if (RowContains(t.y + 1, board[i][j] - 1) ||
-                        RowContains(t.y + 1, board[t.x][t.y] + 1))
+                    if (RowContains(t.y + 1, B64X.EncodeInt(B64X.DecodeInt(board[i][j]) - 1)) ||
+                        RowContains(t.y + 1, B64X.EncodeInt(B64X.DecodeInt(board[t.x][t.y]) + 1)))
                     {
                         result = true;
                     }
@@ -361,9 +361,9 @@ public class MatchFinder
             }
         });
 
-        SearchOneTileAway(i, j, board[i][j] + 2).ForEach((t) =>
+        SearchOneTileAway(i, j, B64X.DecodeInt(board[i][j]) + 2).ForEach((t) =>
         {
-            int requiredDigit = (board[i][j] + board[t.x][t.y]) / 2;
+            string requiredDigit = B64X.EncodeInt((B64X.DecodeInt(board[i][j]) + B64X.DecodeInt(board[t.x][t.y])) / 2);
 
             //if tiles stand vertically
             if (t.x == i)
@@ -386,7 +386,7 @@ public class MatchFinder
         return result;
     }
 
-    private static bool RowContains(int row, int search)
+    private static bool RowContains(int row, string search)
     {
         bool result = false;
 
@@ -403,6 +403,8 @@ public class MatchFinder
         return result;
     }
 
+    /* 
+     * TEST FUNC
     public static bool TestGameOverCondition()
     {
         int[][] board = new int[4][]
@@ -415,4 +417,5 @@ public class MatchFinder
 
         return IsGameOver(board);
     }
+    */
 }

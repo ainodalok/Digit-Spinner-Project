@@ -6,7 +6,7 @@ using System.Linq;
 using UnityEngine.SceneManagement;
 
 public class Util {
-    public static int[][] CloneArray(int[][] source)
+    public static string[][] CloneArray(string[][] source)
     {
         return source.Select(s => s.ToArray()).ToArray();
     }

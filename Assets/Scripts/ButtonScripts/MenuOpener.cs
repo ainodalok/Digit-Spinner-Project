@@ -1,7 +1,5 @@
 ﻿using System.Collections;
-using System.Collections.Generic;
 using UnityEngine;
-using UnityEngine.SceneManagement;
 using TMPro;
 using DG.Tweening;
 
@@ -29,7 +27,7 @@ public class MenuOpener : MonoBehaviour {
     {
         if ((gameModeManager.mode == GameMode.TimeAttack) && readyStart.ready)
         {
-            if ((gameModeManager.tracker as Timer).time == 0)
+            if (SafeMemory.GetInt("time") == 0)
             {
                 return;
             }
@@ -237,7 +235,7 @@ public class MenuOpener : MonoBehaviour {
     {
         if (gameModeManager.mode == GameMode.TimeAttack)
         {
-            if ((gameModeManager.tracker as Timer).time > 0)
+            if (SafeMemory.GetInt("time") > 0)
             {
                 (gameModeManager.tracker as Timer).SetEnableTimer(!enabled);
             }
@@ -246,7 +244,7 @@ public class MenuOpener : MonoBehaviour {
 
     public void EndGame()
     {
-        scoreEndTxt.GetComponent<TextMeshProUGUI>().text = "Score:\n" + boardController.score;
+        scoreEndTxt.GetComponent<TextMeshProUGUI>().text = "Score:\n" + SafeMemory.Get("score");
         StartCoroutine(menuBtn.GetComponent<ScalingObjectController>().ScaleOut());
         StartCoroutine(scoreTxt.GetComponent<ScalingObjectController>().ScaleOut());
         scoreEnd.SetActive(true);

@@ -1,18 +1,21 @@
 ﻿using System.Collections;
+using System;
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
 
 public class Timer : ObjectiveTracker {
-    public int time = 1200;
+    //public int time = 1200;
     [HideInInspector]
     public bool playing = false;
 
     private Coroutine counter;
+    private const int INITIAL_TIME = 1200;
 
     void Start()
     {
-        gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Time left:\n{0}.{1}", time / 10, time % 10);
+        SafeMemory.Set("time", INITIAL_TIME.ToString());
+        gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Time left:\n{0}.{1}", INITIAL_TIME / 10, INITIAL_TIME % 10);
     }
 
     public void StartTimer()
@@ -49,16 +52,17 @@ public class Timer : ObjectiveTracker {
 
     private IEnumerator MsCounter()
     {
-        while (time > 0)
+        while (SafeMemory.GetInt("time") > 0)
         {
             yield return new WaitForSeconds(0.1f);
-            time--;
-            gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Time left:\n{0}.{1}", time / 10, time % 10);
-            if (time == 200)
+            SafeMemory.Set("time", (SafeMemory.GetInt("time") - 1).ToString());
+            //time--;
+            gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Time left:\n{0}.{1}", SafeMemory.GetInt("time") / 10, SafeMemory.GetInt("time") % 10);
+            if (SafeMemory.GetInt("time") == 200)
             {
                 gameObject.GetComponent<TextMeshProUGUI>().fontMaterial = red;
             }
-            if (time == 100)
+            if (SafeMemory.GetInt("time") == 100)
             {
                 StartShakeTween();
             }
@@ -69,7 +73,7 @@ public class Timer : ObjectiveTracker {
 
     private void StartShakeTween()
     {
-        if (time > 0)
+        if (SafeMemory.GetInt("time") > 0)
         { 
             transform.GetComponent<RectTransform>().DOShakeAnchorPos(0.1f, 5, 50, 90, false, false).OnComplete(StartShakeTween);
         }

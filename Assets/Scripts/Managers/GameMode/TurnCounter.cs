@@ -5,23 +5,25 @@ using TMPro;
 using DG.Tweening;
 
 public class TurnCounter : ObjectiveTracker {
-    private int turnsLeft = 20;
+    //private int turnsLeft = 20;
 
 	// Use this for initialization
 	void Start() {
-        gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Turns left:\n{0}", turnsLeft);
+        SafeMemory.Set("turns", 20.ToString());
+        gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Turns left:\n{0}", SafeMemory.Get("turns"));
 	}
 
     public void UpdateTurns()
     {
-        turnsLeft--;
-        gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Turns left:\n{0}", turnsLeft);
+        SafeMemory.Set("turns", (SafeMemory.GetInt("turns") - 1).ToString());
+        //turnsLeft--;
+        gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Turns left:\n{0}", SafeMemory.Get("turns"));
 
-        if (turnsLeft <= 0)
+        if (SafeMemory.GetInt("turns") <= 0)
         {
             StartCoroutine(EndGame());
         }
-        if (turnsLeft == 3)
+        if (SafeMemory.GetInt("turns") == 3)
         {
             gameObject.GetComponent<TextMeshProUGUI>().fontMaterial = red;
         }

@@ -32,8 +32,8 @@ public class BoardController : MonoBehaviour {
     [HideInInspector]
     public GameObject[] ghostTiles = new GameObject[2];
 
-    [HideInInspector]
-    public int score;
+    //[HideInInspector]
+    //public int score;
 
     [HideInInspector]
     public bool isDestroying = false;
@@ -60,6 +60,7 @@ public class BoardController : MonoBehaviour {
         SetupActiveTiles();
         SetupProphecyTiles();
         SetupGhostTiles();
+        SafeMemory.Set("score", "0");
     }
 
     private void SetupActiveTiles()
@@ -76,8 +77,8 @@ public class BoardController : MonoBehaviour {
                 newTile.name = String.Format("Tile ({0}, {1})", i, j);
                 newTile.transform.localPosition = position;
                 newTile.transform.rotation = Quaternion.identity;
-                newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = boardLogic.activeTiles[i][j].ToString();
-                newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial = tileMaterials[boardLogic.activeTiles[i][j]];
+                newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = B64X.Decode(boardLogic.activeTiles[i][j]);
+                newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial = tileMaterials[B64X.DecodeInt(boardLogic.activeTiles[i][j])];
                 activeTileObjects[i][j] = newTile;
             }
         }
@@ -98,8 +99,8 @@ public class BoardController : MonoBehaviour {
                 newTile.name = String.Format("Prophecy Tile ({0}, {1})", i, j);
                 newTile.transform.localPosition = position;
                 newTile.transform.rotation = Quaternion.identity;
-                newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = boardLogic.prophecyTiles[i][j].ToString();
-                newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial = prophecyTileMaterials[boardLogic.prophecyTiles[i][j]];
+                newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = B64X.Decode(boardLogic.prophecyTiles[i][j]);
+                newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial = prophecyTileMaterials[B64X.DecodeInt(boardLogic.prophecyTiles[i][j])];
                 prophecyTileObjects[i][j] = newTile;
                 prophecyTileScale[i][j] = ACTIVE_SIZE - j * SIZE_STEP;
             }
@@ -270,39 +271,42 @@ public class BoardController : MonoBehaviour {
             for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
             {
                 activeTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text =
-                    boardLogic.activeTiles[i][j].ToString();
+                    B64X.Decode(boardLogic.activeTiles[i][j]);
                 activeTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial = 
-                    tileMaterials[boardLogic.activeTiles[i][j]];
+                    tileMaterials[B64X.DecodeInt(boardLogic.activeTiles[i][j])];
             }
 
             for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
             {
                 prophecyTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text =
-                    boardLogic.prophecyTiles[i][j].ToString();
+                    B64X.Decode(boardLogic.prophecyTiles[i][j]);
                 prophecyTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial =
-                    prophecyTileMaterials[boardLogic.prophecyTiles[i][j]];
+                    prophecyTileMaterials[B64X.DecodeInt(boardLogic.prophecyTiles[i][j])];
             }
         }
     }
 
     private void AddScore(int add, int combo)
     {
-        float modifier = 1.0f;
+        //float modifier = 1.0f;
+        SafeMemory.Set("scoreModifier", 1.0f.ToString());
         if (add > 3)
         {
             for (int i = 0; i < (add - 3); i++)
             {
-                modifier += 0.2f * (i + 1);
+                SafeMemory.Set("scoreModifier", (SafeMemory.GetFloat("scoreModifier") + 0.2f * (i + 1)).ToString());
+                //modifier += 0.2f * (i + 1);
             }
         }
-        score += (int) (add * 10 * combo * modifier);
+        SafeMemory.Set("score", (SafeMemory.GetInt("score") + (int) (add * 10 * combo * SafeMemory.GetFloat("scoreModifier"))).ToString());
+        //score += add * 10 * combo * modifier
         if (combo > 1)
         {
             StartCoroutine(ShowCombo(combo));
         }
         else
         {
-            scoreText.text = string.Format("Score: \n{0}", score);
+            scoreText.text = string.Format("Score: \n{0}", SafeMemory.Get("score"));
         }
     }
 
@@ -318,7 +322,7 @@ public class BoardController : MonoBehaviour {
 
         //scoreText.color = new Color(1.0f, 1.0f, 1.0f, 1.0f);
         scoreText.fontSharedMaterial = defaultMaterial;
-        scoreText.text = string.Format("Score: \n{0}", score);
+        scoreText.text = string.Format("Score: \n{0}", SafeMemory.Get("score"));
     }
 
     private GameObject CreateGhostTile(GameObject tile, Vector3 offset)
@@ -425,7 +429,8 @@ public class BoardController : MonoBehaviour {
         int maxDistance = 0;
         int[] fallDistances = new int[BoardLogic.BOARD_SIZE];
         bool particlesPlaying = false;
-        int combo = 0;
+        SafeMemory.Set("combo", "0");
+        //int combo = 0;
 
         if (gameModeManager.mode == GameMode.LimitedTurns)
         {
@@ -435,8 +440,9 @@ public class BoardController : MonoBehaviour {
         while (tilesToRemove.Count > 0)
         {
             //Calculating score
-            combo++;
-            AddScore(tilesToRemove.Count, combo);
+            SafeMemory.Set("combo", (SafeMemory.GetInt("combo") + 1).ToString());
+            //combo++;
+            AddScore(tilesToRemove.Count, SafeMemory.GetInt("combo"));
 
             /*
             float time = 0;

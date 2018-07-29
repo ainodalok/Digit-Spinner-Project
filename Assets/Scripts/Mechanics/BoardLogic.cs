@@ -1,4 +1,5 @@
 ﻿using System.Collections;
+using System;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -6,8 +7,8 @@ public class BoardLogic {
     public const int BOARD_SIZE = 7;
     public const int PROPHECY_HEIGHT = 5;
 
-    public int[][] activeTiles = new int[BOARD_SIZE][];
-    public int[][] prophecyTiles = new int[BOARD_SIZE][];
+    public string[][] activeTiles = new string[BOARD_SIZE][];
+    public string[][] prophecyTiles = new string[BOARD_SIZE][];
 
     System.Random randObj = new System.Random();
 
@@ -39,10 +40,10 @@ public class BoardLogic {
      */
     private List<Vector2Int> MoveColumn(int x, int distance)
     {
-        int[][] temporaryTiles = Util.CloneArray(activeTiles);
+        string[][] temporaryTiles = Util.CloneArray(activeTiles);
 
-        int[] newColumn = new int[BOARD_SIZE];
-        int[] currentColumn = activeTiles[x];
+        string[] newColumn = new string[BOARD_SIZE];
+        string[] currentColumn = activeTiles[x];
 
         for (int i = 0; i <= BOARD_SIZE - 1; i++)
         {
@@ -71,7 +72,7 @@ public class BoardLogic {
      */
     private List<Vector2Int> MoveRow(int y, int distance)
     {
-        int[][] temporaryTiles = Util.CloneArray(activeTiles);
+        string[][] temporaryTiles = Util.CloneArray(activeTiles);
 
         for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
         {
@@ -95,7 +96,7 @@ public class BoardLogic {
     /*
     * returns List - tiles that have to be deleted.
     */
-    private List<Vector2Int> TryMove(int[][] temporaryTiles)
+    private List<Vector2Int> TryMove(string[][] temporaryTiles)
     {
         List<Vector2Int> tilesToRemove = MatchFinder.FindMatchingTiles(temporaryTiles);
 
@@ -113,12 +114,12 @@ public class BoardLogic {
      */
     public List<Vector2Int> DestroyTiles(List<Vector2Int> tiles)
     {
-        int[] column;
+        string[] column;
 
         tiles.ForEach((t) =>
         {
             /* @WARNING change this if you decide to use 0 as one of the possible tile value */
-            activeTiles[t[0]][t[1]] = 0;
+            activeTiles[t.x][t.y] = B64X.EncodeInt(0);
         });
 
         for (int i = 0; i < BOARD_SIZE; i++)
@@ -128,7 +129,7 @@ public class BoardLogic {
             for (int j = BOARD_SIZE - 1; j >= 0; j--)
             {
                 /* @WARNING change this if you decide to use 0 as one of the possible tile value */
-                if (column[j] == 0)
+                if (B64X.DecodeInt(column[j]) == 0)
                 {
                     SlideDownTo(i, j);
                 }
@@ -155,7 +156,7 @@ public class BoardLogic {
             prophecyTiles[x][i] = prophecyTiles[x][i + 1];
         }
 
-        prophecyTiles[x][PROPHECY_HEIGHT - 1] = randObj.Next(9) + 1;
+        prophecyTiles[x][PROPHECY_HEIGHT - 1] = B64X.EncodeInt((randObj.Next(9) + 1));
     }
 
     private void GenerateActiveTiles()
@@ -164,18 +165,23 @@ public class BoardLogic {
 
         for (i = 0; i <= BOARD_SIZE - 1; i++)
         {
-            activeTiles[i] = new int[BOARD_SIZE];
+            activeTiles[i] = new string[BOARD_SIZE];
+
+            for (int j = 0; j <= BOARD_SIZE - 1; j++)
+            {
+                activeTiles[i][j] = B64X.EncodeInt(0);
+            }
         }
 
         for (i = 0; i <= BOARD_SIZE - 1; i++)
         {
             for (int j = 0; j <= BOARD_SIZE - 1; j++)
             {
-                activeTiles[i][j] = randObj.Next(9) + 1;
+                activeTiles[i][j] = B64X.EncodeInt((randObj.Next(9) + 1));
 
                 while (MatchFinder.CheckForInitialMatches(activeTiles, i, j))
                 {
-                    activeTiles[i][j] = randObj.Next(9) + 1;
+                    activeTiles[i][j] = B64X.EncodeInt((randObj.Next(9) + 1));
                 }
             }
         }
@@ -185,11 +191,11 @@ public class BoardLogic {
     {
         for (int i = 0; i < BOARD_SIZE; i++)
         {
-            prophecyTiles[i] = new int[PROPHECY_HEIGHT];
+            prophecyTiles[i] = new string[PROPHECY_HEIGHT];
 
             for (int j = 0; j < PROPHECY_HEIGHT; j++)
             {
-                prophecyTiles[i][j] = randObj.Next(9) + 1;
+                prophecyTiles[i][j] = B64X.EncodeInt((randObj.Next(9) + 1));
             }
         }
     }
