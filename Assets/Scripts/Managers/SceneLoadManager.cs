@@ -37,11 +37,6 @@ public class SceneLoadManager : MonoBehaviour
         }
     }
 
-    void Update()
-    {
-        CheckViewport();
-    }
-
     public void WrapLoadCoroutine(string sceneName, GameMode gameMode = GameMode.None)
     {
         if (!loading)
@@ -56,7 +51,6 @@ public class SceneLoadManager : MonoBehaviour
     {
         currentGameMode = gameMode;
         UpdateGamePanelScales();
-        adManager.ReloadAdsIfNecessary();
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
 
         while (!async.isDone)
@@ -64,6 +58,23 @@ public class SceneLoadManager : MonoBehaviour
             yield return null;
         }
         audioManager.pausedBGM = false;
+        //Uncomment to enable INTERSTITIALS
+#if !UNITY_EDITOR
+        if (currentScene != "")
+        {
+            Debug.Log("Interstitial?");
+            if (adManager.interstitial.IsLoaded())
+            {
+                Debug.Log("Yes!");
+                GL.Clear(false, true, new Color (0.0f, 0.0f, 0.0f, 1.0f));
+                adManager.interstitial.Show();
+                while (adManager.interstitial.IsShown())
+                {
+                    yield return null;
+                }
+            }
+        }
+#endif
         if (currentScene != "")
         {
             DeactivateCamerasInCurrentScene();
@@ -74,25 +85,15 @@ public class SceneLoadManager : MonoBehaviour
         {
             SceneManager.UnloadSceneAsync(currentScene);
         }
-        currentScene = sceneName;
-        viewportBanner = false;
-        CheckViewport();
+        
         ActivateCamerasInLastScene();
-        //Uncomment to enable INTERSTITIALS
-#if !UNITY_EDITOR
-        if (adManager.interstitial.IsLoaded())
+        CheckViewport();
+        if (currentScene == "")
         {
-            if (currentScene != "")
-            {
-                GL.Clear(false, true, new Color (0.0f, 0.0f, 0.0f, 1.0f));
-                adManager.interstitial.Show();
-                while (adManager.interstitial.IsShown())
-                {
-                    yield return null;
-                }
-            }
+            adManager.InitAds();
         }
-#endif
+
+        currentScene = sceneName;
         loading = false;
     }
 
@@ -144,43 +145,43 @@ public class SceneLoadManager : MonoBehaviour
         }
     }
 
-    private void ChangeViewportFitBanner()
-    {
-        GL.Clear(false, true, new Color(0.0f, 0.0f, 0.0f, 1.0f));
-        GameObject[] camerasNew = Util.FindRootGameObjectsByName_SceneIndex("Camera", SceneManager.sceneCount - 1);
-        foreach (GameObject camera in camerasNew)
-        {
-            camera.GetComponent<Camera>().pixelRect = new Rect(0.0f, 0.0f, Screen.width, Screen.height - adManager.banner.GetHeight());
-        }
-        viewportBanner = true;
-    }
-
-    private void ChangeViewportDefault()
-    {
-        GameObject[] camerasNew = Util.FindRootGameObjectsByName_SceneIndex("Camera", SceneManager.sceneCount - 1);
-        foreach (GameObject camera in camerasNew)
-        {
-            camera.GetComponent<Camera>().pixelRect = new Rect(0.0f, 0.0f, Screen.width, Screen.height);
-        }
-        viewportBanner = false;
-    }
-
-    private void CheckViewport()
+    public void ChangeViewportFitBanner()
     {
         if (!viewportBanner)
         {
-            if (adManager.banner.IsShown())
+            GameObject[] camerasNew = Util.FindRootGameObjectsByName_SceneIndex("Camera", SceneManager.sceneCount - 1);
+            foreach (GameObject camera in camerasNew)
             {
-                ChangeViewportFitBanner();
+                camera.GetComponent<Camera>().pixelRect = new Rect(0.0f, 0.0f, Screen.width, Screen.height - adManager.banner.GetHeight());
             }
-            else if (adManager.banner.IsLoaded())
-            {
-                adManager.banner.Show();
-                ChangeViewportFitBanner();
-            }
+            viewportBanner = true;
+            
         }
-        else if (!(adManager.banner.IsLoaded() || adManager.banner.IsShown()))
+    }
+
+    public void ChangeViewportDefault()
+    {
+        if(viewportBanner)
         {
+            GameObject[] camerasNew = Util.FindRootGameObjectsByName_SceneIndex("Camera", SceneManager.sceneCount - 1);
+            foreach (GameObject camera in camerasNew)
+            {
+                camera.GetComponent<Camera>().pixelRect = new Rect(0.0f, 0.0f, Screen.width, Screen.height);
+            }
+            viewportBanner = false;
+        }
+    }
+
+    public void CheckViewport()
+    {
+        if (viewportBanner)
+        {
+            viewportBanner = false;
+            ChangeViewportFitBanner();
+        }
+        else
+        {
+            viewportBanner = true;
             ChangeViewportDefault();
         }
     }

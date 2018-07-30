@@ -10,6 +10,13 @@ public class Banner {
     private bool shown = false;
     private bool loadNeed = true;
 
+    private SceneLoadManager sceneLoadManager;
+
+    public Banner(SceneLoadManager sceneLoadManager)
+    {
+        this.sceneLoadManager = sceneLoadManager;
+    }
+
     public void Request()
     {
         loadNeed = false;
@@ -35,6 +42,7 @@ public class Banner {
 
     public void LoadNew()
     {
+        loadNeed = false;
         // Create an empty ad request.
         AdRequest request = new AdRequest.Builder().Build();
 
@@ -43,6 +51,7 @@ public class Banner {
         bannerView.Hide();
         loaded = false;
         shown = false;
+        sceneLoadManager.ChangeViewportDefault();
     }
 
     public void Destroy()
@@ -52,6 +61,7 @@ public class Banner {
             bannerView.Destroy();
             loaded = false;
             shown = false;
+            sceneLoadManager.ChangeViewportDefault();
         }
     }
 
@@ -67,7 +77,7 @@ public class Banner {
 
     public void HandleOnAdOpening(object sender, EventArgs args)
     {
-        LoadNew();
+        loadNeed = true;
     }
 
     public void HandleOnAdFailedToLoad(object sender, EventArgs args)
@@ -87,8 +97,10 @@ public class Banner {
 
     public void Show()
     {
+        sceneLoadManager.ChangeViewportFitBanner();
         bannerView.Show();
         shown = true;
+        
     }
 
     public bool IsLoadNeed()

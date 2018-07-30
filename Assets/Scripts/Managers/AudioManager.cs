@@ -36,19 +36,20 @@ public class AudioManager : MonoBehaviour
         {
             muted = true;
         }
-        StartCoroutine(CheckIfPlaying());
+	//StartCoroutine(CheckIfPlaying());
+        InvokeRepeating("CheckIfPlaying", 0.01f, 0.5f);
 	}
 
-    IEnumerator CheckIfPlaying()
+    private void/*IEnumerator*/ CheckIfPlaying()
     {
-        while (true)
-        {
-            yield return new WaitForSeconds(0.5f);
+        //while (true)
+        //{
+            //yield return new WaitForSeconds(0.5f);
             if ((!IsPlayingBGM()) && (!pausedBGM) && (!muted))
             {
                 PlayBGM();
             }
-        }
+        //}
     }
 
     private void PlayBGM()

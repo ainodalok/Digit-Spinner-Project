@@ -4,11 +4,15 @@ using UnityEngine;
 using GoogleMobileAds.Api;
 
 public class AdManager : MonoBehaviour {
-    public Banner banner = new Banner();
+    public SceneLoadManager sceneLoadManager;
+    public Banner banner;
     public Interstitial interstitial = new Interstitial();
 
-    void Awake ()
+    const float RELOAD_AD_REST_TIME = 5.0f;
+
+    public void InitAds ()
     {
+        banner = new Banner(sceneLoadManager);
 #if UNITY_ANDROID
         string appId = "ca-app-pub-3940256099942544~3347511713";
         //NASHE
@@ -21,17 +25,34 @@ public class AdManager : MonoBehaviour {
 
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize(appId);
+        RequestAndLoadAds();
+        //StartCoroutine(AdReload());
+        InvokeRepeating("AdReload", 0.01f, RELOAD_AD_REST_TIME);
     }
 
-    public void ReloadAdsIfNecessary()
+    public void RequestAndLoadAds()
     {
-        if (!banner.IsLoaded() && banner.IsLoadNeed())
-        {
-            banner.Request();
-        }
-        if (!interstitial.IsLoaded() && interstitial.IsLoadNeed())
-        {
-            interstitial.RequestAndLoad();
-        }
+        banner.Request();
+        interstitial.Request();
+    }
+
+    public void/*IEnumerator*/ AdReload()
+    {
+        //while (true)
+        //{
+            if (banner.IsLoadNeed())
+            {
+                banner.LoadNew();
+            }
+            else if (banner.IsLoaded() && !banner.IsShown())
+            {
+                banner.Show();
+            }
+            if (!interstitial.IsLoaded() && interstitial.IsLoadNeed())
+            {
+                interstitial.LoadNew();
+            }
+            //yield return new WaitForSeconds(RELOAD_AD_REST_TIME);
+        //}
     }
 }
