@@ -21,9 +21,13 @@ public class Storage
         return AES.Decrypt(PlayerPrefs.GetString(key), password);
     }
 
-    public static void StoreSafe(string key, string data)
+    public static void SetSafe(string key, string data)
     {
         PlayerPrefs.SetString(key, AES.Encrypt(data, password));
+    }
+
+    public static void Commit()
+    {
         PlayerPrefs.Save();
     }
 }

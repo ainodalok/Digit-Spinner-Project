@@ -32,6 +32,10 @@ public class AudioManager : MonoBehaviour
             s.source.volume = s.volume;
             s.source.outputAudioMixerGroup = mixerGroup;
 		}
+        if (PlayerPrefs.GetInt("muted", 0) == 1)
+        {
+            muted = true;
+        }
         StartCoroutine(CheckIfPlaying());
 	}
 
@@ -111,6 +115,7 @@ public class AudioManager : MonoBehaviour
     {
         if (mute)
         {
+            PlayerPrefs.SetInt("muted", 1);
             string currentScene = SceneManager.GetActiveScene().name;
             Sound s = null;
             if (currentScene == "Menu")
@@ -123,6 +128,11 @@ public class AudioManager : MonoBehaviour
             }
             s.source.Stop();
         }
+        else
+        {
+            PlayerPrefs.SetInt("muted", 0);
+        }
         muted = mute;
+        PlayerPrefs.Save();
     }
 }

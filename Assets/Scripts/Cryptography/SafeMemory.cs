@@ -1,6 +1,6 @@
 ﻿using System.Collections.Generic;
 
-//Use to store data in memory safely. This one is fast.
+//Use to store data in memory safely.
 public class SafeMemory
 {
     private static Dictionary<string, string> memory = new Dictionary<string, string>();
