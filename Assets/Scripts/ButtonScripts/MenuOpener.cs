@@ -11,13 +11,15 @@ public class MenuOpener : MonoBehaviour {
     public BoardController boardController;
     public GameObject menuPanel;
     public GameModeManager gameModeManager;
-    public GameObject menuBtn;
-    public GameObject scoreTxt;
     public GameObject scoreEndTxt;
     public ReadyStart readyStart;
     public GameObject scoreEnd;
     public GameObject restartBtn;
     public GameObject mainMenuBtn;
+    public ScalingObjectController menuBtn;
+    public ScalingObjectController scoreTxt;
+    public ScalingObjectController endGameBtn;
+    public CurrencyTextController currencyTextController;
 
     private Coroutine toggleMenuCoroutine;
 
@@ -62,7 +64,7 @@ public class MenuOpener : MonoBehaviour {
                 boardController.SetEnableBoard(open);
                 boardController.ScaleTilesUp();
                 yield return boardController.scalingSequence.WaitForCompletion();
-                TimerPauseSafe(!open);
+                gameModeManager.TimerPauseSafe(!open);
                 if (boardController.fallingSequence != null)
                 {
                     if (boardController.fallingSequence.IsActive())
@@ -148,7 +150,7 @@ public class MenuOpener : MonoBehaviour {
                         }
                     }
                 }
-                TimerPauseSafe(open);
+                gameModeManager.TimerPauseSafe(open);
                 boardController.ScaleTilesDown();
                 yield return boardController.scalingSequence.WaitForCompletion();
                 boardController.SetEnableBoard(!open);
@@ -231,22 +233,14 @@ public class MenuOpener : MonoBehaviour {
         mainMenuBtn.transform.localPosition = new Vector3(0.0f, mainMenuBtn.transform.localPosition.y, mainMenuBtn.transform.localPosition.z);
     }
 
-    private void TimerPauseSafe(bool enabled)
-    {
-        if (gameModeManager.mode == GameMode.TimeAttack)
-        {
-            if (SafeMemory.GetInt("time") > 0)
-            {
-                (gameModeManager.tracker as Timer).SetEnableTimer(!enabled);
-            }
-        }
-    }
-
     public void EndGame()
     {
         scoreEndTxt.GetComponent<TextMeshProUGUI>().text = "Score:\n" + SafeMemory.Get("score");
+        Currency.ProcessEndGame();
+        currencyTextController.UpdateText();
         StartCoroutine(menuBtn.GetComponent<ScalingObjectController>().ScaleOut());
         StartCoroutine(scoreTxt.GetComponent<ScalingObjectController>().ScaleOut());
+        StartCoroutine(endGameBtn.GetComponent<ScalingObjectController>().ScaleOut());
         scoreEnd.SetActive(true);
         scoreEndTxt.SetActive(true);
     }

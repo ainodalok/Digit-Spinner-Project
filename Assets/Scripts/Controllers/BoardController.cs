@@ -60,7 +60,7 @@ public class BoardController : MonoBehaviour {
         SetupActiveTiles();
         SetupProphecyTiles();
         SetupGhostTiles();
-        SafeMemory.Set("score", "0");
+        SafeMemory.SetInt("score", 0);
     }
 
     private void SetupActiveTiles()
@@ -298,7 +298,7 @@ public class BoardController : MonoBehaviour {
                 //modifier += 0.2f * (i + 1);
             }
         }
-        SafeMemory.Set("score", (SafeMemory.GetInt("score") + (int) (add * 10 * combo * SafeMemory.GetFloat("scoreModifier"))).ToString());
+        SafeMemory.SetInt("score", SafeMemory.GetInt("score") + (int) (add * 10 * combo * SafeMemory.GetFloat("scoreModifier")));
         //score += add * 10 * combo * modifier
         if (combo > 1)
         {
@@ -429,7 +429,7 @@ public class BoardController : MonoBehaviour {
         int maxDistance = 0;
         int[] fallDistances = new int[BoardLogic.BOARD_SIZE];
         bool particlesPlaying = false;
-        SafeMemory.Set("combo", "0");
+        SafeMemory.SetInt("combo", 0);
         //int combo = 0;
 
         if (gameModeManager.mode == GameMode.LimitedTurns)
@@ -440,7 +440,7 @@ public class BoardController : MonoBehaviour {
         while (tilesToRemove.Count > 0)
         {
             //Calculating score
-            SafeMemory.Set("combo", (SafeMemory.GetInt("combo") + 1).ToString());
+            SafeMemory.SetInt("combo", SafeMemory.GetInt("combo") + 1);
             //combo++;
             AddScore(tilesToRemove.Count, SafeMemory.GetInt("combo"));
 
@@ -572,53 +572,29 @@ public class BoardController : MonoBehaviour {
             yield return scalingHiddenSequence.WaitForCompletion();
         }
 
-        isDestroying = false;
         if (!menuOpener.open)
         {
             SetEnableTileColliders(true);
         }
 
-        if (MatchFinder.IsGameOver(boardLogic.activeTiles))
+        if (!gameModeManager.tracker.gameOver && MatchFinder.IsGameOver(boardLogic.activeTiles))
         {
-            StartCoroutine(AnimateGameOverNotification());
+            yield return StartCoroutine(AnimateGameOverNotification());
         }
+
+        isDestroying = false;
     }
 
     private IEnumerator AnimateGameOverNotification()
     {
-        Sequence scaling = DOTween.Sequence();
-
-        for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
-        {
-            for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
-            {
-                scaling.Join(activeTileObjects[i][j].transform.DOScale(SPAWN_SIZE, 0.5f).SetEase(Ease.InOutSine));
-            }
-
-            for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
-            {
-                scaling.Join(prophecyTileObjects[i][j].transform.DOScale(SPAWN_SIZE, 0.5f).SetEase(Ease.InOutSine));
-            }
-        }
-
-        yield return scaling.Play().WaitForCompletion();
+        gameModeManager.TimerPauseSafe(true);
+        ScaleTilesDown();
+        yield return scalingSequence.WaitForCompletion();
         yield return gameOverPanelTransform.DOScale(ACTIVE_SIZE, 0.5f).SetEase(Ease.OutCubic).Play().WaitForCompletion();
         yield return new WaitForSeconds(1.0f);
         yield return gameOverPanelTransform.DOScale(SPAWN_SIZE, 0.5f).SetEase(Ease.InCubic).Play().WaitForCompletion();
-     
-        for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
-        {
-            for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
-            {
-                scaling.Join(activeTileObjects[i][j].transform.DOScale(ACTIVE_SIZE, 0.5f).SetEase(Ease.InOutSine));
-            }
-
-            for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
-            {
-                scaling.Join(prophecyTileObjects[i][j].transform.DOScale(ACTIVE_SIZE, 0.5f).SetEase(Ease.InOutSine));
-            }
-        }
-
-        scaling.Play();
+        ScaleTilesUp();
+        yield return scalingSequence.WaitForCompletion();
+        gameModeManager.TimerPauseSafe(false);
     }
 }

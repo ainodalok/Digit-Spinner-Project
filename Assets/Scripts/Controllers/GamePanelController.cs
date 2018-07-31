@@ -4,7 +4,7 @@ using UnityEngine;
 using DG.Tweening;
 
 public class GamePanelController : MonoBehaviour {
-    // MenuBtn, MuteBtn, ScoreTxt, ObjectiveTxt
+    // MenuBtn, MuteBtn, ScoreTxt, ObjectiveTxt, CurrencyText
     public Transform[] scalingObjects;
     public const float fadeDuration = 0.5f;
 

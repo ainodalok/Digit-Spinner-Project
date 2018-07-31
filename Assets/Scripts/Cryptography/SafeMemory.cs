@@ -15,6 +15,11 @@ public class SafeMemory
         return B64X.Decode(memory[key]);
     }
 
+    public static void SetInt(string key, int data)
+    {
+        memory[key] = B64X.EncodeInt(data);
+    }
+
     public static int GetInt(string key)
     {
         return System.Int32.Parse(Get(key));

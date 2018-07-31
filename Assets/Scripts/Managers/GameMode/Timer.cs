@@ -14,7 +14,7 @@ public class Timer : ObjectiveTracker {
 
     void Start()
     {
-        SafeMemory.Set("time", INITIAL_TIME.ToString());
+        SafeMemory.SetInt("time", INITIAL_TIME);
         gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Time left:\n{0}.{1}", INITIAL_TIME / 10, INITIAL_TIME % 10);
     }
 
@@ -55,7 +55,7 @@ public class Timer : ObjectiveTracker {
         while (SafeMemory.GetInt("time") > 0)
         {
             yield return new WaitForSeconds(0.1f);
-            SafeMemory.Set("time", (SafeMemory.GetInt("time") - 1).ToString());
+            SafeMemory.SetInt("time", SafeMemory.GetInt("time") - 1);
             //time--;
             gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Time left:\n{0}.{1}", SafeMemory.GetInt("time") / 10, SafeMemory.GetInt("time") % 10);
             if (SafeMemory.GetInt("time") == 200)

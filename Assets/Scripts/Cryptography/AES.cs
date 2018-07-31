@@ -3,7 +3,6 @@ using System.IO;
 using System.Security.Cryptography;
 using System.Text;
 
-/// https://habr.com/post/249681/
 /// <summary>
 /// AES (Advanced Encryption Standard) implementation with 128-bit key (default)
 /// - 128-bit AES is approved  by NIST, but not the 256-bit AES
@@ -14,8 +13,8 @@ using System.Text;
 public static class AES
 {
     public static int KeyLength = 128;
-    private const string SaltKey = "Sj123xj53@@km";
-    private const string VIKey = ":JDNSALJNLJ@N!@DS"; // TODO: Generate random VI each encryption and store it with encrypted value
+    private const string SaltKey = "ShMG8hLyZ7k~Ge5@";
+    private const string VIKey = "~6YUi0Sv5@|{aOZO"; // TODO: Generate random VI each encryption and store it with encrypted value
 
     public static string Encrypt(byte[] value, string password)
     {

@@ -33,4 +33,15 @@ public class GameModeManager : MonoBehaviour {
 
         tracker.enabled = true;
     }
+
+    public void TimerPauseSafe(bool enabled)
+    {
+        if (mode == GameMode.TimeAttack)
+        {
+            if (SafeMemory.GetInt("time") > 0)
+            {
+                (tracker as Timer).SetEnableTimer(!enabled);
+            }
+        }
+    }
 }
