@@ -843,7 +843,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5684,7 +5684,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -5910,6 +5910,7 @@ MonoBehaviour:
   - {fileID: 1157339779}
   - {fileID: 415179609}
   - {fileID: 1775675596}
+  - {fileID: 187512253}
 --- !u!1 &959373374
 GameObject:
   m_ObjectHideFlags: 0
@@ -11234,7 +11235,7 @@ MonoBehaviour:
   m_fontSizeMin: 18
   m_fontSizeMax: 72
   m_fontStyle: 3
-  m_textAlignment: 514
+  m_textAlignment: 4128
   m_isAlignmentEnumConverted: 1
   m_characterSpacing: 0
   m_wordSpacing: 0
@@ -11385,7 +11386,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -11998,7 +11999,6 @@ MonoBehaviour:
   bc: {fileID: 1845161032}
   red: {fileID: 2100000, guid: 3361cafdb00f309449aa30b43f419a00, type: 2}
   gameOver: 0
-  time: 1200
   playing: 0
 --- !u!114 &1775675600
 MonoBehaviour:
@@ -12197,7 +12197,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   m_Material: {fileID: 0}
   m_Color: {r: 1, g: 1, b: 1, a: 1}
-  m_RaycastTarget: 1
+  m_RaycastTarget: 0
   m_OnCullStateChanged:
     m_PersistentCalls:
       m_Calls: []
@@ -12474,7 +12474,6 @@ MonoBehaviour:
   ghostTiles:
   - {fileID: 0}
   - {fileID: 0}
-  score: 0
   isDestroying: 0
 --- !u!1 &2017151768
 GameObject:

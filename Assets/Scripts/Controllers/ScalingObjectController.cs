@@ -21,6 +21,9 @@ public class ScalingObjectController : MonoBehaviour {
             case "ObjectiveTxt":
                 transform.localScale = GameObject.FindGameObjectWithTag("SceneLoadManager").GetComponent<SceneLoadManager>().gamePanelScales[3];
                 break;
+            case "EndGameBtn":
+                transform.localScale = GameObject.FindGameObjectWithTag("SceneLoadManager").GetComponent<SceneLoadManager>().gamePanelScales[4];
+                break;
         }
         
     }

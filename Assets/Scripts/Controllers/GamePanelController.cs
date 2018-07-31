@@ -22,7 +22,7 @@ public class GamePanelController : MonoBehaviour {
 
     public Vector3[] GetObjectScales()
     {
-        Vector3[] scales = new Vector3[4];
+        Vector3[] scales = new Vector3[scalingObjects.Length];
         for (int i = 0; i < scalingObjects.Length; i++)
         {
             scales[i] = scalingObjects[i].localScale;

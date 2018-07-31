@@ -15,7 +15,7 @@ public class SceneLoadManager : MonoBehaviour
     [HideInInspector]
     public GameMode currentGameMode = GameMode.None;
 
-    // MenuBtn, MuteBtn, ScoreTxt, ObjectiveTxt
+    // MenuBtn, MuteBtn, ScoreTxt, ObjectiveTxt, EndGameBtn
     public Vector3[] gamePanelScales;
 
     private bool loading = false;
@@ -101,7 +101,7 @@ public class SceneLoadManager : MonoBehaviour
     {
         if (currentScene == "Menu")
         {
-            gamePanelScales = new Vector3[4]{ new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f) };
+            gamePanelScales = new Vector3[5]{ new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f) };
         }
         else if (currentScene == "Game")
         {
