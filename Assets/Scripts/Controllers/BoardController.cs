@@ -593,7 +593,9 @@ public class BoardController : MonoBehaviour {
         gameModeManager.TimerPauseSafe(true);
         ScaleTilesDown();
         yield return scalingSequence.WaitForCompletion();
+        SetEnableBoard(false);
         yield return StartCoroutine(gameOverPanelController.Animate());
+        SetEnableBoard(true);
         ScaleTilesUp();
         yield return scalingSequence.WaitForCompletion();
         gameModeManager.TimerPauseSafe(false);
