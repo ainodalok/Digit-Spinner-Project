@@ -579,12 +579,11 @@ public class BoardController : MonoBehaviour {
 
         isDestroying = false;
 
-        if (true)//!gameModeManager.tracker.gameOver && MatchFinder.IsGameOver(boardLogic.activeTiles))
+        if (!gameModeManager.tracker.gameOver && MatchFinder.IsGameOver(boardLogic.activeTiles))
         {
             gameOverPanelController.animationCoroutine = StartCoroutine(AnimateGameOverNotification());
             yield return gameOverPanelController;
         }
-
     }
 
     private IEnumerator AnimateGameOverNotification()
