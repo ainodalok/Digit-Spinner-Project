@@ -79,7 +79,7 @@ public class EndGameBtn : MonoBehaviour
 
         bc.ScaleTilesDown();
         menuOpener.EndGame();
-        objectiveTxtTransform.DOScale(BoardController.SPAWN_SIZE, 0.5f);
+        objectiveTxtTransform.DOScale(BoardController.SPAWN_SIZE, 0.5f).SetEase(Ease.InCubic).Play();
         yield return StartCoroutine(menuOpener.ToggleMenu());
     }
 }
