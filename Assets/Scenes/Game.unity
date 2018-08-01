@@ -5645,13 +5645,14 @@ GameObject:
   - component: {fileID: 747609514}
   - component: {fileID: 747609517}
   - component: {fileID: 747609516}
+  - component: {fileID: 747609515}
   m_Layer: 5
   m_Name: GameOverPanel
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
   m_StaticEditorFlags: 0
-  m_IsActive: 1
+  m_IsActive: 0
 --- !u!224 &747609514
 RectTransform:
   m_ObjectHideFlags: 0
@@ -5671,6 +5672,18 @@ RectTransform:
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
+--- !u!114 &747609515
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_PrefabParentObject: {fileID: 0}
+  m_PrefabInternal: {fileID: 0}
+  m_GameObject: {fileID: 747609513}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 0c7566f8b7823e64b92a08aa194f092f, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
+  isShowing: 0
 --- !u!114 &747609516
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -5834,11 +5847,11 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
-  m_isInputParsingRequired: 0
+  m_isInputParsingRequired: 1
   m_inputSource: 0
   m_hasFontAssetChanged: 0
   m_subTextObjects:
@@ -12332,6 +12345,7 @@ MonoBehaviour:
   scoreTxt: {fileID: 415179612}
   endGameBtn: {fileID: 187512255}
   currencyTextController: {fileID: 1695873323}
+  gameOverPanelController: {fileID: 747609515}
 --- !u!1 &1804453512
 GameObject:
   m_ObjectHideFlags: 0
@@ -12629,7 +12643,7 @@ MonoBehaviour:
   ghostTilePrefab: {fileID: 1864683957520796, guid: 939ef5eb1897c7d4c9cab9b3a1f1fd47,
     type: 2}
   menuOpener: {fileID: 1788273435}
-  gameOverPanelTransform: {fileID: 747609514}
+  gameOverPanelController: {fileID: 747609515}
   tileMaterials:
   - {fileID: 2100000, guid: f148841af4599ed489cfdb28e84cdf18, type: 2}
   - {fileID: 2100000, guid: c42573fd8fed00b459aa3a47cf736b18, type: 2}

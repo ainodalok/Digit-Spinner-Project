@@ -40,13 +40,16 @@ public class AdManager : MonoBehaviour {
     {
         //while (true)
         //{
-            if (banner.IsLoadNeed())
+            if (banner != null)
             {
-                banner.LoadNew();
-            }
-            else if (banner.IsLoaded() && !banner.IsShown())
-            {
-                banner.Show();
+                if (banner.IsLoadNeed())
+                {
+                    banner.LoadNew();
+                }
+                else if (banner.IsLoaded() && !banner.IsShown())
+                {
+                    banner.Show();
+                }
             }
             if (!interstitial.IsLoaded() && interstitial.IsLoadNeed())
             {

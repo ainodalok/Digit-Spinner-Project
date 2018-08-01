@@ -20,6 +20,7 @@ public class MenuOpener : MonoBehaviour {
     public ScalingObjectController scoreTxt;
     public ScalingObjectController endGameBtn;
     public CurrencyTextController currencyTextController;
+    public GameOverPanelController gameOverPanelController;
 
     private Coroutine toggleMenuCoroutine;
 
@@ -61,6 +62,10 @@ public class MenuOpener : MonoBehaviour {
             menuPanel.SetActive(!open);
             if (readyStart.ready)
             {
+                if (gameOverPanelController.isShowing)
+                {
+                    yield return StartCoroutine(gameOverPanelController.Animate());
+                }
                 boardController.SetEnableBoard(open);
                 boardController.ScaleTilesUp();
                 yield return boardController.scalingSequence.WaitForCompletion();
@@ -120,6 +125,22 @@ public class MenuOpener : MonoBehaviour {
             open = true;
             if (readyStart.ready)
             {
+                if (gameOverPanelController.isShowing)
+                {
+                    if (gameOverPanelController.scalingTween != null)
+                    {
+                        if (gameOverPanelController.scalingTween.IsActive())
+                        {
+                            if (gameOverPanelController.scalingTween.IsPlaying())
+                            {
+                                gameOverPanelController.scalingTween.Pause();
+                            }
+                        }
+                    }
+                    gameOverPanelController.StopAnimation();
+                    gameOverPanelController.ScaleDown();
+                    yield return gameOverPanelController.scalingTween.WaitForCompletion();
+                }
                 if (boardController.fallingSequence != null)
                 {
                     if (boardController.fallingSequence.IsActive())
@@ -151,8 +172,11 @@ public class MenuOpener : MonoBehaviour {
                     }
                 }
                 gameModeManager.TimerPauseSafe(open);
-                boardController.ScaleTilesDown();
-                yield return boardController.scalingSequence.WaitForCompletion();
+                if (!gameOverPanelController.isShowing)
+                {
+                    boardController.ScaleTilesDown();
+                    yield return boardController.scalingSequence.WaitForCompletion();
+                }
                 boardController.SetEnableBoard(!open);
             }
             else

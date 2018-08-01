@@ -15,7 +15,7 @@ public class BoardController : MonoBehaviour {
     public GameObject prophecyTilePrefab;
     public GameObject ghostTilePrefab;
     public MenuOpener menuOpener;
-    public Transform gameOverPanelTransform;
+    public GameOverPanelController gameOverPanelController;
     
     /* Materials used to color tiles depending on the digit */
     public Material[] tileMaterials = new Material[10];
@@ -577,24 +577,26 @@ public class BoardController : MonoBehaviour {
             SetEnableTileColliders(true);
         }
 
-        if (!gameModeManager.tracker.gameOver && MatchFinder.IsGameOver(boardLogic.activeTiles))
+        isDestroying = false;
+
+        if (true)//!gameModeManager.tracker.gameOver && MatchFinder.IsGameOver(boardLogic.activeTiles))
         {
-            yield return StartCoroutine(AnimateGameOverNotification());
+            gameOverPanelController.animationCoroutine = StartCoroutine(AnimateGameOverNotification());
+            yield return gameOverPanelController;
         }
 
-        isDestroying = false;
     }
 
     private IEnumerator AnimateGameOverNotification()
     {
+        gameOverPanelController.isShowing = true;
         gameModeManager.TimerPauseSafe(true);
         ScaleTilesDown();
         yield return scalingSequence.WaitForCompletion();
-        yield return gameOverPanelTransform.DOScale(ACTIVE_SIZE, 0.5f).SetEase(Ease.OutCubic).Play().WaitForCompletion();
-        yield return new WaitForSeconds(1.0f);
-        yield return gameOverPanelTransform.DOScale(SPAWN_SIZE, 0.5f).SetEase(Ease.InCubic).Play().WaitForCompletion();
+        yield return StartCoroutine(gameOverPanelController.Animate());
         ScaleTilesUp();
         yield return scalingSequence.WaitForCompletion();
         gameModeManager.TimerPauseSafe(false);
+        gameOverPanelController.isShowing = false;
     }
 }
