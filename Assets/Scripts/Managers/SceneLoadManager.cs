@@ -102,7 +102,7 @@ public class SceneLoadManager : MonoBehaviour
     {
         if (currentScene == "Menu")
         {
-            gamePanelScales = new Vector3[5]{ new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f) };
+            gamePanelScales = new Vector3[6]{ new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f) };
         }
         else if (currentScene == "Game")
         {
