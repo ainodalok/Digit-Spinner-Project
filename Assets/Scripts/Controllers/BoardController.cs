@@ -77,8 +77,8 @@ public class BoardController : MonoBehaviour {
                 newTile.name = String.Format("Tile ({0}, {1})", i, j);
                 newTile.transform.localPosition = position;
                 newTile.transform.rotation = Quaternion.identity;
-                newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = B64X.Decode(boardLogic.activeTiles[i][j]);
-                newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial = tileMaterials[B64X.DecodeInt(boardLogic.activeTiles[i][j])];
+                newTile.transform.GetChild(0).GetComponent<TextMeshPro>().text = B64X.Decode(boardLogic.activeTiles[i][j]);
+                newTile.transform.GetChild(0).GetComponent<TextMeshPro>().fontMaterial = tileMaterials[B64X.DecodeInt(boardLogic.activeTiles[i][j])];
                 activeTileObjects[i][j] = newTile;
             }
         }
@@ -99,8 +99,8 @@ public class BoardController : MonoBehaviour {
                 newTile.name = String.Format("Prophecy Tile ({0}, {1})", i, j);
                 newTile.transform.localPosition = position;
                 newTile.transform.rotation = Quaternion.identity;
-                newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = B64X.Decode(boardLogic.prophecyTiles[i][j]);
-                newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial = prophecyTileMaterials[B64X.DecodeInt(boardLogic.prophecyTiles[i][j])];
+                newTile.transform.GetChild(0).GetComponent<TextMeshPro>().text = B64X.Decode(boardLogic.prophecyTiles[i][j]);
+                newTile.transform.GetChild(0).GetComponent<TextMeshPro>().fontMaterial = prophecyTileMaterials[B64X.DecodeInt(boardLogic.prophecyTiles[i][j])];
                 prophecyTileObjects[i][j] = newTile;
                 prophecyTileScale[i][j] = ACTIVE_SIZE - j * SIZE_STEP;
             }
@@ -314,8 +314,8 @@ public class BoardController : MonoBehaviour {
     {
         scoreText.text = string.Format("Combo {0}X!", combo);
         scoreText.fontSharedMaterial = comboRed;
-        scoreText.fontSharedMaterial.SetColor(ShaderUtilities.ID_GlowColor, new Color32((byte) (51 * combo), 0, 0, 255));
-        scoreText.fontSharedMaterial.SetColor(ShaderUtilities.ID_OutlineColor, new Color32((byte) (51 * combo), 0, 0, 255));
+        //scoreText.fontSharedMaterial.SetColor(ShaderUtilities.ID_GlowColor, new Color32((byte) (51 * combo), 0, 0, 255));
+        scoreText.fontSharedMaterial.SetColor(ShaderUtilities.ID_UnderlayColor, new Color32((byte) (14 * combo + 185), 0, 0, 255));
         //scoreText.color = new Color(combo*0.2f, 1.0f - combo * 0.2f, 1.0f - combo * 0.2f, 1.0f);
 
         yield return scoreText.transform.DOShakePosition(1.0f, combo*15.0f, 1000, 90.0f, false, false).WaitForCompletion();
@@ -332,8 +332,8 @@ public class BoardController : MonoBehaviour {
         newTile.transform.localPosition = tile.transform.localPosition + offset;
         newTile.name = string.Concat(tile.name, " Ghost");
         newTile.transform.rotation = Quaternion.identity;
-        newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text = tile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text;
-        newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial = tile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial;
+        newTile.transform.GetChild(0).GetComponent<TextMeshPro>().text = tile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text;
+        newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial = tile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontSharedMaterial;
         return newTile;
     }
 

@@ -5774,7 +5774,7 @@ MonoBehaviour:
   m_text: No Moves Left
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0bed7c49c9987634ebb8624b525da8c4, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: f148841af4599ed489cfdb28e84cdf18, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 84c425ca459cdc74f91b4fc2f07dc115, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -5853,7 +5853,7 @@ MonoBehaviour:
   m_spriteAnimator: {fileID: 0}
   m_isInputParsingRequired: 1
   m_inputSource: 0
-  m_hasFontAssetChanged: 0
+  m_hasFontAssetChanged: 1
   m_subTextObjects:
   - {fileID: 0}
   - {fileID: 0}

@@ -139,7 +139,7 @@ MeshRenderer:
   m_ReflectionProbeUsage: 0
   m_RenderingLayerMask: 4294967295
   m_Materials:
-  - {fileID: 2100000, guid: f94493ba53a1fa6489df573e3ac43fc9, type: 2}
+  - {fileID: 2100000, guid: f148841af4599ed489cfdb28e84cdf18, type: 2}
   m_StaticBatchInfo:
     firstSubMesh: 0
     subMeshCount: 0
@@ -213,7 +213,7 @@ MonoBehaviour:
   m_text: 0
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 0bed7c49c9987634ebb8624b525da8c4, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: f94493ba53a1fa6489df573e3ac43fc9, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: effbdb48d3345f648a756b16cc510e64, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
