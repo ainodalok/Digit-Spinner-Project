@@ -7,7 +7,7 @@ public class ScalingObjectController : MonoBehaviour {
 
     void Awake()
     {
-        switch(gameObject.name)
+        switch (gameObject.name)
         {
             case "MenuBtn":
                 transform.localScale = GameObject.FindGameObjectWithTag("SceneLoadManager").GetComponent<SceneLoadManager>().gamePanelScales[0];
@@ -27,8 +27,7 @@ public class ScalingObjectController : MonoBehaviour {
             case "CurrencyTxt":
                 transform.localScale = GameObject.FindGameObjectWithTag("SceneLoadManager").GetComponent<SceneLoadManager>().gamePanelScales[5];
                 break;
-        }
-        
+        } 
     }
 
     // Use this for initialization
