@@ -12643,7 +12643,7 @@ MonoBehaviour:
   ghostTilePrefab: {fileID: 1864683957520796, guid: 939ef5eb1897c7d4c9cab9b3a1f1fd47,
     type: 2}
   menuOpener: {fileID: 1788273435}
-  gameOverPanelTransform: {fileID: 0}
+  gameOverPanelController: {fileID: 747609515}
   tileMaterials:
   - {fileID: 2100000, guid: f148841af4599ed489cfdb28e84cdf18, type: 2}
   - {fileID: 2100000, guid: c42573fd8fed00b459aa3a47cf736b18, type: 2}
