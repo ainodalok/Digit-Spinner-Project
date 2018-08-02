@@ -580,7 +580,7 @@ public class BoardController : MonoBehaviour {
         isDestroying = false;
 
         //yield return StartCoroutine(AnimateGameOverNotification());
-        if (true)//!gameModeManager.tracker.gameOver && MatchFinder.IsGameOver(boardLogic.activeTiles))
+        if (!gameModeManager.tracker.gameOver && MatchFinder.IsGameOver(boardLogic.activeTiles))
         {
             yield return StartCoroutine(AnimateGameOverNotification());
         }
