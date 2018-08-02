@@ -15,7 +15,7 @@ public class BoardController : MonoBehaviour {
     public GameObject prophecyTilePrefab;
     public GameObject ghostTilePrefab;
     public MenuOpener menuOpener;
-    public GameOverPanelController gameOverPanelController;
+    public Transform gameOverPanelTransform;
     
     /* Materials used to color tiles depending on the digit */
     public Material[] tileMaterials = new Material[10];
@@ -272,7 +272,7 @@ public class BoardController : MonoBehaviour {
             {
                 activeTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text =
                     B64X.Decode(boardLogic.activeTiles[i][j]);
-                activeTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial = 
+                activeTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial =
                     tileMaterials[B64X.DecodeInt(boardLogic.activeTiles[i][j])];
             }
 
@@ -577,27 +577,25 @@ public class BoardController : MonoBehaviour {
             SetEnableTileColliders(true);
         }
 
-        isDestroying = false;
-
+        //yield return StartCoroutine(AnimateGameOverNotification());
         if (!gameModeManager.tracker.gameOver && MatchFinder.IsGameOver(boardLogic.activeTiles))
         {
-            gameOverPanelController.animationCoroutine = StartCoroutine(AnimateGameOverNotification());
-            yield return gameOverPanelController;
+            yield return StartCoroutine(AnimateGameOverNotification());
         }
+
+        isDestroying = false;
     }
 
     private IEnumerator AnimateGameOverNotification()
     {
-        gameOverPanelController.isShowing = true;
         gameModeManager.TimerPauseSafe(true);
         ScaleTilesDown();
         yield return scalingSequence.WaitForCompletion();
-        SetEnableBoard(false);
-        yield return StartCoroutine(gameOverPanelController.Animate());
-        SetEnableBoard(true);
+        yield return gameOverPanelTransform.DOScale(ACTIVE_SIZE, 0.5f).SetEase(Ease.OutCubic).Play().WaitForCompletion();
+        yield return new WaitForSeconds(1.0f);
+        yield return gameOverPanelTransform.DOScale(SPAWN_SIZE, 0.5f).SetEase(Ease.InCubic).Play().WaitForCompletion();
         ScaleTilesUp();
         yield return scalingSequence.WaitForCompletion();
         gameModeManager.TimerPauseSafe(false);
-        gameOverPanelController.isShowing = false;
     }
 }

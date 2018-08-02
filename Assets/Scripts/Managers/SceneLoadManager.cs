@@ -15,7 +15,7 @@ public class SceneLoadManager : MonoBehaviour
     [HideInInspector]
     public GameMode currentGameMode = GameMode.None;
 
-    // MenuBtn, MuteBtn, ScoreTxt, ObjectiveTxt, EndGameBtn, CurrencyTxt
+    // MenuBtn, MuteBtn, ScoreTxt, ObjectiveTxt, EndGameBtn
     public Vector3[] gamePanelScales;
 
     private bool loading = false;
@@ -81,6 +81,7 @@ public class SceneLoadManager : MonoBehaviour
             StopAudioInCurrentScene();
         }
         SceneManager.SetActiveScene(SceneManager.GetSceneAt(SceneManager.sceneCount - 1));
+        Shader.WarmupAllShaders();
         if (currentScene != "")
         {
             SceneManager.UnloadSceneAsync(currentScene);
@@ -101,7 +102,7 @@ public class SceneLoadManager : MonoBehaviour
     {
         if (currentScene == "Menu")
         {
-            gamePanelScales = new Vector3[6]{ new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f) };
+            gamePanelScales = new Vector3[5]{ new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f), new Vector3(0.0f, 0.0f, 0.0f) };
         }
         else if (currentScene == "Game")
         {
