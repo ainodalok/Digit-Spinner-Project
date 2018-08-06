@@ -22,7 +22,7 @@ public class GameOverPanelController : MonoBehaviour {
         gameObject.SetActive(true);
         ScaleUp();
         yield return scalingTween.WaitForCompletion();
-        yield return new WaitForSeconds(1.0f);
+        yield return new WaitForSeconds(0.5f);
         ScaleDown();
         yield return scalingTween.WaitForCompletion();
         gameObject.SetActive(false);

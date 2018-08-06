@@ -65,6 +65,7 @@ public class MenuOpener : MonoBehaviour {
                 if (gameOverPanelController.isShowing)
                 {
                     yield return StartCoroutine(gameOverPanelController.Animate());
+                    gameOverPanelController.isShowing = false;
                 }
                 boardController.SetEnableBoard(open);
                 boardController.ScaleTilesUp();

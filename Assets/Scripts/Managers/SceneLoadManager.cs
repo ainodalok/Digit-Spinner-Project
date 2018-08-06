@@ -27,6 +27,7 @@ public class SceneLoadManager : MonoBehaviour
         DOTween.SetTweensCapacity(500, 50);
         Input.multiTouchEnabled = false;
         Application.targetFrameRate = 60;
+        PlayServicesManager.Init();
         if (SceneManager.sceneCount < 2)
         {
             StartCoroutine(LoadScene("Menu"));
@@ -53,7 +54,7 @@ public class SceneLoadManager : MonoBehaviour
         UpdateGamePanelScales();
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
 
-        while (!async.isDone)
+        while (!async.isDone || PlayServicesManager.isSigningIn)
         {
             yield return null;
         }
@@ -92,6 +93,7 @@ public class SceneLoadManager : MonoBehaviour
         if (currentScene == "")
         {
             adManager.InitAds();
+            PlayServicesManager.SaveData();
         }
 
         currentScene = sceneName;
