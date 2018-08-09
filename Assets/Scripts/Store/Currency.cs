@@ -28,6 +28,15 @@ public class Currency
         ChangeBalance(SafeMemory.GetInt("score") / 100);
     }
 
+    public static void ProcessPurchase(int amount)
+    {
+        if (amount > 0)
+        {
+            Init();
+            ChangeBalance(amount);
+        }
+    }
+
     private static void ChangeBalance(int change)
     {
         SafeMemory.SetInt("balance", SafeMemory.GetInt("balance") + change);
