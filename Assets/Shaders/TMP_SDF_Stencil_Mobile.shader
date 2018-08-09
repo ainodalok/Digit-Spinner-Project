@@ -42,7 +42,7 @@ Shader "Custom/TMP Distance Stencil Mobile" {
 		_MaskSoftnessX("Mask SoftnessX", float) = 0
 		_MaskSoftnessY("Mask SoftnessY", float) = 0
 
-		_StencilComp("Stencil Comparison", Float) = 8
+		_StencilComp("Stencil Comparison", Float) = 4
 		_Stencil("Stencil ID", Float) = 0
 		_StencilOp("Stencil Operation", Float) = 0
 		_StencilWriteMask("Stencil Write Mask", Float) = 255
@@ -52,6 +52,7 @@ Shader "Custom/TMP Distance Stencil Mobile" {
 	}
 
 		SubShader{
+
 		Tags
 	{
 		"Queue" = "Transparent"
@@ -59,15 +60,9 @@ Shader "Custom/TMP Distance Stencil Mobile" {
 		"RenderType" = "Transparent"
 	}
 
+		
 
-		Stencil
-	{
-		Ref[_Stencil]
-		Comp Equal
-		Pass[_StencilOp]
-		ReadMask[_StencilReadMask]
-		WriteMask[_StencilWriteMask]
-	}
+		
 
 		Cull[_CullMode]
 		ZWrite Off
@@ -78,7 +73,20 @@ Shader "Custom/TMP Distance Stencil Mobile" {
 		ColorMask[_ColorMask]
 
 		Pass{
+
+		Stencil
+	{
+
+		Ref[_Stencil]
+		Comp[_StencilComp]//UNITY_ACCESS_INSTANCED_PROP(Props, _StencilComp)]
+		Pass[_StencilOp]
+		ReadMask[_StencilReadMask]
+		WriteMask[_StencilWriteMask]
+	}
+
 		CGPROGRAM
+
+
 #pragma vertex VertShader
 #pragma fragment PixShader
 #pragma shader_feature __ OUTLINE_ON
@@ -89,7 +97,76 @@ Shader "Custom/TMP Distance Stencil Mobile" {
 
 #include "UnityCG.cginc"
 #include "UnityUI.cginc"
-#include "Assets/TextMesh Pro/Resources/Shaders/TMPro_Properties.cginc"
+
+#pragma multi_compile_instancing
+		UNITY_INSTANCING_BUFFER_START(Props)
+		UNITY_DEFINE_INSTANCED_PROP(fixed4, _OutlineColor)
+		//UNITY_DEFINE_INSTANCED_PROP(float, _StencilComp)
+		UNITY_DEFINE_INSTANCED_PROP(fixed4, _UnderlayColor)
+		UNITY_INSTANCING_BUFFER_END(Props)
+
+		
+
+//#include "Assets/TextMesh Pro/Resources/Shaders/TMPro_Properties.cginc"
+uniform sampler2D	_FaceTex;					
+	uniform float		_FaceUVSpeedX;
+	uniform float		_FaceUVSpeedY;
+	uniform fixed4		_FaceColor;					
+	uniform float		_FaceDilate;				
+	uniform float		_OutlineSoftness;			
+	uniform sampler2D	_OutlineTex;			
+	uniform float		_OutlineUVSpeedX;
+	uniform float		_OutlineUVSpeedY;			
+	uniform float		_OutlineWidth;				
+	uniform float		_Bevel;						
+	uniform float		_BevelOffset;				
+	uniform float		_BevelWidth;				
+	uniform float		_BevelClamp;			
+	uniform float		_BevelRoundness;			
+	uniform sampler2D	_BumpMap;					
+	uniform float		_BumpOutline;				
+	uniform float		_BumpFace;					
+	uniform samplerCUBE	_Cube;					
+	uniform fixed4 		_ReflectFaceColor;		
+	uniform fixed4		_ReflectOutlineColor;
+	uniform float3      _EnvMatrixRotation;
+	uniform float4x4	_EnvMatrix;
+	uniform fixed4		_SpecularColor;				
+	uniform float		_LightAngle;				
+	uniform float		_SpecularPower;			
+	uniform float		_Reflectivity;				
+	uniform float		_Diffuse;					
+	uniform float		_Ambient;			
+	uniform float		_UnderlayOffsetX;		
+	uniform float		_UnderlayOffsetY;		
+	uniform float		_UnderlayDilate;			
+	uniform float		_UnderlaySoftness;
+	uniform fixed4 		_GlowColor;				
+	uniform float 		_GlowOffset;		
+	uniform float 		_GlowOuter;				
+	uniform float 		_GlowInner;		
+	uniform float 		_GlowPower;
+	uniform float 		_ShaderFlags;
+	uniform float		_WeightNormal;
+	uniform float		_WeightBold;
+	uniform float		_ScaleRatioA;
+	uniform float		_ScaleRatioB;
+	uniform float		_ScaleRatioC;
+	uniform float		_VertexOffsetX;
+	uniform float		_VertexOffsetY;
+	uniform float		_MaskID;
+	uniform sampler2D	_MaskTex;
+	uniform float4		_MaskCoord;
+	uniform float4		_ClipRect;
+	uniform float		_MaskSoftnessX;
+	uniform float		_MaskSoftnessY;
+	uniform sampler2D	_MainTex;
+	uniform float		_TextureWidth;
+	uniform float		_TextureHeight;
+	uniform float 		_GradientScale;
+	uniform float		_ScaleX;
+	uniform float		_ScaleY;
+	uniform float		_PerspectiveFilter;
 
 		struct vertex_t {
 		float4	vertex			: POSITION;
@@ -97,6 +174,7 @@ Shader "Custom/TMP Distance Stencil Mobile" {
 		fixed4	color : COLOR;
 		float2	texcoord0		: TEXCOORD0;
 		float2	texcoord1		: TEXCOORD1;
+		UNITY_VERTEX_INPUT_INSTANCE_ID
 	};
 
 	struct pixel_t {
@@ -110,11 +188,14 @@ Shader "Custom/TMP Distance Stencil Mobile" {
 		float4	texcoord1		: TEXCOORD3;			// Texture UV, alpha, reserved
 		half2	underlayParam	: TEXCOORD4;			// Scale(x), Bias(y)
 #endif
+		UNITY_VERTEX_INPUT_INSTANCE_ID
 	};
 
+	
 
 	pixel_t VertShader(vertex_t input)
 	{
+		UNITY_SETUP_INSTANCE_ID(input);
 		float bold = step(input.texcoord1.y, 0);
 
 		float4 vert = input.vertex;
@@ -145,8 +226,8 @@ Shader "Custom/TMP Distance Stencil Mobile" {
 
 		fixed4 faceColor = fixed4(input.color.rgb, opacity) * _FaceColor;
 		faceColor.rgb *= faceColor.a;
-
-		fixed4 outlineColor = _OutlineColor;
+		
+		fixed4 outlineColor = UNITY_ACCESS_INSTANCED_PROP(Props, _OutlineColor);
 		outlineColor.a *= opacity;
 		outlineColor.rgb *= outlineColor.a;
 		outlineColor = lerp(faceColor, outlineColor, sqrt(min(1.0, (outline * 2))));
@@ -166,7 +247,19 @@ Shader "Custom/TMP Distance Stencil Mobile" {
 		float2 maskUV = (vert.xy - clampedRect.xy) / (clampedRect.zw - clampedRect.xy);
 
 		// Structure for pixel shader
-		pixel_t output = {
+		pixel_t output;
+		output.vertex = vPosition;
+		output.faceColor = faceColor;
+		output.outlineColor = outlineColor;
+		output.texcoord0 = float4(input.texcoord0.x, input.texcoord0.y, maskUV.x, maskUV.y);
+		output.param = half4(scale, bias - outline, bias + outline, bias);
+		output.mask = half4(vert.xy * 2 - clampedRect.xy - clampedRect.zw, 0.25 / (0.25 * half2(_MaskSoftnessX, _MaskSoftnessY) + pixelSize.xy));
+#if (UNDERLAY_ON | UNDERLAY_INNER)
+		output.texcoord1 = float4(input.texcoord0 + layerOffset, input.color.a, 0);
+		output.underlayParam = half2(layerScale, layerBias);
+#endif	
+		UNITY_TRANSFER_INSTANCE_ID(input, output);
+		/*{
 			vPosition,
 			faceColor,
 			outlineColor,
@@ -177,8 +270,7 @@ Shader "Custom/TMP Distance Stencil Mobile" {
 			float4(input.texcoord0 + layerOffset, input.color.a, 0),
 			half2(layerScale, layerBias),
 #endif
-		};
-
+		};*/
 		return output;
 	}
 
@@ -196,13 +288,13 @@ Shader "Custom/TMP Distance Stencil Mobile" {
 
 #if UNDERLAY_ON
 	d = tex2D(_MainTex, input.texcoord1.xy).a * input.underlayParam.x;
-	c += float4(_UnderlayColor.rgb * _UnderlayColor.a, _UnderlayColor.a) * saturate(d - input.underlayParam.y) * (1 - c.a);
+	c += float4(UNITY_ACCESS_INSTANCED_PROP(Props, _UnderlayColor).rgb * UNITY_ACCESS_INSTANCED_PROP(Props, _UnderlayColor).a, UNITY_ACCESS_INSTANCED_PROP(Props, _UnderlayColor).a) * saturate(d - input.underlayParam.y) * (1 - c.a);
 #endif
 
 #if UNDERLAY_INNER
 	half sd = saturate(d - input.param.z);
 	d = tex2D(_MainTex, input.texcoord1.xy).a * input.underlayParam.x;
-	c += float4(_UnderlayColor.rgb * _UnderlayColor.a, _UnderlayColor.a) * (1 - saturate(d - input.underlayParam.y)) * sd * (1 - c.a);
+	c += float4(UNITY_ACCESS_INSTANCED_PROP(Props, _UnderlayColor).rgb * UNITY_ACCESS_INSTANCED_PROP(Props, _UnderlayColor).a, UNITY_ACCESS_INSTANCED_PROP(Props, _UnderlayColor).a) * (1 - saturate(d - input.underlayParam.y)) * sd * (1 - c.a);
 #endif
 
 	// Alternative implementation to UnityGet2DClipping with support for softness.
@@ -225,5 +317,5 @@ Shader "Custom/TMP Distance Stencil Mobile" {
 	}
 	}
 
-		CustomEditor "TMPro.EditorUtilities.TMP_SDFShaderGUI"
+		//CustomEditor "TMPro.EditorUtilities.TMP_SDFShaderGUI"
 }

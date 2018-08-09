@@ -19,7 +19,8 @@ public class BoardController : MonoBehaviour {
     
     /* Materials used to color tiles depending on the digit */
     public Material[] tileMaterials = new Material[10];
-    public Material[] prophecyTileMaterials = new Material[10];
+    //public Material[] prophecyTileMaterials = new Material[10];
+    private MaterialPropertyBlock[] props = new MaterialPropertyBlock[10];
 
     public Material comboRed;
     public Material defaultMaterial;
@@ -57,10 +58,21 @@ public class BoardController : MonoBehaviour {
     void Awake ()
     {
         boardLogic = new BoardLogic();
+        SetupMaterialPropertyBlocks();
         SetupActiveTiles();
         SetupProphecyTiles();
         SetupGhostTiles();
         SafeMemory.SetInt("score", 0);
+    }
+
+    private void SetupMaterialPropertyBlocks()
+    {
+        for (int i = 0; i < 10; i++)
+        {
+            props[i] = new MaterialPropertyBlock();
+            props[i].SetColor(ShaderUtilities.ID_OutlineColor, tileMaterials[i].GetColor(ShaderUtilities.ID_OutlineColor));
+            props[i].SetColor(ShaderUtilities.ID_UnderlayColor, tileMaterials[i].GetColor(ShaderUtilities.ID_UnderlayColor));
+        }
     }
 
     private void SetupActiveTiles()
@@ -78,7 +90,11 @@ public class BoardController : MonoBehaviour {
                 newTile.transform.localPosition = position;
                 newTile.transform.rotation = Quaternion.identity;
                 newTile.transform.GetChild(0).GetComponent<TextMeshPro>().text = B64X.Decode(boardLogic.activeTiles[i][j]);
-                newTile.transform.GetChild(0).GetComponent<TextMeshPro>().fontMaterial = tileMaterials[B64X.DecodeInt(boardLogic.activeTiles[i][j])];
+
+                //newTile.transform.GetChild(0).GetComponent<TextMeshPro>().fontMaterial = tileMaterials[B64X.DecodeInt(boardLogic.activeTiles[i][j])];
+                newTile.transform.GetChild(0).GetComponent<TextMeshPro>().renderer.SetPropertyBlock(props[B64X.DecodeInt(boardLogic.activeTiles[i][j])]);
+
+
                 activeTileObjects[i][j] = newTile;
             }
         }
@@ -100,7 +116,10 @@ public class BoardController : MonoBehaviour {
                 newTile.transform.localPosition = position;
                 newTile.transform.rotation = Quaternion.identity;
                 newTile.transform.GetChild(0).GetComponent<TextMeshPro>().text = B64X.Decode(boardLogic.prophecyTiles[i][j]);
-                newTile.transform.GetChild(0).GetComponent<TextMeshPro>().fontMaterial = prophecyTileMaterials[B64X.DecodeInt(boardLogic.prophecyTiles[i][j])];
+
+                //newTile.transform.GetChild(0).GetComponent<TextMeshPro>().fontMaterial = prophecyTileMaterials[B64X.DecodeInt(boardLogic.prophecyTiles[i][j])];
+                newTile.transform.GetChild(0).GetComponent<TextMeshPro>().renderer.SetPropertyBlock(props[B64X.DecodeInt(boardLogic.prophecyTiles[i][j])]);
+
                 prophecyTileObjects[i][j] = newTile;
                 prophecyTileScale[i][j] = ACTIVE_SIZE - j * SIZE_STEP;
             }
@@ -272,16 +291,18 @@ public class BoardController : MonoBehaviour {
             {
                 activeTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text =
                     B64X.Decode(boardLogic.activeTiles[i][j]);
-                activeTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial =
-                    tileMaterials[B64X.DecodeInt(boardLogic.activeTiles[i][j])];
+                //activeTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial =
+                //tileMaterials[B64X.DecodeInt(boardLogic.activeTiles[i][j])];
+                activeTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().renderer.SetPropertyBlock(props[B64X.DecodeInt(boardLogic.activeTiles[i][j])]);
             }
 
             for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
             {
                 prophecyTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text =
                     B64X.Decode(boardLogic.prophecyTiles[i][j]);
-                prophecyTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial =
-                    prophecyTileMaterials[B64X.DecodeInt(boardLogic.prophecyTiles[i][j])];
+                //prophecyTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial =
+                //prophecyTileMaterials[B64X.DecodeInt(boardLogic.prophecyTiles[i][j])];
+                prophecyTileObjects[i][j].transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().renderer.SetPropertyBlock(props[B64X.DecodeInt(boardLogic.prophecyTiles[i][j])]);
             }
         }
     }
@@ -315,7 +336,7 @@ public class BoardController : MonoBehaviour {
         scoreText.text = string.Format("Combo {0}X!", combo);
         scoreText.fontSharedMaterial = comboRed;
         //scoreText.fontSharedMaterial.SetColor(ShaderUtilities.ID_GlowColor, new Color32((byte) (51 * combo), 0, 0, 255));
-        scoreText.fontSharedMaterial.SetColor(ShaderUtilities.ID_UnderlayColor, new Color32((byte) (14 * combo + 185), 0, 0, 255));
+        scoreText.fontSharedMaterial.SetColor(ShaderUtilities.ID_UnderlayColor, new Color32((byte) ((14 * combo + 185) % 256), 0, 0, 255));
         //scoreText.color = new Color(combo*0.2f, 1.0f - combo * 0.2f, 1.0f - combo * 0.2f, 1.0f);
 
         yield return scoreText.transform.DOShakePosition(1.0f, combo*15.0f, 1000, 90.0f, false, false).WaitForCompletion();

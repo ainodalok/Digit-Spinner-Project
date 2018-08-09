@@ -47,7 +47,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 28815001633559114, guid: 0bed7c49c9987634ebb8624b525da8c4,
+        m_Texture: {fileID: 28797771082796372, guid: 36f58c03beae5e740bc28008aec690c0,
           type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -121,7 +121,7 @@ Material:
     - _SpecularPower: 2
     - _SrcBlend: 1
     - _Stencil: 1
-    - _StencilComp: 8
+    - _StencilComp: 4
     - _StencilOp: 0
     - _StencilReadMask: 255
     - _StencilWriteMask: 255

@@ -47,7 +47,7 @@ Material:
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
     - _MainTex:
-        m_Texture: {fileID: 28815001633559114, guid: 0bed7c49c9987634ebb8624b525da8c4,
+        m_Texture: {fileID: 28797771082796372, guid: 36f58c03beae5e740bc28008aec690c0,
           type: 2}
         m_Scale: {x: 1, y: 1}
         m_Offset: {x: 0, y: 0}
@@ -116,8 +116,8 @@ Material:
     - _SpecularHighlights: 1
     - _SpecularPower: 2
     - _SrcBlend: 1
-    - _Stencil: 0
-    - _StencilComp: 8
+    - _Stencil: 1
+    - _StencilComp: 4
     - _StencilOp: 0
     - _StencilReadMask: 255
     - _StencilWriteMask: 255
@@ -141,8 +141,8 @@ Material:
     - _FaceColor: {r: 1, g: 1, b: 1, a: 1}
     - _GlowColor: {r: 0.5058824, g: 0, b: 0.6156863, a: 0.50980395}
     - _MaskCoord: {r: 0, g: 0, b: 32767, a: 32767}
-    - _OutlineColor: {r: 0.69803923, g: 0, b: 0.8509804, a: 0.49803922}
+    - _OutlineColor: {r: 1, g: 1, b: 1, a: 1}
     - _ReflectFaceColor: {r: 0, g: 0, b: 0, a: 1}
     - _ReflectOutlineColor: {r: 0, g: 0, b: 0, a: 1}
     - _SpecularColor: {r: 1, g: 1, b: 1, a: 1}
-    - _UnderlayColor: {r: 0.69803923, g: 0, b: 0.8509804, a: 1}
+    - _UnderlayColor: {r: 1, g: 1, b: 1, a: 1}
