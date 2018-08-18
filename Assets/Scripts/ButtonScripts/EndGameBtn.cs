@@ -21,12 +21,7 @@ public class EndGameBtn : MonoBehaviour
     private bool clickedOnce = false;
     private bool isEnding = false;
 
-    void Awake()
-    {
-        GetComponent<Button>().onClick.AddListener(() => EndGameBtnAction());
-    }
-
-    private void EndGameBtnAction()
+    public void EndGameBtnAction()
     {
         /*
         if (widener != null)
@@ -43,9 +38,9 @@ public class EndGameBtn : MonoBehaviour
         {
             clickedOnce = true;
             gameObject.GetComponent<Image>().sprite = burgundyBorderPref;
-            endGameTxt.text = "Tap Again";
+            endGameTxt.text = "Sure?";
             endGameTxt.fontSharedMaterial = red;
-            //widener = DOTween.To(x => transform.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, x), 335, 250, 0.2f).SetEase(Ease.OutQuart);
+            Tweener widener = DOTween.To(x => transform.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, x), 335, 280, 0.2f).SetEase(Ease.OutQuart);
             timer = StartCoroutine(WaitFewSecondsAndReturnButton());
         }
         else
@@ -60,9 +55,9 @@ public class EndGameBtn : MonoBehaviour
 
         clickedOnce = false;
         gameObject.GetComponent<Image>().sprite = blueBorderPref;
-        endGameTxt.text = "End Game";
+        endGameTxt.text = "Give Up";
         endGameTxt.fontSharedMaterial = blue;
-        //widener = DOTween.To(x => transform.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, x), 250, 335, 0.2f).SetEase(Ease.OutQuart);
+        Tweener widener = DOTween.To(x => transform.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, x), 280, 335, 0.2f).SetEase(Ease.OutQuart);
     }
 
     private IEnumerator EndGame()
@@ -80,6 +75,13 @@ public class EndGameBtn : MonoBehaviour
         bc.ScaleTilesDown();
         menuOpener.EndGame();
         objectiveTxtTransform.DOScale(BoardController.SPAWN_SIZE, 0.5f).SetEase(Ease.InCubic).Play();
-        yield return StartCoroutine(menuOpener.ToggleMenu());
+        if (!menuOpener.open)
+        {
+            yield return StartCoroutine(menuOpener.ToggleMenu());
+        }
+        else
+        {
+            yield return StartCoroutine(menuOpener.SlideToCenterHighscore());
+        }
     }
 }

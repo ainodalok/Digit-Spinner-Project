@@ -26,6 +26,8 @@ public class BoardController : MonoBehaviour {
     public Material defaultMaterial;
 
     public TextMeshProUGUI scoreText;
+    public Transform[] powerupTransforms;
+
     [HideInInspector]
     public GameObject[][] prophecyTileObjects = new GameObject[BoardLogic.BOARD_SIZE][];
     [HideInInspector]
@@ -55,7 +57,7 @@ public class BoardController : MonoBehaviour {
 
     private Vector3[][] prophecyTileScale = new Vector3[BoardLogic.BOARD_SIZE][];
 
-    void Awake ()
+    void Start ()
     {
         boardLogic = new BoardLogic();
         SetupMaterialPropertyBlocks();
@@ -147,6 +149,12 @@ public class BoardController : MonoBehaviour {
                 scalingSequence.Join(activeTileObjects[i][j].transform.DOScale(ACTIVE_SIZE, INITIAL_SCALE_DURATION).SetEase(Ease.InOutSine));
             }
         }
+        for (int i = 0; i < powerupTransforms.Length; i++)
+        {
+            powerupTransforms[i].DOScale(ACTIVE_SIZE, INITIAL_SCALE_DURATION)
+            .SetEase(Ease.InOutSine)
+            .WaitForCompletion();
+        }
         scalingSequence.Play();
     }
 
@@ -170,6 +178,12 @@ public class BoardController : MonoBehaviour {
             {
                 scalingSequence.Join(activeTileObjects[i][j].transform.DOScale(0, INITIAL_SCALE_DURATION).SetEase(Ease.InOutSine));
             }
+        }
+        for (int i = 0; i < powerupTransforms.Length; i++)
+        {
+            powerupTransforms[i].DOScale(0, INITIAL_SCALE_DURATION)
+            .SetEase(Ease.InOutSine)
+            .WaitForCompletion();
         }
         scalingSequence.Play();
     }
@@ -353,6 +367,7 @@ public class BoardController : MonoBehaviour {
         newTile.transform.localPosition = tile.transform.localPosition + offset;
         newTile.name = string.Concat(tile.name, " Ghost");
         newTile.transform.rotation = Quaternion.identity;
+        newTile.transform.localScale = ACTIVE_SIZE;
         newTile.transform.GetChild(0).GetComponent<TextMeshPro>().text = tile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().text;
         newTile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontMaterial = tile.transform.GetChild(0).gameObject.GetComponent<TextMeshPro>().fontSharedMaterial;
         return newTile;
@@ -444,7 +459,7 @@ public class BoardController : MonoBehaviour {
         }
     }
 
-    public IEnumerator DestroyMatchedTiles(List<Vector2Int> tilesToRemove)
+    public IEnumerator DestroyMatchedTiles(List<Vector2Int> tilesToRemove, bool powerup = false)
     {
         isDestroying = true;
         int maxDistance = 0;
@@ -453,9 +468,12 @@ public class BoardController : MonoBehaviour {
         SafeMemory.SetInt("combo", 0);
         //int combo = 0;
 
-        if (gameModeManager.mode == GameMode.LimitedTurns)
+        if (GameModeManager.mode == GameMode.LimitedTurns)
         {
-            (gameModeManager.tracker as TurnCounter).UpdateTurns();
+            if (!powerup)
+            {
+                (gameModeManager.tracker as TurnCounter).UpdateTurns();
+            }
         }
 
         while (tilesToRemove.Count > 0)
@@ -601,9 +619,27 @@ public class BoardController : MonoBehaviour {
         isDestroying = false;
 
         //gameOverPanelController.animationCoroutine = StartCoroutine(AnimateGameOverNotification());
-        if (!gameModeManager.tracker.gameOver && MatchFinder.IsGameOver(boardLogic.activeTiles))
+        if (GameModeManager.mode != GameMode.Tutorial)
         {
-            gameOverPanelController.animationCoroutine = StartCoroutine(AnimateGameOverNotification());
+            if (!gameModeManager.tracker.gameOver && MatchFinder.IsGameOver(boardLogic.activeTiles))
+            {
+                gameOverPanelController.animationCoroutine = StartCoroutine(AnimateGameOverNotification());
+            }
+        }
+        else
+        {
+            if ((gameModeManager.tracker as SectionCounter).sectionCurrent == 2)
+            {
+                if (!gameModeManager.tracker.gameOver && MatchFinder.IsGameOver(boardLogic.activeTiles))
+                {
+                    gameOverPanelController.animationCoroutine = StartCoroutine(AnimateGameOverNotification());
+                }
+                (gameModeManager.tracker as SectionCounter).NextSection();
+            }
+            else if ((gameModeManager.tracker as SectionCounter).sectionCurrent == 1)
+            {
+                (gameModeManager.tracker as SectionCounter).NextSection();
+            }
         }
     }
 

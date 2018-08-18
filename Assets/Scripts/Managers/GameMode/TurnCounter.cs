@@ -6,11 +6,11 @@ using DG.Tweening;
 
 public class TurnCounter : ObjectiveTracker {
     //private int turnsLeft = 20;
-    private const int TURNS_ON_START = 20;
+    private const int INITIAL_TURNS = 20;
 
 	// Use this for initialization
 	void Start() {
-        SafeMemory.SetInt("turns", TURNS_ON_START);
+        SafeMemory.SetInt("turns", INITIAL_TURNS);
         gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Turns left:\n{0}", SafeMemory.Get("turns"));
 	}
 

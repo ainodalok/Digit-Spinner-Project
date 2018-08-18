@@ -203,10 +203,17 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         if (overallMovement != 0)
         {
             List<Vector2Int> tilesToRemove = bc.boardLogic.Move(number, overallMovement, isColumnMoving);
-
+            Debug.Log("number - "+number+", overallMovement - " + overallMovement+ ", isColumnMoving - " + isColumnMoving+", tilesToRemove - "+tilesToRemove);
             if (tilesToRemove.Count == 0 || tilesToRemove == null)
             {
-                MoveBack(overallMovement);
+                if (!WrongMove.active)
+                {
+                    MoveBack(overallMovement);
+                }
+                else
+                {
+                    WrongMove.active = false;
+                }
                 bc.SetEnableTileColliders(true);
                 return;
             }
@@ -219,6 +226,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         }
     }
 
+    //TODO: Use dotween to make fast smooth animation
     private void MoveBack(int distance)
     {
         bc.ShiftBy(number, -distance, isColumnMoving);

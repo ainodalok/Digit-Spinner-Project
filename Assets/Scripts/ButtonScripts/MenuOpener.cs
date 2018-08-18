@@ -28,7 +28,7 @@ public class MenuOpener : MonoBehaviour {
 
     public void ToggleMenuCoroutine()
     {
-        if ((gameModeManager.mode == GameMode.TimeAttack) && readyStart.ready)
+        if ((GameModeManager.mode == GameMode.TimeAttack) && readyStart.ready)
         {
             if (SafeMemory.GetInt("time") == 0)
             {
@@ -67,37 +67,44 @@ public class MenuOpener : MonoBehaviour {
                     yield return StartCoroutine(gameOverPanelController.Animate());
                     gameOverPanelController.isShowing = false;
                 }
-                boardController.SetEnableBoard(open);
-                boardController.ScaleTilesUp();
-                yield return boardController.scalingSequence.WaitForCompletion();
-                gameModeManager.TimerPauseSafe(!open);
-                if (boardController.fallingSequence != null)
+                if(gameModeManager.tutorialShown && (GameModeManager.mode == GameMode.Tutorial))
                 {
-                    if (boardController.fallingSequence.IsActive())
+                    gameModeManager.ShowTutorialMessage(true);
+                }
+                else
+                {
+                    boardController.SetEnableBoard(open);
+                    boardController.ScaleTilesUp();
+                    yield return boardController.scalingSequence.WaitForCompletion();
+                    gameModeManager.TimerPauseSafe(!open);
+                    if (boardController.fallingSequence != null)
                     {
-                        if (!boardController.fallingSequence.IsComplete())
+                        if (boardController.fallingSequence.IsActive())
                         {
-                            boardController.fallingSequence.Play();
+                            if (!boardController.fallingSequence.IsComplete())
+                            {
+                                boardController.fallingSequence.Play();
+                            }
                         }
                     }
-                }
-                if (boardController.scalingHiddenSequence != null)
-                {
-                    if (boardController.scalingHiddenSequence.IsActive())
+                    if (boardController.scalingHiddenSequence != null)
                     {
-                        if (!boardController.scalingHiddenSequence.IsComplete())
+                        if (boardController.scalingHiddenSequence.IsActive())
                         {
-                            boardController.scalingHiddenSequence.Play();
+                            if (!boardController.scalingHiddenSequence.IsComplete())
+                            {
+                                boardController.scalingHiddenSequence.Play();
+                            }
                         }
                     }
-                }
-                if (boardController.shakingSequence != null)
-                {
-                    if (boardController.shakingSequence.IsActive())
+                    if (boardController.shakingSequence != null)
                     {
-                        if (!boardController.shakingSequence.IsComplete())
+                        if (boardController.shakingSequence.IsActive())
                         {
-                            boardController.shakingSequence.Play();
+                            if (!boardController.shakingSequence.IsComplete())
+                            {
+                                boardController.shakingSequence.Play();
+                            }
                         }
                     }
                 }
@@ -142,43 +149,50 @@ public class MenuOpener : MonoBehaviour {
                     gameOverPanelController.ScaleDown();
                     yield return gameOverPanelController.scalingTween.WaitForCompletion();
                 }
-                if (boardController.fallingSequence != null)
+                if (gameModeManager.tutorialShown && (GameModeManager.mode == GameMode.Tutorial))
                 {
-                    if (boardController.fallingSequence.IsActive())
+                    gameModeManager.ShowTutorialMessage(false);
+                }
+                else
+                {
+                    if (boardController.fallingSequence != null)
                     {
-                        if (boardController.fallingSequence.IsPlaying())
+                        if (boardController.fallingSequence.IsActive())
                         {
-                            boardController.fallingSequence.Pause();
+                            if (boardController.fallingSequence.IsPlaying())
+                            {
+                                boardController.fallingSequence.Pause();
+                            }
                         }
                     }
-                }
-                if (boardController.scalingHiddenSequence != null)
-                {
-                    if (boardController.scalingHiddenSequence.IsActive())
+                    if (boardController.scalingHiddenSequence != null)
                     {
-                        if (boardController.scalingHiddenSequence.IsPlaying())
+                        if (boardController.scalingHiddenSequence.IsActive())
                         {
-                            boardController.scalingHiddenSequence.Pause();
+                            if (boardController.scalingHiddenSequence.IsPlaying())
+                            {
+                                boardController.scalingHiddenSequence.Pause();
+                            }
                         }
                     }
-                }
-                if (boardController.shakingSequence != null)
-                {
-                    if (boardController.shakingSequence.IsActive())
+                    if (boardController.shakingSequence != null)
                     {
-                        if (boardController.shakingSequence.IsPlaying())
+                        if (boardController.shakingSequence.IsActive())
                         {
-                            boardController.shakingSequence.Pause();
+                            if (boardController.shakingSequence.IsPlaying())
+                            {
+                                boardController.shakingSequence.Pause();
+                            }
                         }
                     }
+                    gameModeManager.TimerPauseSafe(open);
+                    if (!gameOverPanelController.isShowing)
+                    {
+                        boardController.ScaleTilesDown();
+                        yield return boardController.scalingSequence.WaitForCompletion();
+                    }
+                    boardController.SetEnableBoard(!open);
                 }
-                gameModeManager.TimerPauseSafe(open);
-                if (!gameOverPanelController.isShowing)
-                {
-                    boardController.ScaleTilesDown();
-                    yield return boardController.scalingSequence.WaitForCompletion();
-                }
-                boardController.SetEnableBoard(!open);
             }
             else
             {
@@ -200,6 +214,13 @@ public class MenuOpener : MonoBehaviour {
             yield return StartCoroutine(SlideToCenterAnimation());
         }
         menuToggles = false;
+    }
+
+    public IEnumerator SlideToCenterHighscore()
+    {
+        Tweener scoreEndSlide = scoreEnd.transform.DOMoveX(0, SLIDE_DURATION).SetEase(Ease.OutBack);
+        scoreEndSlide.Play();
+        yield return scoreEndSlide.WaitForCompletion();
     }
 
     private IEnumerator SlideToCenterAnimation()

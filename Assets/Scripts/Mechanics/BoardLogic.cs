@@ -14,10 +14,17 @@ public class BoardLogic {
 
     public BoardLogic()
     {
-        GenerateActiveTiles();
-        while (MatchFinder.IsGameOver(activeTiles))
+        if (GameModeManager.mode == GameMode.Tutorial)
+        {
+            LoadActiveTiles(GameModeManager.tutorialActive1);
+        }
+        else
         {
             GenerateActiveTiles();
+            while (MatchFinder.IsGameOver(activeTiles))
+            {
+                GenerateActiveTiles();
+            }
         }
         GenerateProphecyTiles();
     }
@@ -73,7 +80,7 @@ public class BoardLogic {
     private List<Vector2Int> MoveRow(int y, int distance)
     {
         string[][] temporaryTiles = Util.CloneArray(activeTiles);
-
+        Debug.Log(activeTiles);
         for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
         {
             int newIndex = i + distance;
@@ -100,7 +107,7 @@ public class BoardLogic {
     {
         List<Vector2Int> tilesToRemove = MatchFinder.FindMatchingTiles(temporaryTiles);
 
-        if (tilesToRemove.Count > 0)
+        if ((tilesToRemove.Count > 0) || WrongMove.active)
         {
             activeTiles = temporaryTiles;
         }
@@ -159,7 +166,7 @@ public class BoardLogic {
         prophecyTiles[x][PROPHECY_HEIGHT - 1] = B64X.EncodeInt((randObj.Next(9) + 1));
     }
 
-    private void GenerateActiveTiles()
+    public void GenerateActiveTiles()
     {
         int i;
 
@@ -196,6 +203,32 @@ public class BoardLogic {
             for (int j = 0; j < PROPHECY_HEIGHT; j++)
             {
                 prophecyTiles[i][j] = B64X.EncodeInt((randObj.Next(9) + 1));
+            }
+        }
+    }
+
+    public void LoadActiveTiles(int[][] activeTiles)
+    {
+        for (int i = 0; i < BOARD_SIZE; i++)
+        {
+            this.activeTiles[i] = new string[BOARD_SIZE];
+
+            for (int j = 0; j < BOARD_SIZE; j++)
+            {
+                this.activeTiles[i][j] = B64X.EncodeInt(activeTiles[i][j]);
+            }
+        }
+    }
+
+    public void LoadProphecyTiles(int[][] prophecyTiles)
+    {
+        for (int i = 0; i < BOARD_SIZE; i++)
+        {
+            this.prophecyTiles[i] = new string[PROPHECY_HEIGHT];
+
+            for (int j = 0; j < PROPHECY_HEIGHT; j++)
+            {
+                this.prophecyTiles[i][j] = B64X.EncodeInt(prophecyTiles[i][j]);
             }
         }
     }

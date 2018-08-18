@@ -89,14 +89,21 @@ public class ReadyStart : MonoBehaviour {
                 time += Time.deltaTime;
         }
 
-        boardController.SetEnableBoard(true);
-        boardController.ScaleTilesUp();
+        if (GameModeManager.mode == GameMode.Tutorial)
+        {
+            gameModeManager.ShowTutorialMessage(true);
+            gameModeManager.tutorialShown = true;
+        }
+        else
+        {
+            boardController.SetEnableBoard(true);
+            boardController.ScaleTilesUp();
+        }
         ready = true;
-        if ((gameModeManager.mode == GameMode.TimeAttack) && !menuOpener.open)
+        if ((GameModeManager.mode == GameMode.TimeAttack) && !menuOpener.open)
         {
             (gameModeManager.tracker as Timer).StartTimer();
         }
-
         gameObject.SetActive(false);
     }
 }

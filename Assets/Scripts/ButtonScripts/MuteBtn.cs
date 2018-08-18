@@ -18,7 +18,6 @@ public class MuteBtn : MonoBehaviour {
     void Awake()
     {
         AudioManagerScript = GameObject.FindWithTag("AudioManager").GetComponent<AudioManager>();
-        GetComponent<Button>().onClick.AddListener(() => MuteBtnAction());
     }
 
     void Start()
