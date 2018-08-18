@@ -305,7 +305,7 @@ MonoBehaviour:
   board: {fileID: 1845161030}
   boardController: {fileID: 1845161032}
   BombLeftTxt: {fileID: 1335576927}
-  selectBorder: {fileID: 21300000, guid: afdcce8dc537f944f86784137a550070, type: 3}
+  selectBorder: {fileID: 21300000, guid: 3561acf321b30f741b83753dbc226455, type: 3}
   normalBorder: {fileID: 21300000, guid: c69697bc5f2b51b45bcb205729efd44d, type: 3}
 --- !u!1 &165084552
 GameObject:
