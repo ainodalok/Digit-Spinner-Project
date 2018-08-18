@@ -7,6 +7,7 @@ public class AdManager : MonoBehaviour {
     public SceneLoadManager sceneLoadManager;
     public Banner banner;
     public Interstitial interstitial = new Interstitial();
+    public RewardedVideo rewardedVideo = new RewardedVideo();
 
     const float RELOAD_AD_REST_TIME = 5.0f;
 
@@ -34,6 +35,7 @@ public class AdManager : MonoBehaviour {
     {
         banner.Request();
         interstitial.Request();
+        rewardedVideo.Request();
     }
 
     public void/*IEnumerator*/ AdReload()
@@ -54,6 +56,10 @@ public class AdManager : MonoBehaviour {
             if (!interstitial.IsLoaded() && interstitial.IsLoadNeed())
             {
                 interstitial.LoadNew();
+            }
+            if (!rewardedVideo.IsLoaded() && rewardedVideo.IsLoadNeed())
+            {
+                rewardedVideo.LoadNew();
             }
             //yield return new WaitForSeconds(RELOAD_AD_REST_TIME);
         //}

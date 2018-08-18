@@ -18,11 +18,7 @@ public class IAPManager : MonoBehaviour, IStoreListener
     private const string CREDITS_1000 = "1000credits";
 
     //below you may see commented implementation for it in case of different ids in apple and google stores for the same product
-
-    // Apple App Store-specific product identifier for the subscription product.
     //private static string kProductNameAppleSubscription = "com.unity3d.subscription.new";
-
-    // Google Play Store-specific product identifier subscription product.
     //private static string kProductNameGooglePlaySubscription = "com.unity3d.subscription.original";
 
     void Start()
@@ -70,18 +66,15 @@ public class IAPManager : MonoBehaviour, IStoreListener
 
             if (product != null && product.availableToPurchase)
             {
-                Debug.Log(string.Format("Purchasing product asychronously: '{0}'", product.definition.id));
                 m_StoreController.InitiatePurchase(product);
             }
             else
             {
-                Debug.Log("BuyProductByID: FAIL. Not purchasing product, either is not found or is not available for purchase");
                 ShowFailure();
             }
         }
         else
         {
-            Debug.Log("BuyProductByID FAIL. Not initialized.");
             ShowFailure();
         }
     }
@@ -91,7 +84,6 @@ public class IAPManager : MonoBehaviour, IStoreListener
     {
         if (!IsInitialized())
         {
-            Debug.Log("RestorePurchases FAIL. Not initialized.");
             ShowFailure();
             return;
         }
@@ -99,24 +91,19 @@ public class IAPManager : MonoBehaviour, IStoreListener
         if (Application.platform == RuntimePlatform.IPhonePlayer ||
             Application.platform == RuntimePlatform.OSXPlayer)
         {
-            Debug.Log("RestorePurchases started ...");
-
             var apple = m_StoreExtensionProvider.GetExtension<IAppleExtensions>();
             apple.RestoreTransactions((result) => {
-                Debug.Log("RestorePurchases continuing: " + result + ". If no further messages, no purchases available to restore.");
+                Debug.Log("RestorePurchases: " + result + ". If no further messages, no purchases available to restore.");
             });
         }
         else
         {
-            Debug.Log("RestorePurchases FAIL. Not supported on this platform. Current = " + Application.platform);
             ShowFailure();
         }
     }
 
     public void OnInitialized(IStoreController controller, IExtensionProvider extensions)
     {
-        Debug.Log("OnInitialized: PASS");
-
         m_StoreController = controller;
         m_StoreExtensionProvider = extensions;
     }
@@ -130,14 +117,12 @@ public class IAPManager : MonoBehaviour, IStoreListener
     {
         if (String.Equals(args.purchasedProduct.definition.id, CREDITS_1000, StringComparison.Ordinal))
         {
-            Debug.Log(string.Format("ProcessPurchase: PASS. Product: '{0}'", args.purchasedProduct.definition.id));
             Currency.ProcessPurchase(1000);
             currencyTxt.UpdateText();
             ShowSuccess();
         }
         else
         {
-            Debug.Log(string.Format("ProcessPurchase: FAIL. Unrecognized product: '{0}'", args.purchasedProduct.definition.id));
             ShowFailure();
         }
 
@@ -146,20 +131,17 @@ public class IAPManager : MonoBehaviour, IStoreListener
     
     public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
     {
-        Debug.Log(string.Format("OnPurchaseFailed: FAIL. Product: '{0}', PurchaseFailureReason: {1}", product.definition.storeSpecificId, failureReason));
         ShowFailure();
     }
 
     private void ShowSuccess()
     {
-        InfoTabTxt.text = "Purchase successful \n\n Thank you!";
         StorePanel.SetActive(false);
         InfoTab.SetActive(true);
     }
 
     private void ShowFailure()
     {
-        InfoTabTxt.text = "Purchase failed \n\n Please try again later";
         StorePanel.SetActive(false);
         InfoTab.SetActive(true);
     }

@@ -37,6 +37,12 @@ public class Currency
         }
     }
 
+    public static void ProcessRewardedVideo()
+    {
+        Init();
+        ChangeBalance(50);
+    }
+
     private static void ChangeBalance(int change)
     {
         SafeMemory.SetInt("balance", SafeMemory.GetInt("balance") + change);

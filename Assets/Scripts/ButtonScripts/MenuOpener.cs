@@ -135,16 +135,6 @@ public class MenuOpener : MonoBehaviour {
             {
                 if (gameOverPanelController.isShowing)
                 {
-                    if (gameOverPanelController.scalingTween != null)
-                    {
-                        if (gameOverPanelController.scalingTween.IsActive())
-                        {
-                            if (gameOverPanelController.scalingTween.IsPlaying())
-                            {
-                                gameOverPanelController.scalingTween.Pause();
-                            }
-                        }
-                    }
                     gameOverPanelController.StopAnimation();
                     gameOverPanelController.ScaleDown();
                     yield return gameOverPanelController.scalingTween.WaitForCompletion();

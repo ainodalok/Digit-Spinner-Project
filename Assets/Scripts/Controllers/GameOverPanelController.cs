@@ -11,6 +11,16 @@ public class GameOverPanelController : MonoBehaviour {
 
     public void StopAnimation()
     {
+        if (scalingTween != null)
+        {
+            if (scalingTween.IsActive())
+            {
+                if (scalingTween.IsPlaying())
+                {
+                    scalingTween.Pause();
+                }
+            }
+        }
         if (animationCoroutine != null)
         {
             StopCoroutine(animationCoroutine);
