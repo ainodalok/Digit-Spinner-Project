@@ -10,19 +10,23 @@ public class Bomb : MonoBehaviour {
     public Sprite selectBorder;
     public Sprite normalBorder;
 
+#if UNITY_EDITOR
     private bool firstTime = false;
     private bool mouseUp = false;
+#endif
     private bool picking = false;
     private Coroutine picker;
     private List<Vector2Int> tilesToExplode = new List<Vector2Int>();
     private int x = -1;
     private int y = -1;
 
+#if UNITY_EDITOR
     void Update()
     {
         if (Input.GetMouseButtonUp(0))
             mouseUp = true;
     }
+#endif
 
     void Awake()
     {
@@ -62,14 +66,19 @@ public class Bomb : MonoBehaviour {
     {
         while(picking)
         {
-            //if (Input.touchCount > 0)
-            if (Input.GetMouseButton(0))
-            {
-                if(!firstTime)
+#if UNITY_EDITOR
+                if (Input.GetMouseButton(0))
+#else
+                if (Input.touchCount > 0)
+#endif
+                {
+#if UNITY_EDITOR
+                if (!firstTime)
                 {
                     firstTime = true;
                     mouseUp = false;
                 }
+#endif
                 Vector3 worldPointPosition = Camera.main.ScreenToWorldPoint(Input.mousePosition);//Input.GetTouch(0).position);
                 Vector2 touchPosition = new Vector2(worldPointPosition.x, worldPointPosition.y);
                 Collider2D collider = Physics2D.OverlapPoint(touchPosition);
@@ -81,9 +90,11 @@ public class Bomb : MonoBehaviour {
                         y = (int)collider.transform.localPosition.y;
                         RecalculateTilesToExplode(x, y);
                     }
-                    Debug.Log(mouseUp);
-                    //if (Input.GetTouch(0).phase == TouchPhase.Ended)
+#if UNITY_EDITOR
                     if (mouseUp)
+#else
+                    if (Input.GetTouch(0).phase == TouchPhase.Ended)
+#endif
                     {
                         for (int i = 0; i < tilesToExplode.Count; i++)
                         {
@@ -96,11 +107,12 @@ public class Bomb : MonoBehaviour {
                     }
                     
                 }
+#if UNITY_EDITOR
                 if (mouseUp)
                     firstTime = false;
-                
+                mouseUp = false;
+#endif
             }
-            mouseUp = false;
             if (picking)
             {
                 yield return new WaitForEndOfFrame();
