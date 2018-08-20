@@ -16,7 +16,8 @@ public class BoardLogic {
     {
         if (GameModeManager.mode == GameMode.Tutorial)
         {
-            LoadActiveTiles(GameModeManager.tutorialActive1);
+            LoadActiveTiles(TutorialBoards.active1);
+            LoadProphecyTiles(TutorialBoards.prophecy1);
         }
         else
         {
@@ -25,8 +26,8 @@ public class BoardLogic {
             {
                 GenerateActiveTiles();
             }
+            GenerateProphecyTiles();
         }
-        GenerateProphecyTiles();
     }
 
     public List<Vector2Int> Move(int number, int distance, bool isColumn)
@@ -80,7 +81,6 @@ public class BoardLogic {
     private List<Vector2Int> MoveRow(int y, int distance)
     {
         string[][] temporaryTiles = Util.CloneArray(activeTiles);
-        Debug.Log(activeTiles);
         for (int i = 0; i < BoardLogic.BOARD_SIZE; i++)
         {
             int newIndex = i + distance;

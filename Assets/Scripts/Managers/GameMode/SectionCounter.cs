@@ -9,7 +9,7 @@ public class SectionCounter : ObjectiveTracker
     public GameModeManager gameModeManager;
     public BoardController boardController;
 
-    [HideInInspector]
+    [HideInInspector] [System.NonSerialized]
     public int sectionCount = 8;
     [HideInInspector]
     public int sectionCurrent = 1;
@@ -22,17 +22,25 @@ public class SectionCounter : ObjectiveTracker
 
     public void NextSection()
     {
-        StartCoroutine(NextSectionCoroutine());
+        if (!gameModeManager.tracker.gameOver)
+        {
+            StartCoroutine(NextSectionCoroutine());
+        }
     }
 
     private IEnumerator NextSectionCoroutine()
     {
+        
+        boardController.SetEnableTileColliders(false);
+        yield return new WaitForSeconds(0.5f);
         sectionCurrent += 1;
-        gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Section:\n1/{0}", sectionCount);
+        gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Section:\n{0}/{1}", sectionCurrent, sectionCount);
         boardController.ScaleTilesDown();
         yield return boardController.scalingSequence.WaitForCompletion();
         boardController.SetEnableBoard(false);
-        gameModeManager.ShowTutorialMessage(true);
+        gameModeManager.tutorialOpens = true;
+        yield return StartCoroutine(gameModeManager.ShowTutorialMessage(true));
         gameModeManager.tutorialShown = true;
+        gameModeManager.tutorialOpens = false;
     }
 }

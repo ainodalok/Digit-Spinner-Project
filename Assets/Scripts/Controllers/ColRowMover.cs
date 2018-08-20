@@ -203,7 +203,6 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
         if (overallMovement != 0)
         {
             List<Vector2Int> tilesToRemove = bc.boardLogic.Move(number, overallMovement, isColumnMoving);
-            Debug.Log("number - "+number+", overallMovement - " + overallMovement+ ", isColumnMoving - " + isColumnMoving+", tilesToRemove - "+tilesToRemove);
             if (tilesToRemove.Count == 0 || tilesToRemove == null)
             {
                 if (!WrongMove.active)
@@ -213,6 +212,10 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 else
                 {
                     WrongMove.active = false;
+                    if (GameModeManager.mode == GameMode.Tutorial)
+                    {
+                        (bc.gameModeManager.tracker as SectionCounter).NextSection();
+                    }
                 }
                 bc.SetEnableTileColliders(true);
                 return;

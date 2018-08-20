@@ -32,6 +32,10 @@ public class Overtime : MonoBehaviour {
                     SafeMemory.SetInt("time", SafeMemory.GetInt("time") + ADDITIONAL_TIME);
                     (gameModeManager.tracker as Timer).gameObject.GetComponent<TextMeshProUGUI>().text = string.Format("Time left:\n{0}.{1}", SafeMemory.GetInt("time") / 10, SafeMemory.GetInt("time") % 10);
                     break;
+                case GameMode.Tutorial:
+                    (gameModeManager.tracker as SectionCounter).NextSection();
+                    break;
+
             }
             SafeMemory.SetInt("overtimeLeft", SafeMemory.GetInt("overtimeLeft") - 1);
             OTLeftTxt.SetText(SafeMemory.GetInt("overtimeLeft").ToString());

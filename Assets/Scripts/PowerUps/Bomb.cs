@@ -9,6 +9,7 @@ public class Bomb : MonoBehaviour {
     public TextMeshProUGUI BombLeftTxt;
     public Sprite selectBorder;
     public Sprite normalBorder;
+    public GameModeManager gameModeManager;
 
 #if UNITY_EDITOR
     private bool firstTime = false;
@@ -44,7 +45,7 @@ public class Bomb : MonoBehaviour {
             {
                 boardController.activeTileObjects[tilesToExplode[i].x][tilesToExplode[i].y].GetComponentInChildren<SpriteRenderer>().sprite = normalBorder;
             }
-            EnableColRowMovers(true);
+            boardController.SetEnableColRowMovers(true);
             SafeMemory.SetInt("bombLeft", SafeMemory.GetInt("bombLeft") + 1);
             BombLeftTxt.SetText(SafeMemory.GetInt("bombLeft").ToString());
             picking = false;
@@ -54,7 +55,7 @@ public class Bomb : MonoBehaviour {
             if (SafeMemory.GetInt("bombLeft") > 0)
             {
                 picking = true;
-                EnableColRowMovers(false);
+                boardController.SetEnableColRowMovers(false);
                 SafeMemory.SetInt("bombLeft", SafeMemory.GetInt("bombLeft") - 1);
                 BombLeftTxt.SetText(SafeMemory.GetInt("bombLeft").ToString());
                 picker = StartCoroutine(ProcessInputs());
@@ -96,14 +97,17 @@ public class Bomb : MonoBehaviour {
                     if (Input.GetTouch(0).phase == TouchPhase.Ended)
 #endif
                     {
+                        picking = false;
                         for (int i = 0; i < tilesToExplode.Count; i++)
                         {
                             boardController.activeTileObjects[tilesToExplode[i].x][tilesToExplode[i].y].GetComponentInChildren<SpriteRenderer>().sprite = normalBorder;
                         }
                         yield return StartCoroutine(boardController.DestroyMatchedTiles(tilesToExplode, true));
-                        EnableColRowMovers(true);
-                        picking = false;
-                        
+                        boardController.SetEnableColRowMovers(true);
+                        if (GameModeManager.mode == GameMode.Tutorial)
+                        {
+                            (gameModeManager.tracker as SectionCounter).NextSection();
+                        }
                     }
                     
                 }
@@ -117,15 +121,6 @@ public class Bomb : MonoBehaviour {
             {
                 yield return new WaitForEndOfFrame();
             }
-        }
-    }
-
-    private void EnableColRowMovers(bool enable)
-    {
-        ColRowMover[] colRowMovers = board.GetComponentsInChildren<ColRowMover>();
-        foreach (ColRowMover comp in colRowMovers)
-        {
-            comp.enabled = enable;
         }
     }
 

@@ -35,7 +35,7 @@ public class MenuOpener : MonoBehaviour {
                 return;
             }
         }
-
+        Debug.Log("menutoggles - "+menuToggles);
         if (menuToggles)
         {
             return;
@@ -62,16 +62,7 @@ public class MenuOpener : MonoBehaviour {
             menuPanel.SetActive(!open);
             if (readyStart.ready)
             {
-                if (gameOverPanelController.isShowing)
-                {
-                    yield return StartCoroutine(gameOverPanelController.Animate());
-                    gameOverPanelController.isShowing = false;
-                }
-                if(gameModeManager.tutorialShown && (GameModeManager.mode == GameMode.Tutorial))
-                {
-                    gameModeManager.ShowTutorialMessage(true);
-                }
-                else
+                if (!(gameModeManager.tutorialShown && (GameModeManager.mode == GameMode.Tutorial)))
                 {
                     boardController.SetEnableBoard(open);
                     boardController.ScaleTilesUp();
@@ -126,22 +117,28 @@ public class MenuOpener : MonoBehaviour {
                 }
             }
             open = false;
+            if (gameModeManager.tutorialShown && (GameModeManager.mode == GameMode.Tutorial))
+            {
+                gameModeManager.TutorialPanel.SetActive(true);
+                yield return StartCoroutine(gameModeManager.ShowTutorialMessage(true));
+            }
         }
         //Opens menu
         else
         {
-            open = true;
             if (readyStart.ready)
             {
-                if (gameOverPanelController.isShowing)
+                Debug.Log("Shown - " + gameModeManager.tutorialShown);
+                Debug.Log("Opens - " + gameModeManager.tutorialOpens);
+                while (gameOverPanelController.isShowing)
                 {
-                    gameOverPanelController.StopAnimation();
-                    gameOverPanelController.ScaleDown();
-                    yield return gameOverPanelController.scalingTween.WaitForCompletion();
+                    yield return null;
                 }
-                if (gameModeManager.tutorialShown && (GameModeManager.mode == GameMode.Tutorial))
+                if ((gameModeManager.tutorialShown  || gameModeManager.tutorialOpens) && (GameModeManager.mode == GameMode.Tutorial))
                 {
-                    gameModeManager.ShowTutorialMessage(false);
+                    Debug.Log("Hide Show Tutorial Message");
+                    yield return StartCoroutine(gameModeManager.ShowTutorialMessage(false));
+                    gameModeManager.TutorialPanel.SetActive(false);
                 }
                 else
                 {
@@ -175,13 +172,10 @@ public class MenuOpener : MonoBehaviour {
                             }
                         }
                     }
-                    gameModeManager.TimerPauseSafe(open);
-                    if (!gameOverPanelController.isShowing)
-                    {
-                        boardController.ScaleTilesDown();
-                        yield return boardController.scalingSequence.WaitForCompletion();
-                    }
-                    boardController.SetEnableBoard(!open);
+                    gameModeManager.TimerPauseSafe(!open);
+                    boardController.ScaleTilesDown();
+                    yield return boardController.scalingSequence.WaitForCompletion();
+                    boardController.SetEnableBoard(open);
                 }
             }
             else
@@ -198,10 +192,11 @@ public class MenuOpener : MonoBehaviour {
                 }
                 readyStart.ScaleReadyDown();
                 yield return readyStart.scalingTween.WaitForCompletion();
-                readyStart.SetEnableReadyPanel(!open);
+                readyStart.SetEnableReadyPanel(open);
             }
-            menuPanel.SetActive(open);
+            menuPanel.SetActive(!open);
             yield return StartCoroutine(SlideToCenterAnimation());
+            open = true;
         }
         menuToggles = false;
     }

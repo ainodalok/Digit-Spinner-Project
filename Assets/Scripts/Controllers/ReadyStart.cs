@@ -59,7 +59,7 @@ public class ReadyStart : MonoBehaviour {
         while (time < 0.3f)
         {
             yield return null;
-            if (!menuOpener.open)
+            if (!(menuOpener.open || (!menuOpener.open && menuOpener.menuToggles)))
                 time += Time.deltaTime;
         }
 
@@ -72,7 +72,7 @@ public class ReadyStart : MonoBehaviour {
         while (time < 0.5f)
         {
             yield return null;
-            if (!menuOpener.open)
+            if (!(menuOpener.open || (!menuOpener.open && menuOpener.menuToggles)))
                 time += Time.deltaTime;
         }
 
@@ -85,22 +85,24 @@ public class ReadyStart : MonoBehaviour {
         while (time < 0.3f)
         {
             yield return null;
-            if (!menuOpener.open)
+            if (!(menuOpener.open || (!menuOpener.open && menuOpener.menuToggles)))
                 time += Time.deltaTime;
         }
-
+        ready = true;
         if (GameModeManager.mode == GameMode.Tutorial)
         {
-            gameModeManager.ShowTutorialMessage(true);
+            gameModeManager.tutorialOpens = true;
+            yield return StartCoroutine(gameModeManager.ShowTutorialMessage(true));
             gameModeManager.tutorialShown = true;
+            gameModeManager.tutorialOpens = false;
         }
         else
         {
             boardController.SetEnableBoard(true);
             boardController.ScaleTilesUp();
+            yield return boardController.scalingSequence;
         }
-        ready = true;
-        if ((GameModeManager.mode == GameMode.TimeAttack) && !menuOpener.open)
+        if ((GameModeManager.mode == GameMode.TimeAttack) && (!(menuOpener.open || (!menuOpener.open && menuOpener.menuToggles))))
         {
             (gameModeManager.tracker as Timer).StartTimer();
         }

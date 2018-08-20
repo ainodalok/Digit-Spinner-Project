@@ -190,10 +190,10 @@ RectTransform:
   m_Father: {fileID: 1152107126}
   m_RootOrder: 3
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.8, y: 0.4}
-  m_AnchorMax: {x: 0.8, y: 0.4}
+  m_AnchorMin: {x: 0.785, y: 0.4}
+  m_AnchorMax: {x: 0.785, y: 0.4}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 70, y: 70}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &118516261
 MonoBehaviour:
@@ -307,6 +307,7 @@ MonoBehaviour:
   BombLeftTxt: {fileID: 1335576927}
   selectBorder: {fileID: 21300000, guid: 3561acf321b30f741b83753dbc226455, type: 3}
   normalBorder: {fileID: 21300000, guid: c69697bc5f2b51b45bcb205729efd44d, type: 3}
+  gameModeManager: {fileID: 2017151770}
 --- !u!1 &165084552
 GameObject:
   m_ObjectHideFlags: 0
@@ -341,10 +342,10 @@ RectTransform:
   m_Father: {fileID: 1152107126}
   m_RootOrder: 0
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.2, y: 0.4}
-  m_AnchorMax: {x: 0.2, y: 0.4}
+  m_AnchorMin: {x: 0.11, y: 0.4}
+  m_AnchorMax: {x: 0.11, y: 0.4}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 70, y: 70}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &165084554
 MonoBehaviour:
@@ -455,6 +456,7 @@ MonoBehaviour:
   m_EditorClassIdentifier: 
   RegenLeftTxt: {fileID: 2060744000}
   boardController: {fileID: 1845161032}
+  gameModeManager: {fileID: 2017151770}
 --- !u!1 &187512252
 GameObject:
   m_ObjectHideFlags: 0
@@ -1352,7 +1354,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 110, y: 0}
-  m_SizeDelta: {x: 80, y: 0}
+  m_SizeDelta: {x: 19.999992, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &677498031
 MonoBehaviour:
@@ -1417,7 +1419,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
@@ -6409,7 +6411,7 @@ RectTransform:
   m_GameObject: {fileID: 922148021}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 1}
   m_Children:
   - {fileID: 1921964937}
   m_Father: {fileID: 1928289457}
@@ -6460,7 +6462,7 @@ MonoBehaviour:
     m_PersistentCalls:
       m_Calls:
       - m_Target: {fileID: 922148026}
-        m_MethodName: ContinueTutorial
+        m_MethodName: WrapContinueTutorial
         m_Mode: 1
         m_Arguments:
           m_ObjectArgument: {fileID: 0}
@@ -6519,6 +6521,7 @@ MonoBehaviour:
   tutorialPanel: {fileID: 1928289456}
   gameModeManager: {fileID: 2017151770}
   boardController: {fileID: 1845161032}
+  endGameBtn: {fileID: 187512254}
 --- !u!114 &922148027
 MonoBehaviour:
   m_ObjectHideFlags: 0
@@ -6710,7 +6713,7 @@ RectTransform:
   m_GameObject: {fileID: 965944625}
   m_LocalRotation: {x: 0, y: 0, z: 0, w: 1}
   m_LocalPosition: {x: 0, y: 0, z: 0}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalScale: {x: 0, y: 0, z: 1}
   m_Children: []
   m_Father: {fileID: 1928289457}
   m_RootOrder: 0
@@ -6739,7 +6742,14 @@ MonoBehaviour:
       m_Calls: []
     m_TypeName: UnityEngine.UI.MaskableGraphic+CullStateChangedEvent, UnityEngine.UI,
       Version=1.0.0.0, Culture=neutral, PublicKeyToken=null
-  m_text: 
+  m_text: "The playing field consists of Blue and Red tiles. You can shift an entire
+    row or column of Blue tiles by any amount you want. Digits that go beyond the
+    playing field will appear on the opposite side.  If you do not match any numbers,
+    the row or column you moved will return to its initial position. When you match
+    the sequence it will explode and give you score.The more tiles you destroy in
+    one turn the more score you will get. After you execute a combo the empty space
+    will be filled by red tiles falling down and becoming blue.\r\n \r\nNow try it
+    yourself, move the green tiles right.\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 36f58c03beae5e740bc28008aec690c0, type: 2}
   m_sharedMaterial: {fileID: 2100000, guid: 0e86e38a31993dd4b83596e36f02f872, type: 2}
@@ -6784,7 +6794,7 @@ MonoBehaviour:
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0
   m_overflowMode: 0
-  m_firstOverflowCharacterIndex: 831
+  m_firstOverflowCharacterIndex: 0
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
   m_isTextTruncated: 0
@@ -6807,13 +6817,13 @@ MonoBehaviour:
   m_margin: {x: 40, y: 40, z: 50, w: 226.18079}
   m_textInfo:
     textComponent: {fileID: 965944627}
-    characterCount: 0
+    characterCount: 586
     spriteCount: 0
-    spaceCount: 0
-    wordCount: 0
+    spaceCount: 113
+    wordCount: 111
     linkCount: 0
-    lineCount: 0
-    pageCount: 0
+    lineCount: 23
+    pageCount: 1
     materialCount: 1
   m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
@@ -7018,7 +7028,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 110, y: 0}
-  m_SizeDelta: {x: 80, y: 0}
+  m_SizeDelta: {x: 19.999992, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1058093326
 MonoBehaviour:
@@ -7083,7 +7093,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
@@ -11943,8 +11953,8 @@ RectTransform:
   m_Father: {fileID: 854433351}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0, y: 0.055}
-  m_AnchorMax: {x: 1, y: 0.135}
+  m_AnchorMin: {x: 0, y: 0.06}
+  m_AnchorMax: {x: 1, y: 0.14}
   m_AnchoredPosition: {x: 0, y: 0}
   m_SizeDelta: {x: 0, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
@@ -12305,7 +12315,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 110, y: 0}
-  m_SizeDelta: {x: 80, y: 0}
+  m_SizeDelta: {x: 19.999992, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1335576927
 MonoBehaviour:
@@ -12370,7 +12380,7 @@ MonoBehaviour:
   m_charWidthMaxAdj: 0
   m_enableWordWrapping: 1
   m_wordWrappingRatios: 0.4
-  m_overflowMode: 0
+  m_overflowMode: 1
   m_firstOverflowCharacterIndex: -1
   m_linkedTextComponent: {fileID: 0}
   m_isLinkedTextComponent: 0
@@ -13349,7 +13359,6 @@ MonoBehaviour:
   gameOver: 0
   gameModeManager: {fileID: 2017151770}
   boardController: {fileID: 1845161032}
-  sectionCount: 7
   sectionCurrent: 1
 --- !u!1 &1788273430
 GameObject:
@@ -13675,8 +13684,8 @@ Transform:
   m_PrefabInternal: {fileID: 0}
   m_GameObject: {fileID: 1845161030}
   m_LocalRotation: {x: -0, y: -0, z: -0, w: 1}
-  m_LocalPosition: {x: -3, y: -5.25, z: 89}
-  m_LocalScale: {x: 1, y: 1, z: 1}
+  m_LocalPosition: {x: -3, y: -5, z: 89}
+  m_LocalScale: {x: 0.98, y: 0.98, z: 1}
   m_Children:
   - {fileID: 2126578343}
   - {fileID: 1078908245}
@@ -13917,7 +13926,7 @@ RectTransform:
   m_AnchorMin: {x: 0.5, y: 0.5}
   m_AnchorMax: {x: 0.5, y: 0.5}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 1000, y: 1500}
+  m_SizeDelta: {x: 1000, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &1928289458
 MonoBehaviour:
@@ -14003,6 +14012,15 @@ MonoBehaviour:
   tracker: {fileID: 1775675599}
   TutorialPanel: {fileID: 1928289456}
   TutorialTxt: {fileID: 965944625}
+  greenBorder: {fileID: 21300000, guid: 3561acf321b30f741b83753dbc226455, type: 3}
+  normalBorder: {fileID: 21300000, guid: c69697bc5f2b51b45bcb205729efd44d, type: 3}
+  boardController: {fileID: 1845161032}
+  BombLeftTxt: {fileID: 1335576927}
+  OTLeftTxt: {fileID: 677498031}
+  RegenLeftTxt: {fileID: 2060744000}
+  WMLeftTxt: {fileID: 1058093326}
+  tutorialNextBtn: {fileID: 922148026}
+  endGameBtn: {fileID: 187512254}
 --- !u!1 &2049919493
 GameObject:
   m_ObjectHideFlags: 0
@@ -14037,10 +14055,10 @@ RectTransform:
   m_Father: {fileID: 1152107126}
   m_RootOrder: 1
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.4, y: 0.4}
-  m_AnchorMax: {x: 0.4, y: 0.4}
+  m_AnchorMin: {x: 0.335, y: 0.4}
+  m_AnchorMax: {x: 0.335, y: 0.4}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 70, y: 70}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2049919495
 MonoBehaviour:
@@ -14185,10 +14203,10 @@ RectTransform:
   m_Father: {fileID: 1152107126}
   m_RootOrder: 2
   m_LocalEulerAnglesHint: {x: 0, y: 0, z: 0}
-  m_AnchorMin: {x: 0.6, y: 0.4}
-  m_AnchorMax: {x: 0.6, y: 0.4}
+  m_AnchorMin: {x: 0.56, y: 0.4}
+  m_AnchorMax: {x: 0.56, y: 0.4}
   m_AnchoredPosition: {x: 0, y: 0}
-  m_SizeDelta: {x: 70, y: 70}
+  m_SizeDelta: {x: 100, y: 100}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2051036011
 MonoBehaviour:
@@ -14331,7 +14349,7 @@ RectTransform:
   m_AnchorMin: {x: 0, y: 0}
   m_AnchorMax: {x: 1, y: 1}
   m_AnchoredPosition: {x: 110, y: 0}
-  m_SizeDelta: {x: 80, y: 0}
+  m_SizeDelta: {x: 19.999992, y: 0}
   m_Pivot: {x: 0.5, y: 0.5}
 --- !u!114 &2060744000
 MonoBehaviour:

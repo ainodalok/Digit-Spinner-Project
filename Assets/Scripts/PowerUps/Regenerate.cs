@@ -6,6 +6,7 @@ using TMPro;
 public class Regenerate : MonoBehaviour {
     public TextMeshProUGUI RegenLeftTxt;
     public BoardController boardController;
+    public GameModeManager gameModeManager;
 
     void Awake()
     {
@@ -26,6 +27,10 @@ public class Regenerate : MonoBehaviour {
             boardController.UpdateDigitsBasic();
             SafeMemory.SetInt("regenLeft", SafeMemory.GetInt("regenLeft") - 1);
             RegenLeftTxt.SetText(SafeMemory.GetInt("regenLeft").ToString());
+        }
+        if (GameModeManager.mode == GameMode.Tutorial)
+        {
+            (gameModeManager.tracker as SectionCounter).NextSection();
         }
     }
 }

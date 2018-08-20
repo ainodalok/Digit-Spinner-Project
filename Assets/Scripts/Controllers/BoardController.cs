@@ -57,6 +57,8 @@ public class BoardController : MonoBehaviour {
 
     private Vector3[][] prophecyTileScale = new Vector3[BoardLogic.BOARD_SIZE][];
 
+    private float shakeDuration = 0.5f;
+
     void Start ()
     {
         boardLogic = new BoardLogic();
@@ -65,6 +67,10 @@ public class BoardController : MonoBehaviour {
         SetupProphecyTiles();
         SetupGhostTiles();
         SafeMemory.SetInt("score", 0);
+        if (GameModeManager.mode == GameMode.Tutorial)
+        {
+            shakeDuration = 3.0f;
+        }
     }
 
     private void SetupMaterialPropertyBlocks()
@@ -143,6 +149,10 @@ public class BoardController : MonoBehaviour {
             for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
             {
                 scalingSequence.Join(prophecyTileObjects[i][j].transform.DOScale(prophecyTileScale[i][j], INITIAL_SCALE_DURATION).SetEase(Ease.InOutSine));
+                if (isDestroying)
+                {
+                    prophecyTileScale[i][j] = ACTIVE_SIZE - j * SIZE_STEP;
+                }
             }
             for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
             {
@@ -171,7 +181,10 @@ public class BoardController : MonoBehaviour {
         {
             for (int j = 0; j < BoardLogic.PROPHECY_HEIGHT; j++)
             {
-                prophecyTileScale[i][j] = prophecyTileObjects[i][j].transform.localScale;
+                if (isDestroying)
+                {
+                    prophecyTileScale[i][j] = prophecyTileObjects[i][j].transform.localScale;
+                }
                 scalingSequence.Join(prophecyTileObjects[i][j].transform.DOScale(0, INITIAL_SCALE_DURATION).SetEase(Ease.InOutSine));
             }
             for (int j = 0; j < BoardLogic.BOARD_SIZE; j++)
@@ -450,6 +463,15 @@ public class BoardController : MonoBehaviour {
         }
     }
 
+    public void SetEnableColRowMovers(bool enable)
+    {
+        ColRowMover[] colRowMovers = gameObject.GetComponentsInChildren<ColRowMover>();
+        foreach (ColRowMover comp in colRowMovers)
+        {
+            comp.enabled = enable;
+        }
+    }
+
     public void SetEnableTileColliders(bool enable)
     {
         BoxCollider2D[] colliders = gameObject.GetComponentsInChildren<BoxCollider2D>();
@@ -473,6 +495,23 @@ public class BoardController : MonoBehaviour {
             if (!powerup)
             {
                 (gameModeManager.tracker as TurnCounter).UpdateTurns();
+            }
+        }
+
+        if (GameModeManager.mode == GameMode.Tutorial)
+        {
+            if ((gameModeManager.tracker as SectionCounter).sectionCurrent == 1)
+            {
+                activeTileObjects[1][5].GetComponentInChildren<SpriteRenderer>().sprite = gameModeManager.normalBorder;
+                activeTileObjects[2][5].GetComponentInChildren<SpriteRenderer>().sprite = gameModeManager.normalBorder;
+                activeTileObjects[3][5].GetComponentInChildren<SpriteRenderer>().sprite = gameModeManager.normalBorder;
+            }
+            if ((gameModeManager.tracker as SectionCounter).sectionCurrent == 2)
+            {
+                activeTileObjects[1][5].GetComponentInChildren<SpriteRenderer>().sprite = gameModeManager.normalBorder;
+                activeTileObjects[1][2].GetComponentInChildren<SpriteRenderer>().sprite = gameModeManager.normalBorder;
+                activeTileObjects[1][3].GetComponentInChildren<SpriteRenderer>().sprite = gameModeManager.normalBorder;
+                activeTileObjects[1][4].GetComponentInChildren<SpriteRenderer>().sprite = gameModeManager.normalBorder;
             }
         }
 
@@ -503,10 +542,10 @@ public class BoardController : MonoBehaviour {
             shakingSequence.Pause();
             tilesToRemove.ForEach((t) =>
             {
-                shakingSequence.Join(activeTileObjects[t.x][t.y].transform.DOShakePosition(0.5f, 0.1f, 10000, 90.0f, false, false));
+                shakingSequence.Join(activeTileObjects[t.x][t.y].transform.DOShakePosition(shakeDuration, 0.1f, 10000, 90.0f, false, false));
             });
 
-            if (!menuOpener.open)
+            if (!(menuOpener.open || (!menuOpener.open && menuOpener.menuToggles)))
             {
                 shakingSequence.Play();
             }
@@ -566,7 +605,7 @@ public class BoardController : MonoBehaviour {
                     maxDistance = fallDistances[i];
                 }
             }
-            if(!menuOpener.open)
+            if(!(menuOpener.open || (!menuOpener.open && menuOpener.menuToggles)))
             {
                 fallingSequence.Play();
             }
@@ -580,7 +619,7 @@ public class BoardController : MonoBehaviour {
                 {
                     activeTileObjects[i][j].transform.localPosition = new Vector3(i, j, 0);
                     activeTileObjects[i][j].GetComponent<ColRowMover>().tileToRemove = false;
-                    if (!menuOpener.open)
+                    if (!(menuOpener.open || (!menuOpener.open && menuOpener.menuToggles)))
                     {
                         activeTileObjects[i][j].transform.GetChild(0).GetComponent<MeshRenderer>().enabled = true;
                         activeTileObjects[i][j].transform.GetChild(1).GetComponent<SpriteRenderer>().enabled = true;
@@ -604,14 +643,14 @@ public class BoardController : MonoBehaviour {
 
             tilesToRemove = boardLogic.DestroyTiles(tilesToRemove);
             UpdateDigitsBasic();
-            if (!menuOpener.open)
+            if (!(menuOpener.open || (!menuOpener.open && menuOpener.menuToggles)))
             {
                 scalingHiddenSequence.Play();
             }
             yield return scalingHiddenSequence.WaitForCompletion();
         }
 
-        if (!menuOpener.open)
+        if (!(menuOpener.open || (!menuOpener.open && menuOpener.menuToggles)))
         {
             SetEnableTileColliders(true);
         }
@@ -619,31 +658,18 @@ public class BoardController : MonoBehaviour {
         isDestroying = false;
 
         //gameOverPanelController.animationCoroutine = StartCoroutine(AnimateGameOverNotification());
-        if (GameModeManager.mode != GameMode.Tutorial)
+        if (!gameModeManager.tracker.gameOver && MatchFinder.IsGameOver(boardLogic.activeTiles))
         {
-            if (!gameModeManager.tracker.gameOver && MatchFinder.IsGameOver(boardLogic.activeTiles))
-            {
-                gameOverPanelController.animationCoroutine = StartCoroutine(AnimateGameOverNotification());
-            }
+            yield return gameOverPanelController.animationCoroutine = StartCoroutine(AnimateGameOverNotification());
         }
-        else
+        if ((GameModeManager.mode == GameMode.Tutorial) &&
+            (((gameModeManager.tracker as SectionCounter).sectionCurrent == 2) || ((gameModeManager.tracker as SectionCounter).sectionCurrent == 1)))
         {
-            if ((gameModeManager.tracker as SectionCounter).sectionCurrent == 2)
-            {
-                if (!gameModeManager.tracker.gameOver && MatchFinder.IsGameOver(boardLogic.activeTiles))
-                {
-                    gameOverPanelController.animationCoroutine = StartCoroutine(AnimateGameOverNotification());
-                }
-                (gameModeManager.tracker as SectionCounter).NextSection();
-            }
-            else if ((gameModeManager.tracker as SectionCounter).sectionCurrent == 1)
-            {
-                (gameModeManager.tracker as SectionCounter).NextSection();
-            }
+            (gameModeManager.tracker as SectionCounter).NextSection();
         }
     }
 
-    private IEnumerator AnimateGameOverNotification()
+    public IEnumerator AnimateGameOverNotification()
     {
         gameOverPanelController.isShowing = true;
         gameModeManager.TimerPauseSafe(true);

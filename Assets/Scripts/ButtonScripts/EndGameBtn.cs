@@ -45,7 +45,21 @@ public class EndGameBtn : MonoBehaviour
         }
         else
         {
-            StartCoroutine(EndGame());
+            if (GameModeManager.mode == GameMode.Tutorial)
+            {
+                if ((gameModeManager.tracker as SectionCounter).sectionCurrent == 7)
+                {
+                    (gameModeManager.tracker as SectionCounter).NextSection();
+                }
+                else
+                {
+                    StartCoroutine(EndGame());
+                }
+            }
+            else
+            {
+                StartCoroutine(EndGame());
+            }
         }
     }
 
@@ -60,7 +74,7 @@ public class EndGameBtn : MonoBehaviour
         Tweener widener = DOTween.To(x => transform.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, x), 280, 335, 0.2f).SetEase(Ease.OutQuart);
     }
 
-    private IEnumerator EndGame()
+    public IEnumerator EndGame()
     {
         isEnding = true;
         gameObject.transform.DOScale(BoardController.SPAWN_SIZE, 0.5f).SetEase(Ease.InCubic).Play();
@@ -71,11 +85,10 @@ public class EndGameBtn : MonoBehaviour
         {
             yield return null;
         }
-
-        bc.ScaleTilesDown();
+        
         menuOpener.EndGame();
         objectiveTxtTransform.DOScale(BoardController.SPAWN_SIZE, 0.5f).SetEase(Ease.InCubic).Play();
-        if (!menuOpener.open)
+        if (!(menuOpener.open || (!menuOpener.open && menuOpener.menuToggles)))
         {
             yield return StartCoroutine(menuOpener.ToggleMenu());
         }
