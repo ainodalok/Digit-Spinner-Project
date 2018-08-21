@@ -27,6 +27,7 @@ public class SceneLoadManager : MonoBehaviour
         DOTween.SetTweensCapacity(500, 50);
         Input.multiTouchEnabled = false;
         Application.targetFrameRate = 60;
+        //Moved this one
         //PlayServicesManager.Init();
         if (SceneManager.sceneCount < 2)
         {
@@ -60,6 +61,7 @@ public class SceneLoadManager : MonoBehaviour
         }
         audioManager.pausedBGM = false;
         //Uncomment to enable INTERSTITIALS
+        
 #if !UNITY_EDITOR
         if (currentScene != "")
         {
@@ -74,6 +76,7 @@ public class SceneLoadManager : MonoBehaviour
             }
         }
 #endif
+        
         if (currentScene != "")
         {
             DeactivateCamerasInCurrentScene();
@@ -90,7 +93,7 @@ public class SceneLoadManager : MonoBehaviour
         CheckViewport();
         if (currentScene == "")
         {
-            //adManager.InitAds();
+            adManager.InitAds();
             PlayServicesManager.Init();
             PlayServicesManager.SaveData();
         }
