@@ -63,10 +63,8 @@ public class SceneLoadManager : MonoBehaviour
 #if !UNITY_EDITOR
         if (currentScene != "")
         {
-            Debug.Log("Interstitial?");
             if (adManager.interstitial.IsLoaded())
             {
-                Debug.Log("Yes!");
                 GL.Clear(false, true, new Color (0.0f, 0.0f, 0.0f, 1.0f));
                 adManager.interstitial.Show();
                 while (adManager.interstitial.IsShown())
@@ -92,7 +90,7 @@ public class SceneLoadManager : MonoBehaviour
         CheckViewport();
         if (currentScene == "")
         {
-            adManager.InitAds();
+            //adManager.InitAds();
             PlayServicesManager.Init();
             PlayServicesManager.SaveData();
         }

@@ -35,7 +35,6 @@ public class MenuOpener : MonoBehaviour {
                 return;
             }
         }
-        Debug.Log("menutoggles - "+menuToggles);
         if (menuToggles)
         {
             return;
@@ -128,15 +127,12 @@ public class MenuOpener : MonoBehaviour {
         {
             if (readyStart.ready)
             {
-                Debug.Log("Shown - " + gameModeManager.tutorialShown);
-                Debug.Log("Opens - " + gameModeManager.tutorialOpens);
                 while (gameOverPanelController.isShowing)
                 {
                     yield return null;
                 }
                 if ((gameModeManager.tutorialShown  || gameModeManager.tutorialOpens) && (GameModeManager.mode == GameMode.Tutorial))
                 {
-                    Debug.Log("Hide Show Tutorial Message");
                     yield return StartCoroutine(gameModeManager.ShowTutorialMessage(false));
                     gameModeManager.TutorialPanel.SetActive(false);
                 }

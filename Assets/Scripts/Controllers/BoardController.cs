@@ -501,18 +501,15 @@ public class BoardController : MonoBehaviour {
 
         if (GameModeManager.mode == GameMode.Tutorial)
         {
-            if ((gameModeManager.tracker as SectionCounter).sectionCurrent == 1)
+            if (((gameModeManager.tracker as SectionCounter).sectionCurrent == 1) || ((gameModeManager.tracker as SectionCounter).sectionCurrent == 2))
             {
-                activeTileObjects[1][5].GetComponentInChildren<SpriteRenderer>().sprite = gameModeManager.normalBorder;
-                activeTileObjects[2][5].GetComponentInChildren<SpriteRenderer>().sprite = gameModeManager.normalBorder;
-                activeTileObjects[3][5].GetComponentInChildren<SpriteRenderer>().sprite = gameModeManager.normalBorder;
-            }
-            if ((gameModeManager.tracker as SectionCounter).sectionCurrent == 2)
-            {
-                activeTileObjects[1][5].GetComponentInChildren<SpriteRenderer>().sprite = gameModeManager.normalBorder;
-                activeTileObjects[1][2].GetComponentInChildren<SpriteRenderer>().sprite = gameModeManager.normalBorder;
-                activeTileObjects[1][3].GetComponentInChildren<SpriteRenderer>().sprite = gameModeManager.normalBorder;
-                activeTileObjects[1][4].GetComponentInChildren<SpriteRenderer>().sprite = gameModeManager.normalBorder;
+                for(int i = 0; i < BoardLogic.BOARD_SIZE; i++)
+                {
+                    for(int j = 0; j < BoardLogic.BOARD_SIZE; j++)
+                    {
+                        activeTileObjects[i][j].GetComponentInChildren<SpriteRenderer>().sprite = gameModeManager.normalBorder;
+                    }
+                }
             }
         }
 
