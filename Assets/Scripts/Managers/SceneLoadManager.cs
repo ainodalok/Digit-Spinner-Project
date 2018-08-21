@@ -27,7 +27,6 @@ public class SceneLoadManager : MonoBehaviour
         DOTween.SetTweensCapacity(500, 50);
         Input.multiTouchEnabled = false;
         Application.targetFrameRate = 60;
-        //Moved this one
         //PlayServicesManager.Init();
         if (SceneManager.sceneCount < 2)
         {
