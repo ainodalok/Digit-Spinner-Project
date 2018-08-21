@@ -83,7 +83,7 @@ public class SceneLoadManager : MonoBehaviour
             StopAudioInCurrentScene();
         }
         SceneManager.SetActiveScene(SceneManager.GetSceneAt(SceneManager.sceneCount - 1));
-        Shader.WarmupAllShaders();
+        //Shader.WarmupAllShaders();
         if (currentScene != "")
         {
             SceneManager.UnloadSceneAsync(currentScene);
