@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class WrongMove : MonoBehaviour {
     public TextMeshProUGUI WMLeftTxt;
@@ -20,16 +21,18 @@ public class WrongMove : MonoBehaviour {
         if (active)
         {
             active = false;
-            SafeMemory.SetInt("wrongMoveLeft", SafeMemory.GetInt("wrongMoveLeft") + 1);
-            WMLeftTxt.SetText(SafeMemory.GetInt("wrongMoveLeft").ToString());
+            //SafeMemory.SetInt("wrongMoveLeft", SafeMemory.GetInt("wrongMoveLeft") + 1);
+            //WMLeftTxt.SetText(SafeMemory.GetInt("wrongMoveLeft").ToString());
+            Util.SwapButtonColors(transform.GetComponent<Button>());
         }
         else
         {
             if (SafeMemory.GetInt("wrongMoveLeft") > 0)
             {
                 active = true;
-                SafeMemory.SetInt("wrongMoveLeft", SafeMemory.GetInt("wrongMoveLeft") - 1);
-                WMLeftTxt.SetText(SafeMemory.GetInt("wrongMoveLeft").ToString());
+                //SafeMemory.SetInt("wrongMoveLeft", SafeMemory.GetInt("wrongMoveLeft") - 1);
+                //WMLeftTxt.SetText(SafeMemory.GetInt("wrongMoveLeft").ToString());
+                Util.SwapButtonColors(transform.GetComponent<Button>());
             }
         }
     }

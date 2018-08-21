@@ -212,6 +212,8 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 else
                 {
                     WrongMove.active = false;
+                    SafeMemory.SetInt("wrongMoveLeft", SafeMemory.GetInt("wrongMoveLeft") - 1);
+                    bc.WMLeftTxt.SetText(SafeMemory.GetInt("wrongMoveLeft").ToString());
                     if (GameModeManager.mode == GameMode.Tutorial)
                     {
                         (bc.gameModeManager.tracker as SectionCounter).NextSection();

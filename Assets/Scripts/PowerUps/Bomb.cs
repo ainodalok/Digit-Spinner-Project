@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using UnityEngine.UI;
 
 public class Bomb : MonoBehaviour {
     public GameObject board;
@@ -46,8 +47,9 @@ public class Bomb : MonoBehaviour {
                 boardController.activeTileObjects[tilesToExplode[i].x][tilesToExplode[i].y].GetComponentInChildren<SpriteRenderer>().sprite = normalBorder;
             }
             boardController.SetEnableColRowMovers(true);
-            SafeMemory.SetInt("bombLeft", SafeMemory.GetInt("bombLeft") + 1);
-            BombLeftTxt.SetText(SafeMemory.GetInt("bombLeft").ToString());
+            //SafeMemory.SetInt("bombLeft", SafeMemory.GetInt("bombLeft") + 1);
+            //BombLeftTxt.SetText(SafeMemory.GetInt("bombLeft").ToString());
+            Util.SwapButtonColors(transform.GetComponent<Button>());
             picking = false;
         }
         else
@@ -56,8 +58,9 @@ public class Bomb : MonoBehaviour {
             {
                 picking = true;
                 boardController.SetEnableColRowMovers(false);
-                SafeMemory.SetInt("bombLeft", SafeMemory.GetInt("bombLeft") - 1);
-                BombLeftTxt.SetText(SafeMemory.GetInt("bombLeft").ToString());
+                //SafeMemory.SetInt("bombLeft", SafeMemory.GetInt("bombLeft") - 1);
+                //BombLeftTxt.SetText(SafeMemory.GetInt("bombLeft").ToString());
+                Util.SwapButtonColors(transform.GetComponent<Button>());
                 picker = StartCoroutine(ProcessInputs());
             }
         }
@@ -102,6 +105,8 @@ public class Bomb : MonoBehaviour {
                         {
                             boardController.activeTileObjects[tilesToExplode[i].x][tilesToExplode[i].y].GetComponentInChildren<SpriteRenderer>().sprite = normalBorder;
                         }
+                        SafeMemory.SetInt("bombLeft", SafeMemory.GetInt("bombLeft") - 1);
+                        BombLeftTxt.SetText(SafeMemory.GetInt("bombLeft").ToString());
                         yield return StartCoroutine(boardController.DestroyMatchedTiles(tilesToExplode, true));
                         boardController.SetEnableColRowMovers(true);
                         if (GameModeManager.mode == GameMode.Tutorial)

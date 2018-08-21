@@ -6752,7 +6752,7 @@ MonoBehaviour:
     yourself, move the green tiles right.\r\n"
   m_isRightToLeft: 0
   m_fontAsset: {fileID: 11400000, guid: 36f58c03beae5e740bc28008aec690c0, type: 2}
-  m_sharedMaterial: {fileID: 2100000, guid: 0e86e38a31993dd4b83596e36f02f872, type: 2}
+  m_sharedMaterial: {fileID: 2100000, guid: 6a4eb0ba61ded7945a233a0a147f6168, type: 2}
   m_fontSharedMaterials: []
   m_fontMaterial: {fileID: 0}
   m_fontMaterials: []
@@ -6825,7 +6825,7 @@ MonoBehaviour:
     lineCount: 23
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 0
+  m_havePropertiesChanged: 1
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -13732,6 +13732,7 @@ MonoBehaviour:
   - {fileID: 2051036010}
   - {fileID: 118516260}
   - {fileID: 165084553}
+  WMLeftTxt: {fileID: 1058093326}
   ghostTiles:
   - {fileID: 0}
   - {fileID: 0}

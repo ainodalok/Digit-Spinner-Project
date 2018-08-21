@@ -27,6 +27,7 @@ public class BoardController : MonoBehaviour {
 
     public TextMeshProUGUI scoreText;
     public Transform[] powerupTransforms;
+    public TextMeshProUGUI WMLeftTxt;
 
     [HideInInspector]
     public GameObject[][] prophecyTileObjects = new GameObject[BoardLogic.BOARD_SIZE][];

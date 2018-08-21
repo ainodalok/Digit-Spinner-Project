@@ -6,6 +6,7 @@ using System.Linq;
 using UnityEngine.SceneManagement;
 using System.Runtime.Serialization.Formatters.Binary;
 using System.IO;
+using UnityEngine.UI;
 
 public class Util {
     public static string[][] CloneArray(string[][] source)
@@ -108,5 +109,13 @@ public class Util {
             ms.Seek(0, SeekOrigin.Begin);
             return (Dictionary<string, string>) new BinaryFormatter().Deserialize(ms);
         }
+    }
+
+    public static void SwapButtonColors(Button button)
+    {
+        ColorBlock colorBlock = button.colors;
+        colorBlock.normalColor = button.colors.highlightedColor;
+        colorBlock.highlightedColor = button.colors.normalColor;
+        button.colors = colorBlock;
     }
 }

@@ -27,7 +27,7 @@ public class SceneLoadManager : MonoBehaviour
         DOTween.SetTweensCapacity(500, 50);
         Input.multiTouchEnabled = false;
         Application.targetFrameRate = 60;
-        PlayServicesManager.Init();
+        //PlayServicesManager.Init();
         if (SceneManager.sceneCount < 2)
         {
             StartCoroutine(LoadScene("Menu"));
@@ -93,6 +93,7 @@ public class SceneLoadManager : MonoBehaviour
         if (currentScene == "")
         {
             adManager.InitAds();
+            PlayServicesManager.Init();
             PlayServicesManager.SaveData();
         }
 
