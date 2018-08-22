@@ -24,7 +24,8 @@
 
 public static class GPGSIds
 {
-        public const string leaderboard_main = "CgkI-MWprNwaEAIQAQ"; // <GPGSID>
+        public const string leaderboard_limited_turns = "CgkI-MWprNwaEAIQAg"; // <GPGSID>
+        public const string leaderboard_time_attack = "CgkI-MWprNwaEAIQAw"; // <GPGSID>
 
 }
 

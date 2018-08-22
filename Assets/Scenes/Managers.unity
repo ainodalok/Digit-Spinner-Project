@@ -190,7 +190,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   audioManager: {fileID: 1737998035}
-  adManager: {fileID: 0}
+  adManager: {fileID: 1841007015}
   currentScene: 
   currentGameMode: 0
   gamePanelScales: []
@@ -310,3 +310,9 @@ MonoBehaviour:
   currentGameBGMIndex: -1
   pausedBGM: 0
   muted: 0
+--- !u!114 &1841007015 stripped
+MonoBehaviour:
+  m_PrefabParentObject: {fileID: 114429942342115718, guid: 1b91dc325e655a44e807a25e12df4909,
+    type: 2}
+  m_PrefabInternal: {fileID: 1099304405}
+  m_Script: {fileID: 11500000, guid: a663c424f2cf0f341b36fd30c548e314, type: 3}
