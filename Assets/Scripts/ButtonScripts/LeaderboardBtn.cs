@@ -7,6 +7,6 @@ public class LeaderboardBtn : MonoBehaviour {
 
     public void OpenLeaderboard()
     {
-        Social.ShowAchievementsUI();
+        Social.ShowLeaderboardUI();
     }
 }
