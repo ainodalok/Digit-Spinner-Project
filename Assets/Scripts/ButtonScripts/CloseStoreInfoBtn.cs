@@ -2,10 +2,11 @@
 using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
+using DG.Tweening;
 
 public class CloseStoreInfoBtn : MonoBehaviour {
-    public GameObject StorePanel;
-    public GameObject InfoTab;
+    public ScalingObjectController StorePanel;
+    public ScalingObjectController InfoTab;
 
 	void Awake () {
         GetComponent<Button>().onClick.AddListener(() => ReturnToStore());
@@ -13,7 +14,13 @@ public class CloseStoreInfoBtn : MonoBehaviour {
 
     private void ReturnToStore()
     {
-        InfoTab.SetActive(false);
-        StorePanel.SetActive(true);
+        StartCoroutine(FadeToStore());
+    }
+
+    private IEnumerator FadeToStore()
+    {
+        yield return StartCoroutine(InfoTab.ScaleOut());
+        yield return StartCoroutine(StorePanel.ScaleIn());
+        InfoTab.gameObject.SetActive(false);
     }
 }

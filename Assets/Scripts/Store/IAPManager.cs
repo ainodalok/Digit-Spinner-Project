@@ -2,12 +2,13 @@
 using UnityEngine;
 using UnityEngine.Purchasing;
 using TMPro;
+using System.Collections;
 
 public class IAPManager : MonoBehaviour, IStoreListener
 {
     public CurrencyTextController currencyTxt;
-    public GameObject StorePanel;
-    public GameObject InfoTab;
+    public ScalingObjectController StorePanel;
+    public ScalingObjectController InfoTab;
     public TextMeshProUGUI InfoTabTxt;
 
     private static IStoreController m_StoreController;          // The Unity Purchasing system.
@@ -131,18 +132,60 @@ public class IAPManager : MonoBehaviour, IStoreListener
     
     public void OnPurchaseFailed(Product product, PurchaseFailureReason failureReason)
     {
-        ShowFailure();
+        string reason = "";
+
+        switch (failureReason)
+        {
+            case PurchaseFailureReason.PurchasingUnavailable:
+                reason = "Store unavailable.";
+                break;
+            case PurchaseFailureReason.ExistingPurchasePending:
+                reason = "Previous purchase not finalized yet.";
+                break;
+            case PurchaseFailureReason.ProductUnavailable:
+                reason = "Product is unavailable at the moment.";
+                break;
+            case PurchaseFailureReason.SignatureInvalid:
+                reason = "Invalid signature.";
+                break;
+            case PurchaseFailureReason.UserCancelled:
+                reason = "Cancelled by user.";
+                break;
+            case PurchaseFailureReason.PaymentDeclined:
+                reason = "Payment declined.";
+                break;
+            case PurchaseFailureReason.DuplicateTransaction:
+                reason = "Duplicate Transaction.";
+                break;
+        }
+
+        ShowFailure(reason);
+    }
+
+    private void ShowFailure(string reason = "")
+    {
+        InfoTabTxt.text = "Purchase failed!";
+        if (reason != "")
+        {
+            InfoTabTxt.text = InfoTabTxt.text + "\n Reason: " + reason;
+        }
+        else
+        {
+            InfoTabTxt.text = InfoTabTxt.text + "\n Reason: Unknown.";
+        }
+        StartCoroutine(FadeToInfoTab());
     }
 
     private void ShowSuccess()
     {
-        StorePanel.SetActive(false);
-        InfoTab.SetActive(true);
+        InfoTabTxt.text = "Purchase successful!";
+        StartCoroutine(FadeToInfoTab());
     }
 
-    private void ShowFailure()
+    private IEnumerator FadeToInfoTab()
     {
-        StorePanel.SetActive(false);
-        InfoTab.SetActive(true);
+        yield return StartCoroutine(StorePanel.ScaleOut());
+        InfoTab.gameObject.SetActive(true);
+        StartCoroutine(InfoTab.ScaleIn());
     }
 }

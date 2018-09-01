@@ -4,6 +4,7 @@ using DG.Tweening;
 
 public class ScalingObjectController : MonoBehaviour {
     public const float fadeDuration = 0.5f;
+    public bool scaleUpOnStart;
 
     void Awake()
     {
@@ -32,7 +33,7 @@ public class ScalingObjectController : MonoBehaviour {
 
     // Use this for initialization
     void Start () {
-        if (transform.localScale != BoardController.ACTIVE_SIZE)
+        if (transform.localScale != BoardController.ACTIVE_SIZE && scaleUpOnStart)
         {
             StartCoroutine(ScaleIn());
         }
@@ -43,7 +44,7 @@ public class ScalingObjectController : MonoBehaviour {
         yield return gameObject.transform.DOScale(BoardController.ACTIVE_SIZE, fadeDuration)
             .SetEase(Ease.OutCubic)
             .WaitForCompletion();
-    }
+    } 
 
     public IEnumerator ScaleOut()
     {

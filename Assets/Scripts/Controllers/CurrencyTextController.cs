@@ -8,7 +8,7 @@ public class CurrencyTextController : MonoBehaviour {
 
 	// Use this for initialization
 	void Start () {
-        UpdateText();
+        InvokeRepeating("UpdateText", 0.0f, 0.2f);
 	}
 	
     public void UpdateText()
