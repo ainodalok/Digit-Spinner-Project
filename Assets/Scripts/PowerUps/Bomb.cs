@@ -110,7 +110,7 @@ public class Bomb : MonoBehaviour {
                         {
                             boardController.activeTileObjects[tilesToExplode[i].x][tilesToExplode[i].y].GetComponentInChildren<SpriteRenderer>().sprite = normalBorder;
                         }
-                        SafeMemory.SetInt("bombLeft", SafeMemory.GetInt("bombLeft") - 1);
+                        PowerUps.ChangePowerUpLeft("bombLeft", PowerUps.GetPowerUpLeft("bombLeft") - 1);
                         BombLeftTxt.SetText(SafeMemory.GetInt("bombLeft").ToString());
                         yield return StartCoroutine(boardController.DestroyMatchedTiles(tilesToExplode, true));
                         boardController.SetEnableColRowMovers(true);

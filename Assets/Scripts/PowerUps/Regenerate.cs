@@ -30,7 +30,7 @@ public class Regenerate : MonoBehaviour {
                 boardController.boardLogic.GenerateActiveTiles();
             }
             boardController.UpdateDigitsBasic();
-            SafeMemory.SetInt("regenLeft", SafeMemory.GetInt("regenLeft") - 1);
+            PowerUps.ChangePowerUpLeft("regenLeft", PowerUps.GetPowerUpLeft("regenLeft") - 1);
             RegenLeftTxt.SetText(SafeMemory.GetInt("regenLeft").ToString());
         }
         if (GameModeManager.mode == GameMode.Tutorial)

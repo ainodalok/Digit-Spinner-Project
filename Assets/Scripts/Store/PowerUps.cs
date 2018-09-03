@@ -7,6 +7,8 @@ public class PowerUps
     public const int POWERUP_COUNT = 4;
     private static bool[] initialized = new bool[4] { false, false, false, false };
 
+    public const int DEFAULT_BALANCE = 0;
+
     //Use this at the beginning of each function that has to do with getting Power Up count
     private static void Init(string powerUpNameLeft)
     {
@@ -55,5 +57,7 @@ public class PowerUps
         SafeMemory.SetInt(powerUpNameLeft, value);
         Storage.SetSafeInt(powerUpNameLeft, value);
         Storage.Commit();
+        //PlayServicesManager.Init();
+        //PlayServicesManager.SaveData();
     }
 }

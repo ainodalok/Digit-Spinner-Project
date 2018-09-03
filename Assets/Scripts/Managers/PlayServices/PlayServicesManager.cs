@@ -14,7 +14,6 @@ public class PlayServicesManager
     public static bool isSigningIn = false;
 
     private const float SERVICE_SIGN_IN_REST_TIME = 5.0f;
-    private const string ENCRYPTION_PASSWORD = "12dSNADO)*U@IASD!(!";
     private const string SAVE_GAME_NAME = "DigitSpinnerSave";
 
     public static void Init()
@@ -115,19 +114,11 @@ public class PlayServicesManager
 
             //here you should specify fields from local storage you want to be saved
             //and keep it SAFE
-            string balanceEncrypted;
-            try
-            {
-                balanceEncrypted = AES.Encrypt(
-                    (Int32.Parse(AES.Decrypt(oldData["balance"], ENCRYPTION_PASSWORD)) + Storage.GetSafeInt("balanceChange")).ToString(),
-                    ENCRYPTION_PASSWORD
-                );
-            }
-            catch (Exception e)
-            {
-                balanceEncrypted = AES.Encrypt("0", ENCRYPTION_PASSWORD);
-            }
-            dataToSave.Add("balance", balanceEncrypted);
+            dataToSave.Add("balance", Storage.Get("balance"));
+            dataToSave.Add("bombLeft", Storage.Get("bombLeft"));
+            dataToSave.Add("regenLeft", Storage.Get("regenLeft"));
+            dataToSave.Add("overtimeLeft", Storage.Get("overtimeLeft"));
+            dataToSave.Add("wrongMoveLeft", Storage.Get("wrongMoveLeft"));
 
             SaveToCloud(Util.DictionaryToByteArray(dataToSave));
         }
@@ -158,13 +149,57 @@ public class PlayServicesManager
             Dictionary<string, string> cloudData = Util.ByteArrayToDict(data);
             try
             {
-                Storage.SetSafeInt("balance", Int32.Parse(AES.Decrypt(cloudData["balance"], ENCRYPTION_PASSWORD)));
+                PlayerPrefs.SetString("balance", cloudData["balance"]);
                 SafeMemory.SetInt("balance", Storage.GetSafeInt("balance"));
             }
             catch (Exception e)
             {
                 Storage.SetSafeInt("balance", Currency.DEFAULT_BALANCE);
                 SafeMemory.SetInt("balance", Currency.DEFAULT_BALANCE);
+            }
+
+            try
+            {
+                PlayerPrefs.SetString("bombLeft", cloudData["bombLeft"]);
+                SafeMemory.SetInt("bombLeft", Storage.GetSafeInt("bombLeft"));
+            }
+            catch (Exception e)
+            {
+                Storage.SetSafeInt("bombLeft", PowerUps.DEFAULT_BALANCE);
+                SafeMemory.SetInt("bombLeft", PowerUps.DEFAULT_BALANCE);
+            }
+
+            try
+            {
+                PlayerPrefs.SetString("regenLeft", cloudData["regenLeft"]);
+                SafeMemory.SetInt("regenLeft", Storage.GetSafeInt("regenLeft"));
+            }
+            catch (Exception e)
+            {
+                Storage.SetSafeInt("regenLeft", PowerUps.DEFAULT_BALANCE);
+                SafeMemory.SetInt("regenLeft", PowerUps.DEFAULT_BALANCE);
+            }
+
+            try
+            {
+                PlayerPrefs.SetString("wrongMoveLeft", cloudData["wrongMoveLeft"]);
+                SafeMemory.SetInt("wrongMoveLeft", Storage.GetSafeInt("wrongMoveLeft"));
+            }
+            catch (Exception e)
+            {
+                Storage.SetSafeInt("wrongMoveLeft", PowerUps.DEFAULT_BALANCE);
+                SafeMemory.SetInt("wrongMoveLeft", PowerUps.DEFAULT_BALANCE);
+            }
+
+            try
+            {
+                PlayerPrefs.SetString("overtimeLeft", cloudData["overtimeLeft"]);
+                SafeMemory.SetInt("overtimeLeft", Storage.GetSafeInt("overtimeLeft"));
+            }
+            catch (Exception e)
+            {
+                Storage.SetSafeInt("overtimeLeft", PowerUps.DEFAULT_BALANCE);
+                SafeMemory.SetInt("overtimeLeft", PowerUps.DEFAULT_BALANCE);
             }
         }
         else

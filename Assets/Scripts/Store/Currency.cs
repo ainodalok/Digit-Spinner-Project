@@ -5,7 +5,7 @@ using GameAnalyticsSDK;
 public class Currency
 {
     private static bool initialized = false;
-    public const int DEFAULT_BALANCE = 100;
+    public const int DEFAULT_BALANCE = 0;
 
     //Use this at the beginning of each function that has to do with balance
     private static void Init()
@@ -47,10 +47,55 @@ public class Currency
         GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "credits", RewardedVideo.REWARD_AMOUNT, "reward", "rewardedVideoAd");
     }
 
-    public static void AddBalance(int amount)
+    public static bool ProcessPowerUpPurchase()
     {
         Init();
-        ChangeBalance(amount);
+
+        if (GetBalance() > StoreManager.POWER_UP_PRICE)
+        {
+            ChangeBalance(-StoreManager.POWER_UP_PRICE);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public static bool ProcessPowerUpSetPurchase()
+    {
+        Init();
+
+        if (GetBalance() > StoreManager.POWER_UP_SET_PRICE)
+        {
+            ChangeBalance(-StoreManager.POWER_UP_SET_PRICE);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public static bool ProcessBlockAdsPurchase()
+    {
+        Init();
+
+        if (GetBalance() > StoreManager.ADBLOCK_PRICE)
+        {
+            ChangeBalance(-StoreManager.ADBLOCK_PRICE);
+            return true;
+        }
+        else
+        {
+            return false;
+        }
+    }
+
+    public static void ProcessPromocode()
+    {
+        Init();
+        ChangeBalance(2000);
     }
 
     private static void ChangeBalance(int change)
@@ -58,5 +103,7 @@ public class Currency
         SafeMemory.SetInt("balance", SafeMemory.GetInt("balance") + change);
         Storage.SetSafeInt("balance", SafeMemory.GetInt("balance"));
         Storage.Commit();
+        //PlayServicesManager.Init();
+        //PlayServicesManager.SaveData();
     }
 }

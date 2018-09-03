@@ -25,7 +25,7 @@ public class WrongMove : MonoBehaviour {
         if (active)
         {
             active = false;
-            //SafeMemory.SetInt("wrongMoveLeft", SafeMemory.GetInt("wrongMoveLeft") + 1);
+            //PowerUps.ChangePowerUpLeft("wrongMoveLeft", SafeMemory.GetInt("wrongLoveLeft") + 1);
             //WMLeftTxt.SetText(SafeMemory.GetInt("wrongMoveLeft").ToString());
             Util.SwapButtonColors(transform.GetComponent<Button>());
         }
@@ -34,7 +34,7 @@ public class WrongMove : MonoBehaviour {
             if (SafeMemory.GetInt("wrongMoveLeft") > 0)
             {
                 active = true;
-                //SafeMemory.SetInt("wrongMoveLeft", SafeMemory.GetInt("wrongMoveLeft") - 1);
+                //PowerUps.ChangePowerUpLeft("wrongMoveLeft", SafeMemory.GetInt("wrongLoveLeft") - 1);
                 //WMLeftTxt.SetText(SafeMemory.GetInt("wrongMoveLeft").ToString());
                 Util.SwapButtonColors(transform.GetComponent<Button>());
             }

@@ -23,7 +23,7 @@ public class CloseAndCheckPromocodeBtn : MonoBehaviour
         if (string.CompareOrdinal(inputField.text.Trim(), PROMOCODE_1) == 0)
         {
             AdRemove.Enable();
-            Currency.AddBalance(2000);
+            Currency.ProcessPromocode();
             infoText.text = "Promocode accepted. \n Thank you!";
         }
         else if (string.CompareOrdinal(inputField.text.Trim(), PROMOCODE_2) == 0)

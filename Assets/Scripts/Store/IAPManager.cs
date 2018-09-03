@@ -192,8 +192,8 @@ public class IAPManager : MonoBehaviour, IStoreListener
             ShowFailure();
         }
 
-        PlayServicesManager.Init();
-        PlayServicesManager.SaveData();
+        //PlayServicesManager.Init();
+        //PlayServicesManager.SaveData();
 
         return PurchaseProcessingResult.Complete;
     }
