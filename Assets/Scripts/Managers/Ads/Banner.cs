@@ -23,9 +23,9 @@ public class Banner {
         Destroy();
 
 #if UNITY_ANDROID
-        string adUnitId = "ca-app-pub-3940256099942544/6300978111";
+        //string adUnitId = "ca-app-pub-3940256099942544/6300978111";
         //NASHE
-        //string adUnitId = "ca-app-pub-6252312720775415/6436179941";
+        string adUnitId = "ca-app-pub-6252312720775415/6436179941";
 #elif UNITY_IPHONE
         string adUnitId = "ca-app-pub-3940256099942544/2934735716";
 #else

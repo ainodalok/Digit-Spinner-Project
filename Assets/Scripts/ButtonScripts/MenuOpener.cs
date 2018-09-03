@@ -326,10 +326,10 @@ public class MenuOpener : MonoBehaviour {
         scoreEndTxt.GetComponent<TextMeshProUGUI>().text = "Score:\n" + SafeMemory.Get("score");
         Currency.ProcessEndGame();
         currencyTextController.UpdateText();
-        StartCoroutine(menuBtn.GetComponent<ScalingObjectController>().ScaleOut());
-        StartCoroutine(scoreTxt.GetComponent<ScalingObjectController>().ScaleOut());
-        StartCoroutine(endGameBtn.GetComponent<ScalingObjectController>().ScaleOut());
-        StartCoroutine(settingsBtn.GetComponent<ScalingObjectController>().ScaleOut());
+        StartCoroutine(menuBtn.ScaleOut());
+        StartCoroutine(scoreTxt.ScaleOut());
+        StartCoroutine(endGameBtn.ScaleOut());
+        //StartCoroutine(settingsBtn.GetComponent<ScalingObjectController>().ScaleOut());
         scoreEnd.SetActive(true);
         scoreEndTxt.SetActive(true);
     }

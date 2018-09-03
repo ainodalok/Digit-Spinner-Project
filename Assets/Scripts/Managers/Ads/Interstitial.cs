@@ -14,9 +14,9 @@ public class Interstitial {
     {
         loadNeed = false;
 #if UNITY_ANDROID
-        string adUnitId = "ca-app-pub-3940256099942544/1033173712";
+        //string adUnitId = "ca-app-pub-3940256099942544/1033173712";
         //NASHE
-        //string adUnitId = "ca-app-pub-6252312720775415/9911609303";
+        string adUnitId = "ca-app-pub-6252312720775415/9911609303";
 #elif UNITY_IPHONE
         string adUnitId = "ca-app-pub-3940256099942544/4411468910";
 #else

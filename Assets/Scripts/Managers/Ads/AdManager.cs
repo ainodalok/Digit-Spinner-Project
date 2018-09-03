@@ -15,9 +15,9 @@ public class AdManager : MonoBehaviour {
     {
         banner = new Banner(sceneLoadManager);
 #if UNITY_ANDROID
-        string appId = "ca-app-pub-3940256099942544~3347511713";
+        //string appId = "ca-app-pub-3940256099942544~3347511713";
         //NASHE
-        //string appId = "ca-app-pub-6252312720775415~6167805410";
+        string appId = "ca-app-pub-6252312720775415~6167805410";
 #elif UNITY_IPHONE
         string appId = "unexpected_platform";
 #else
