@@ -100,6 +100,11 @@ public class SceneLoadManager : MonoBehaviour
             PlayServicesManager.Init();
             PlayServicesManager.TryLoadCloudSave();
         }
+        else
+        {
+            PlayServicesManager.Init();
+            PlayServicesManager.SaveData();
+        }
         if (sceneName == "Game")
         {
             if (gameMode == GameMode.LimitedTurns)

@@ -44,7 +44,12 @@ public class IAPManager : MonoBehaviour, IStoreListener
 
         var builder = ConfigurationBuilder.Instance(StandardPurchasingModule.Instance());
 
+        builder.AddProduct(CREDITS_100, ProductType.Consumable);
+        builder.AddProduct(CREDITS_200, ProductType.Consumable);
+        builder.AddProduct(CREDITS_500, ProductType.Consumable);
         builder.AddProduct(CREDITS_1000, ProductType.Consumable);
+        builder.AddProduct(CREDITS_5000, ProductType.Consumable);
+        builder.AddProduct(CREDITS_10000, ProductType.Consumable);
         /*
         builder.AddProduct(kProductIDSubscription, ProductType.Subscription, new IDs(){
                 { kProductNameAppleSubscription, AppleAppStore.Name },
@@ -186,6 +191,9 @@ public class IAPManager : MonoBehaviour, IStoreListener
         {
             ShowFailure();
         }
+
+        PlayServicesManager.Init();
+        PlayServicesManager.SaveData();
 
         return PurchaseProcessingResult.Complete;
     }

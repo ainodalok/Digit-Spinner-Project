@@ -4,6 +4,7 @@ using UnityEngine;
 using System.Collections.Generic;
 using GooglePlayGames.BasicApi.SavedGame;
 using System;
+using GameAnalyticsSDK;
 
 public class PlayServicesManager
 {
@@ -55,7 +56,6 @@ public class PlayServicesManager
             return;
         }
 
-        //TODO: discuss the choice
         PlayGamesPlatform.Instance.SavedGame.OpenWithAutomaticConflictResolution(
             SAVE_GAME_NAME,
             DataSource.ReadCacheOrNetwork,
@@ -72,7 +72,6 @@ public class PlayServicesManager
             return;
         }
 
-        //TODO: discuss the choice
         PlayGamesPlatform.Instance.SavedGame.OpenWithAutomaticConflictResolution(
             SAVE_GAME_NAME,
             DataSource.ReadCacheOrNetwork,
@@ -90,7 +89,7 @@ public class PlayServicesManager
         }
         else
         {
-            // handle error
+            GameAnalytics.NewErrorEvent(GAErrorSeverity.Debug, "Saved game request failed on trying to update");
         }
     }
 
@@ -103,7 +102,7 @@ public class PlayServicesManager
         }
         else
         {
-            // handle error
+            GameAnalytics.NewErrorEvent(GAErrorSeverity.Debug, "Saved game request failed on trying to save");
         }
     }
 
@@ -134,7 +133,7 @@ public class PlayServicesManager
         }
         else
         {
-            // handle error
+            GameAnalytics.NewErrorEvent(GAErrorSeverity.Debug, "Saved game request failed on trying to update cloud data");
         }
     }
 
@@ -170,7 +169,7 @@ public class PlayServicesManager
         }
         else
         {
-            // handle error
+            GameAnalytics.NewErrorEvent(GAErrorSeverity.Debug, "Saved game request failed on trying to update local data");
         }
     }
 
