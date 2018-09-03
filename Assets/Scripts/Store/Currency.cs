@@ -47,6 +47,12 @@ public class Currency
         GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "credits", RewardedVideo.REWARD_AMOUNT, "reward", "rewardedVideoAd");
     }
 
+    public static void AddBalance(int amount)
+    {
+        Init();
+        ChangeBalance(amount);
+    }
+
     private static void ChangeBalance(int change)
     {
         SafeMemory.SetInt("balance", SafeMemory.GetInt("balance") + change);

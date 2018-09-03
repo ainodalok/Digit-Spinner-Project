@@ -33,8 +33,11 @@ public class AdManager : MonoBehaviour {
 
     public void RequestAndLoadAds()
     {
-        banner.Request();
-        interstitial.Request();
+        if(AdRemove.Get())
+        {
+            banner.Request();
+            interstitial.Request();
+        }
         rewardedVideo.Request();
     }
 
@@ -42,20 +45,23 @@ public class AdManager : MonoBehaviour {
     {
         //while (true)
         //{
-            if (banner != null)
+            if(AdRemove.Get())
             {
-                if (banner.IsLoadNeed())
+                if (banner != null)
                 {
-                    banner.LoadNew();
+                    if (banner.IsLoadNeed())
+                    {
+                        banner.LoadNew();
+                    }
+                    else if (banner.IsLoaded() && !banner.IsShown())
+                    {
+                        banner.Show();
+                    }
                 }
-                else if (banner.IsLoaded() && !banner.IsShown())
+                if (!interstitial.IsLoaded() && interstitial.IsLoadNeed())
                 {
-                    banner.Show();
+                    interstitial.LoadNew();
                 }
-            }
-            if (!interstitial.IsLoaded() && interstitial.IsLoadNeed())
-            {
-                interstitial.LoadNew();
             }
             if (!rewardedVideo.IsLoaded() && rewardedVideo.IsLoadNeed())
             {
