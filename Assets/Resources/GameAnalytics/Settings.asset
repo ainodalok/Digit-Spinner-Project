@@ -25,18 +25,18 @@ MonoBehaviour:
   UserMessagesFailed: 0
   CustomArea: 
   gameKey:
-  - db0fed1e5b587483a0e44eabf7c5745a
+  - 17512c26593cf04415aecdc82237e3c8
   secretKey:
-  - d36cb4f98727b7f809fd5391a6ca62df414b627c
+  - b96f96dbc416b3a9f5041583ced37dfd175e5bd0
   Build:
   - 0.1
   SelectedPlatformStudio:
   - Frost Nova Interactive
   SelectedPlatformGame:
   - Digit Spinner
-  SelectedPlatformGameID: 01e30000
+  SelectedPlatformGameID: fee20000
   SelectedStudio: 01000000
-  SelectedGame: 01000000
+  SelectedGame: 02000000
   NewVersion: 
   Changes: 
   SignUpOpen: 0
