@@ -33,7 +33,7 @@ public class AdManager : MonoBehaviour {
 
     public void RequestAndLoadAds()
     {
-        if(AdRemove.Get())
+        if (!AdRemove.Get())
         {
             banner.Request();
             interstitial.Request();
@@ -45,7 +45,7 @@ public class AdManager : MonoBehaviour {
     {
         //while (true)
         //{
-            if(AdRemove.Get())
+            if(!AdRemove.Get())
             {
                 if (banner != null)
                 {

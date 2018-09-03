@@ -8,6 +8,7 @@ public class StoreManager : MonoBehaviour {
     public ScalingObjectController StorePanel;
     public ScalingObjectController InfoTab;
     public TextMeshProUGUI InfoTabTxt;
+    public GameObject AdRemoveBtnObj;
 
     public const int POWER_UP_PRICE = 70;
     public const int POWER_UP_SET_PRICE = 240;
@@ -85,7 +86,9 @@ public class StoreManager : MonoBehaviour {
     {
         if (Currency.ProcessBlockAdsPurchase())
         {
+            AdRemove.Enable();
             ShowSuccess();
+            AdRemoveBtnObj.SetActive(false);
         }
         else
         {

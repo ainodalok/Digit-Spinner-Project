@@ -8,6 +8,7 @@ public class WrongMove : MonoBehaviour {
     public TextMeshProUGUI WMLeftTxt;
 
     public static bool active = false;
+    public static bool used = false;
 
     void Awake()
     {
@@ -22,21 +23,24 @@ public class WrongMove : MonoBehaviour {
 
     public void Activate()
     {
-        if (active)
+        if (!used)
         {
-            active = false;
-            //PowerUps.ChangePowerUpLeft("wrongMoveLeft", SafeMemory.GetInt("wrongLoveLeft") + 1);
-            //WMLeftTxt.SetText(SafeMemory.GetInt("wrongMoveLeft").ToString());
-            Util.SwapButtonColors(transform.GetComponent<Button>());
-        }
-        else
-        {
-            if (SafeMemory.GetInt("wrongMoveLeft") > 0)
+            if (active)
             {
-                active = true;
-                //PowerUps.ChangePowerUpLeft("wrongMoveLeft", SafeMemory.GetInt("wrongLoveLeft") - 1);
+                active = false;
+                //PowerUps.ChangePowerUpLeft("wrongMoveLeft", SafeMemory.GetInt("wrongLoveLeft") + 1);
                 //WMLeftTxt.SetText(SafeMemory.GetInt("wrongMoveLeft").ToString());
                 Util.SwapButtonColors(transform.GetComponent<Button>());
+            }
+            else
+            {
+                if (SafeMemory.GetInt("wrongMoveLeft") > 0)
+                {
+                    active = true;
+                    //PowerUps.ChangePowerUpLeft("wrongMoveLeft", SafeMemory.GetInt("wrongLoveLeft") - 1);
+                    //WMLeftTxt.SetText(SafeMemory.GetInt("wrongMoveLeft").ToString());
+                    Util.SwapButtonColors(transform.GetComponent<Button>());
+                }
             }
         }
     }

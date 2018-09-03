@@ -212,6 +212,8 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                 }
                 else
                 {
+                    Util.SwapButtonColors(bc.WMLeftBtn);
+                    WrongMove.used = true;
                     WrongMove.active = false;
                     PowerUps.ChangePowerUpLeft("wrongMoveLeft", PowerUps.GetPowerUpLeft("wrongMoveLeft") - 1);
                     bc.WMLeftTxt.SetText(SafeMemory.GetInt("wrongMoveLeft").ToString());

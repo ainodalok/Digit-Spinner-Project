@@ -6,6 +6,7 @@ using System.Linq;
 using System;
 using TMPro;
 using DG.Tweening;
+using UnityEngine.UI;
 
 public class BoardController : MonoBehaviour {
     public BoardLogic boardLogic;
@@ -28,6 +29,7 @@ public class BoardController : MonoBehaviour {
     public TextMeshProUGUI scoreText;
     public Transform[] powerupTransforms;
     public TextMeshProUGUI WMLeftTxt;
+    public Button WMLeftBtn;
 
     [HideInInspector]
     public GameObject[][] prophecyTileObjects = new GameObject[BoardLogic.BOARD_SIZE][];

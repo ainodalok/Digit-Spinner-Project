@@ -17007,6 +17007,7 @@ MonoBehaviour:
   - {fileID: 118516260}
   - {fileID: 165084553}
   WMLeftTxt: {fileID: 1058093326}
+  WMLeftBtn: {fileID: 2051036011}
   ghostTiles:
   - {fileID: 0}
   - {fileID: 0}

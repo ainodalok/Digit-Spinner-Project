@@ -9,6 +9,8 @@ public class Regenerate : MonoBehaviour {
     public BoardController boardController;
     public GameModeManager gameModeManager;
 
+    public static bool used = false;
+
     void Awake()
     {
         //CHANGE TO A REAL VALUE LATER
@@ -22,24 +24,28 @@ public class Regenerate : MonoBehaviour {
 
     public void RegenerateBoard()
     {
-        if (SafeMemory.GetInt("regenLeft") > 0)
+        if (!used)
         {
-            boardController.boardLogic.GenerateActiveTiles();
-            while (MatchFinder.IsGameOver(boardController.boardLogic.activeTiles))
+            if (SafeMemory.GetInt("regenLeft") > 0)
             {
                 boardController.boardLogic.GenerateActiveTiles();
+                while (MatchFinder.IsGameOver(boardController.boardLogic.activeTiles))
+                {
+                    boardController.boardLogic.GenerateActiveTiles();
+                }
+                boardController.UpdateDigitsBasic();
+                used = true;
+                PowerUps.ChangePowerUpLeft("regenLeft", PowerUps.GetPowerUpLeft("regenLeft") - 1);
+                RegenLeftTxt.SetText(SafeMemory.GetInt("regenLeft").ToString());
             }
-            boardController.UpdateDigitsBasic();
-            PowerUps.ChangePowerUpLeft("regenLeft", PowerUps.GetPowerUpLeft("regenLeft") - 1);
-            RegenLeftTxt.SetText(SafeMemory.GetInt("regenLeft").ToString());
-        }
-        if (GameModeManager.mode == GameMode.Tutorial)
-        {
-            (gameModeManager.tracker as SectionCounter).NextSection();
-        }
-        else
-        {
-            GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "regenLeft", 1, "Use", "PowerUpUse");
+            if (GameModeManager.mode == GameMode.Tutorial)
+            {
+                (gameModeManager.tracker as SectionCounter).NextSection();
+            }
+            else
+            {
+                GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "regenLeft", 1, "Use", "PowerUpUse");
+            }
         }
     }
 }

@@ -13,6 +13,8 @@ public class Bomb : MonoBehaviour {
     public Sprite normalBorder;
     public GameModeManager gameModeManager;
 
+    public static bool used = false;
+
 #if UNITY_EDITOR
     private bool firstTime = false;
     private bool mouseUp = false;
@@ -44,29 +46,32 @@ public class Bomb : MonoBehaviour {
 
     public void PickAndExplode()
     {
-        if (picking)
+        if (!used)
         {
-            StopCoroutine(picker);
-            for (int i = 0; i < tilesToExplode.Count; i++)
+            if (picking)
             {
-                boardController.activeTileObjects[tilesToExplode[i].x][tilesToExplode[i].y].GetComponentInChildren<SpriteRenderer>().sprite = normalBorder;
-            }
-            boardController.SetEnableColRowMovers(true);
-            //SafeMemory.SetInt("bombLeft", SafeMemory.GetInt("bombLeft") + 1);
-            //BombLeftTxt.SetText(SafeMemory.GetInt("bombLeft").ToString());
-            Util.SwapButtonColors(transform.GetComponent<Button>());
-            picking = false;
-        }
-        else
-        {
-            if (SafeMemory.GetInt("bombLeft") > 0)
-            {
-                picking = true;
-                boardController.SetEnableColRowMovers(false);
-                //SafeMemory.SetInt("bombLeft", SafeMemory.GetInt("bombLeft") - 1);
+                StopCoroutine(picker);
+                for (int i = 0; i < tilesToExplode.Count; i++)
+                {
+                    boardController.activeTileObjects[tilesToExplode[i].x][tilesToExplode[i].y].GetComponentInChildren<SpriteRenderer>().sprite = normalBorder;
+                }
+                boardController.SetEnableColRowMovers(true);
+                //SafeMemory.SetInt("bombLeft", SafeMemory.GetInt("bombLeft") + 1);
                 //BombLeftTxt.SetText(SafeMemory.GetInt("bombLeft").ToString());
                 Util.SwapButtonColors(transform.GetComponent<Button>());
-                picker = StartCoroutine(ProcessInputs());
+                picking = false;
+            }
+            else
+            {
+                if (SafeMemory.GetInt("bombLeft") > 0)
+                {
+                    picking = true;
+                    boardController.SetEnableColRowMovers(false);
+                    //SafeMemory.SetInt("bombLeft", SafeMemory.GetInt("bombLeft") - 1);
+                    //BombLeftTxt.SetText(SafeMemory.GetInt("bombLeft").ToString());
+                    Util.SwapButtonColors(transform.GetComponent<Button>());
+                    picker = StartCoroutine(ProcessInputs());
+                }
             }
         }
     }
@@ -110,8 +115,10 @@ public class Bomb : MonoBehaviour {
                         {
                             boardController.activeTileObjects[tilesToExplode[i].x][tilesToExplode[i].y].GetComponentInChildren<SpriteRenderer>().sprite = normalBorder;
                         }
+                        used = true;
                         PowerUps.ChangePowerUpLeft("bombLeft", PowerUps.GetPowerUpLeft("bombLeft") - 1);
                         BombLeftTxt.SetText(SafeMemory.GetInt("bombLeft").ToString());
+                        Util.SwapButtonColors(transform.GetComponent<Button>());
                         yield return StartCoroutine(boardController.DestroyMatchedTiles(tilesToExplode, true));
                         boardController.SetEnableColRowMovers(true);
                         if (GameModeManager.mode == GameMode.Tutorial)
