@@ -237,6 +237,7 @@ public class MenuOpener : MonoBehaviour {
         }
         slideMenuPanel.Join(restartBtnSlide);
         slideMenuPanel.Join(mainMenuBtnSlide);
+        slideMenuPanel.Join(settingsBtnSlide);
         slideMenuPanel.Play();
         yield return slideMenuPanel.WaitForCompletion();
     }
@@ -274,6 +275,7 @@ public class MenuOpener : MonoBehaviour {
         }
         slideMenuPanel.Join(restartBtnSlide);
         slideMenuPanel.Join(mainMenuBtnSlide);
+        slideMenuPanel.Join(settingsBtnSlide);
         slideMenuPanel.Play();
         yield return slideMenuPanel.WaitForCompletion();
         slideMenuPanel = null;

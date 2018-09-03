@@ -1482,7 +1482,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -14294,7 +14294,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -15719,7 +15719,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -17512,7 +17512,7 @@ MonoBehaviour:
     lineCount: 1
     pageCount: 1
     materialCount: 1
-  m_havePropertiesChanged: 1
+  m_havePropertiesChanged: 0
   m_isUsingLegacyAnimationComponent: 0
   m_isVolumetricText: 0
   m_spriteAnimator: {fileID: 0}
@@ -17598,6 +17598,7 @@ MonoBehaviour:
   TutorialTxt: {fileID: 965944625}
   greenBorder: {fileID: 21300000, guid: 3561acf321b30f741b83753dbc226455, type: 3}
   normalBorder: {fileID: 21300000, guid: c69697bc5f2b51b45bcb205729efd44d, type: 3}
+  playerGaveUp: 0
   boardController: {fileID: 1845161032}
   BombLeftTxt: {fileID: 1335576927}
   OTLeftTxt: {fileID: 677498031}
