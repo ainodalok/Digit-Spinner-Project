@@ -16,7 +16,12 @@ public class IAPManager : MonoBehaviour, IStoreListener
 
     //list all product ids and then add them to config in InitializePurchasing()
     //also, provide handlers in ProcessPurchase()
+    private const string CREDITS_100 = "100credits";
+    private const string CREDITS_200 = "200credits";
+    private const string CREDITS_500 = "500credits";
     private const string CREDITS_1000 = "1000credits";
+    private const string CREDITS_5000 = "5000credits";
+    private const string CREDITS_10000 = "10000credits";
 
     //below you may see commented implementation for it in case of different ids in apple and google stores for the same product
     //private static string kProductNameAppleSubscription = "com.unity3d.subscription.new";
@@ -54,9 +59,34 @@ public class IAPManager : MonoBehaviour, IStoreListener
         return m_StoreController != null && m_StoreExtensionProvider != null;
     }
 
+    public void Buy100Credits()
+    {
+        BuyProductByID(CREDITS_100);
+    }
+
+    public void Buy200Credits()
+    {
+        BuyProductByID(CREDITS_200);
+    }
+
+    public void Buy500Credits()
+    {
+        BuyProductByID(CREDITS_500);
+    }
+
     public void Buy1000Credits()
     {
         BuyProductByID(CREDITS_1000);
+    }
+
+    public void Buy5000Credits()
+    {
+        BuyProductByID(CREDITS_5000);
+    }
+
+    public void Buy10000Credits()
+    {
+        BuyProductByID(CREDITS_10000);
     }
 
     void BuyProductByID(string productId)
@@ -116,9 +146,39 @@ public class IAPManager : MonoBehaviour, IStoreListener
 
     public PurchaseProcessingResult ProcessPurchase(PurchaseEventArgs args)
     {
-        if (String.Equals(args.purchasedProduct.definition.id, CREDITS_1000, StringComparison.Ordinal))
+        if (String.Equals(args.purchasedProduct.definition.id, CREDITS_100, StringComparison.Ordinal))
+        {
+            Currency.ProcessPurchase(100);
+            currencyTxt.UpdateText();
+            ShowSuccess();
+        }
+        else if (String.Equals(args.purchasedProduct.definition.id, CREDITS_200, StringComparison.Ordinal))
+        {
+            Currency.ProcessPurchase(200);
+            currencyTxt.UpdateText();
+            ShowSuccess();
+        }
+        else if (String.Equals(args.purchasedProduct.definition.id, CREDITS_500, StringComparison.Ordinal))
+        {
+            Currency.ProcessPurchase(500);
+            currencyTxt.UpdateText();
+            ShowSuccess();
+        }
+        else if (String.Equals(args.purchasedProduct.definition.id, CREDITS_1000, StringComparison.Ordinal))
         {
             Currency.ProcessPurchase(1000);
+            currencyTxt.UpdateText();
+            ShowSuccess();
+        }
+        else if (String.Equals(args.purchasedProduct.definition.id, CREDITS_5000, StringComparison.Ordinal))
+        {
+            Currency.ProcessPurchase(5000);
+            currencyTxt.UpdateText();
+            ShowSuccess();
+        }
+        else if (String.Equals(args.purchasedProduct.definition.id, CREDITS_10000, StringComparison.Ordinal))
+        {
+            Currency.ProcessPurchase(10000);
             currencyTxt.UpdateText();
             ShowSuccess();
         }

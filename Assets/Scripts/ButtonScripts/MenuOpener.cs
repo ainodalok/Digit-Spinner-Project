@@ -315,6 +315,7 @@ public class MenuOpener : MonoBehaviour {
             }
 
             GameAnalytics.NewProgressionEvent(status, eventName, SafeMemory.GetInt("score"));
+            GameAnalytics.NewDesignEvent("Game:Move:Count", boardController.moveCount);
         }
     }
 

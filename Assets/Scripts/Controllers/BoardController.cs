@@ -38,6 +38,8 @@ public class BoardController : MonoBehaviour {
 
     //[HideInInspector]
     //public int score;
+    [HideInInspector]
+    public int moveCount = 0;
 
     [HideInInspector]
     public bool isDestroying = false;
@@ -665,6 +667,8 @@ public class BoardController : MonoBehaviour {
         {
             (gameModeManager.tracker as SectionCounter).NextSection();
         }
+
+        moveCount++;
     }
 
     public IEnumerator AnimateGameOverNotification()

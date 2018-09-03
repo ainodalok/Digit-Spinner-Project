@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using DG.Tweening;
+using GameAnalyticsSDK;
 
 public class StoreOpener : MonoBehaviour {
     public ScalingObjectController mainMenuPanel;
@@ -17,6 +18,7 @@ public class StoreOpener : MonoBehaviour {
 	public void OpenStore()
     {
         StartCoroutine(SwitchPanels(mainMenuPanel, storePanel));
+        GameAnalytics.NewDesignEvent("Button:Store:Open");
     }
 
     public void CloseStore()

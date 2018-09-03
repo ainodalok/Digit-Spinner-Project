@@ -37,6 +37,11 @@ public class SceneLoadManager : MonoBehaviour
         }
     }
 
+    void Start()
+    {
+        GameAnalytics.Initialize();
+    }
+
     public void WrapLoadCoroutine(string sceneName, GameMode gameMode = GameMode.None)
     {
         if (!loading)
@@ -93,7 +98,7 @@ public class SceneLoadManager : MonoBehaviour
         {
             adManager.InitAds();
             PlayServicesManager.Init();
-            PlayServicesManager.SaveData();
+            PlayServicesManager.TryLoadCloudSave();
         }
         if (sceneName == "Game")
         {
