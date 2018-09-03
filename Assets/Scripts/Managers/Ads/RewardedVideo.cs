@@ -33,7 +33,7 @@ public class RewardedVideo
 #if UNITY_ANDROID
         string adUnitId = "ca-app-pub-3940256099942544/5224354917";
         //NASHE
-        //string adUnitId = "";
+        //string adUnitId = "ca-app-pub-6252312720775415/7624766435";
 #elif UNITY_IPHONE
         string adUnitId = "ca-app-pub-3940256099942544/1712485313";
 #else

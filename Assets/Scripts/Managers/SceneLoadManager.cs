@@ -109,15 +109,15 @@ public class SceneLoadManager : MonoBehaviour
         {
             if (gameMode == GameMode.LimitedTurns)
             {
-                GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "Game:LimitedTurns:Play");
+                GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "Game", "LimitedTurns", "Play");
             }
             else if (gameMode == GameMode.TimeAttack)
             {
-                GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "Game:TimeAttack:Play");
+                GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "Game", "TimeAttack", "Play");
             }
             else if (gameMode == GameMode.Tutorial)
             {
-                GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "Tutorial:Tutorial:Play");
+                GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "Game", "Tutorial", "Play");
             }
             else
             {

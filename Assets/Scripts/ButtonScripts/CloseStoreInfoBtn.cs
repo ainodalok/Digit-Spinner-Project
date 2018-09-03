@@ -20,6 +20,7 @@ public class CloseStoreInfoBtn : MonoBehaviour {
     private IEnumerator FadeToStore()
     {
         yield return StartCoroutine(InfoTab.ScaleOut());
+        StorePanel.gameObject.SetActive(true);
         yield return StartCoroutine(StorePanel.ScaleIn());
         InfoTab.gameObject.SetActive(false);
     }

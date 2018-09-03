@@ -293,13 +293,13 @@ public class MenuOpener : MonoBehaviour {
                 GameAnalytics.NewErrorEvent(GAErrorSeverity.Warning, "No Mode at the end of the game");
                 break;
             case GameMode.TimeAttack:
-                eventName = "Game:TimeAttack:Play";
+                eventName = "TimeAttack";
                 break;
             case GameMode.LimitedTurns:
-                eventName = "Game:LimitedTurns:Play";
+                eventName = "LimitedTurns";
                 break;
             case GameMode.Tutorial:
-                eventName = "Game:Tutorial:Play";
+                eventName = "Tutorial";
                 break;
         }
 
@@ -316,7 +316,7 @@ public class MenuOpener : MonoBehaviour {
                 status = GAProgressionStatus.Complete;
             }
 
-            GameAnalytics.NewProgressionEvent(status, eventName, SafeMemory.GetInt("score"));
+            GameAnalytics.NewProgressionEvent(status, "Game", eventName, "Play", SafeMemory.GetInt("score"));
         }
     }
 
