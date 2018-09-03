@@ -13,7 +13,11 @@ public class Overtime : MonoBehaviour {
     void Awake()
     {
         //CHANGE TO A REAL VALUE LATER
-        SafeMemory.SetInt("overtimeLeft", 1);
+        //SafeMemory.SetInt("overtimeLeft", 1);
+        if (GameModeManager.mode != GameMode.Tutorial)
+        {
+            PowerUps.GetPowerUpLeft("overtimeLeft");
+        }
         OTLeftTxt.SetText(SafeMemory.GetInt("overtimeLeft").ToString());
     }
 

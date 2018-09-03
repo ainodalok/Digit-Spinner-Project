@@ -34,7 +34,11 @@ public class Bomb : MonoBehaviour {
     void Awake()
     {
         //CHANGE TO A REAL VALUE LATER
-        SafeMemory.SetInt("bombLeft", 1); 
+        //SafeMemory.SetInt("bombLeft", 1);
+        if (GameModeManager.mode != GameMode.Tutorial)
+        {
+            PowerUps.GetPowerUpLeft("bombLeft");
+        }
         BombLeftTxt.SetText(SafeMemory.GetInt("bombLeft").ToString());
     }
 

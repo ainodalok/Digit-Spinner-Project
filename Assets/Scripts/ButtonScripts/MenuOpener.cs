@@ -219,25 +219,25 @@ public class MenuOpener : MonoBehaviour {
     {
         Sequence slideMenuPanel = DOTween.Sequence();
         Tweener restartBtnSlide = restartBtn.transform.DOMoveX(0, SLIDE_DURATION).SetEase(Ease.OutBack);
-        Tweener mainMenuBtnSlide = mainMenuBtn.transform.DOMoveX(0, SLIDE_DURATION).SetEase(Ease.OutBack);
         Tweener settingsBtnSlide = settingsBtn.transform.DOMoveX(0, SLIDE_DURATION).SetEase(Ease.OutBack);
+        Tweener mainMenuBtnSlide = mainMenuBtn.transform.DOMoveX(0, SLIDE_DURATION).SetEase(Ease.OutBack);
 
         if (gameModeManager.tracker.gameOver)
         {
             Tweener scoreEndSlide = scoreEnd.transform.DOMoveX(0, SLIDE_DURATION).SetEase(Ease.OutBack);
             restartBtnSlide.SetDelay(scoreEndSlide.Duration() / 6.0f);
-            mainMenuBtnSlide.SetDelay(2 * scoreEndSlide.Duration() / 6.0f);
-            settingsBtnSlide.SetDelay(3 * scoreEndSlide.Duration() / 6.0f);
+            settingsBtnSlide.SetDelay(2 * scoreEndSlide.Duration() / 6.0f);
+            mainMenuBtnSlide.SetDelay(3 * scoreEndSlide.Duration() / 6.0f);
             slideMenuPanel.Join(scoreEndSlide);
         }
         else
         {
-            mainMenuBtnSlide.SetDelay(restartBtnSlide.Duration() / 6.0f);
-            settingsBtnSlide.SetDelay(2 * restartBtnSlide.Duration() / 6.0f);
+            settingsBtnSlide.SetDelay(restartBtnSlide.Duration() / 6.0f);
+            mainMenuBtnSlide.SetDelay(2 * restartBtnSlide.Duration() / 6.0f);
         }
         slideMenuPanel.Join(restartBtnSlide);
-        slideMenuPanel.Join(mainMenuBtnSlide);
         slideMenuPanel.Join(settingsBtnSlide);
+        slideMenuPanel.Join(mainMenuBtnSlide);
         slideMenuPanel.Play();
         yield return slideMenuPanel.WaitForCompletion();
     }
@@ -249,14 +249,14 @@ public class MenuOpener : MonoBehaviour {
                                                                     (transform.GetComponent<RectTransform>().rect.width + 
                                                                     restartBtn.transform.GetComponent<RectTransform>().rect.width) / 2.0f, 
                                                                     SLIDE_DURATION).SetEase(Ease.InBack);
-        Tweener mainMenuBtnSlide = mainMenuBtn.transform.DOLocalMoveX(-mainMenuBtn.transform.parent.localPosition.x - 
-                                                                      (transform.GetComponent<RectTransform>().rect.width + 
-                                                                      mainMenuBtn.transform.GetComponent<RectTransform>().rect.width) / 2.0f, 
-                                                                      SLIDE_DURATION).SetEase(Ease.InBack);
         Tweener settingsBtnSlide = settingsBtn.transform.DOLocalMoveX(-mainMenuBtn.transform.parent.localPosition.x -
                                                               (transform.GetComponent<RectTransform>().rect.width +
                                                               settingsBtn.transform.GetComponent<RectTransform>().rect.width) / 2.0f,
                                                               SLIDE_DURATION).SetEase(Ease.InBack);
+        Tweener mainMenuBtnSlide = mainMenuBtn.transform.DOLocalMoveX(-mainMenuBtn.transform.parent.localPosition.x - 
+                                                                      (transform.GetComponent<RectTransform>().rect.width + 
+                                                                      mainMenuBtn.transform.GetComponent<RectTransform>().rect.width) / 2.0f, 
+                                                                      SLIDE_DURATION).SetEase(Ease.InBack);
         if (gameModeManager.tracker.gameOver)
         {
             Tweener scoreEndSlide = scoreEnd.transform.DOLocalMoveX(-scoreEnd.transform.parent.localPosition.x - 
@@ -264,18 +264,18 @@ public class MenuOpener : MonoBehaviour {
                                                                     scoreEnd.transform.GetComponent<RectTransform>().rect.width) / 2.0f, 
                                                                     SLIDE_DURATION).SetEase(Ease.InBack);
             restartBtnSlide.SetDelay(scoreEndSlide.Duration() / 6.0f);
-            mainMenuBtnSlide.SetDelay(2 * scoreEndSlide.Duration() / 6.0f);
-            settingsBtnSlide.SetDelay(3 * scoreEndSlide.Duration() / 6.0f);
+            settingsBtnSlide.SetDelay(2 * scoreEndSlide.Duration() / 6.0f);
+            mainMenuBtnSlide.SetDelay(3 * scoreEndSlide.Duration() / 6.0f);
             slideMenuPanel.Join(scoreEndSlide);
         }
         else
         {
-            mainMenuBtnSlide.SetDelay(restartBtnSlide.Duration() / 6.0f);
-            settingsBtnSlide.SetDelay(2 * restartBtnSlide.Duration() / 6.0f);
+            settingsBtnSlide.SetDelay(restartBtnSlide.Duration() / 6.0f);
+            mainMenuBtnSlide.SetDelay(2 * restartBtnSlide.Duration() / 6.0f);
         }
         slideMenuPanel.Join(restartBtnSlide);
-        slideMenuPanel.Join(mainMenuBtnSlide);
         slideMenuPanel.Join(settingsBtnSlide);
+        slideMenuPanel.Join(mainMenuBtnSlide);
         slideMenuPanel.Play();
         yield return slideMenuPanel.WaitForCompletion();
         slideMenuPanel = null;
@@ -317,7 +317,6 @@ public class MenuOpener : MonoBehaviour {
             }
 
             GameAnalytics.NewProgressionEvent(status, eventName, SafeMemory.GetInt("score"));
-            GameAnalytics.NewDesignEvent("Game:Move:Count", boardController.moveCount);
         }
     }
 

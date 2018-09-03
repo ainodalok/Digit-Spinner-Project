@@ -58,6 +58,7 @@ public class GameModeManager : MonoBehaviour {
         }
         else if (mode == GameMode.Tutorial)
         {
+            PowerUps.ResetInitialized();
             tracker = gameObject.transform.GetChild(1).gameObject.GetComponent<SectionCounter>();
         }
 

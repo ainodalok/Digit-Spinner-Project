@@ -12,7 +12,11 @@ public class Regenerate : MonoBehaviour {
     void Awake()
     {
         //CHANGE TO A REAL VALUE LATER
-        SafeMemory.SetInt("regenLeft", 1);
+        //SafeMemory.SetInt("regenLeft", 1);
+        if (GameModeManager.mode != GameMode.Tutorial)
+        {
+            PowerUps.GetPowerUpLeft("regenLeft");
+        }
         RegenLeftTxt.SetText(SafeMemory.GetInt("regenLeft").ToString());
     }
 

@@ -13,6 +13,6 @@ public class CurrencyTextController : MonoBehaviour {
 	
     public void UpdateText()
     {
-        text.text = string.Format("Coins:\n{0}", Currency.GetBalance()); 
+        text.text = string.Format("Credits:\n{0}", Currency.GetBalance()); 
     }
 }

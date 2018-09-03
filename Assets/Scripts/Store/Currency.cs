@@ -50,12 +50,6 @@ public class Currency
     private static void ChangeBalance(int change)
     {
         SafeMemory.SetInt("balance", SafeMemory.GetInt("balance") + change);
-
-        if (SafeMemory.GetInt("balance") < 0)
-        {
-            SafeMemory.SetInt("balance", 0);
-        }
-
         Storage.SetSafeInt("balance", SafeMemory.GetInt("balance"));
         Storage.Commit();
     }
