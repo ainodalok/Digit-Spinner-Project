@@ -54,6 +54,7 @@ public class Currency
         if (GetBalance() > StoreManager.POWER_UP_PRICE)
         {
             ChangeBalance(-StoreManager.POWER_UP_PRICE);
+            GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "credits", StoreManager.POWER_UP_PRICE, "purchase", "powerup");
             return true;
         }
         else
@@ -68,6 +69,7 @@ public class Currency
 
         if (GetBalance() > StoreManager.POWER_UP_SET_PRICE)
         {
+            GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "credits", StoreManager.POWER_UP_SET_PRICE, "purchase", "powerupset");
             ChangeBalance(-StoreManager.POWER_UP_SET_PRICE);
             return true;
         }
@@ -83,6 +85,7 @@ public class Currency
 
         if (GetBalance() > StoreManager.ADBLOCK_PRICE)
         {
+            GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "credits", StoreManager.ADBLOCK_PRICE, "purchase", "adblock");
             ChangeBalance(-StoreManager.ADBLOCK_PRICE);
             return true;
         }

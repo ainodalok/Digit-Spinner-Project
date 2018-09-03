@@ -120,7 +120,7 @@ public class Bomb : MonoBehaviour {
                         }
                         else
                         {
-                            GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "PowerUpOvertime", 1, "Use", "PowerUpUse");
+                            GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "bombLeft", 1, "Use", "PowerUpUse");
                         }
                     }
                     

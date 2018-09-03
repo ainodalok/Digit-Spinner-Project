@@ -42,7 +42,7 @@ public class Overtime : MonoBehaviour {
             }
             PowerUps.ChangePowerUpLeft("overtimeLeft", PowerUps.GetPowerUpLeft("overtimeLeft") - 1);
             OTLeftTxt.SetText(SafeMemory.GetInt("overtimeLeft").ToString());
-            GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "PowerUpOvertime", 1, "Use", "PowerUpUse");
+            GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "overtimeLeft", 1, "Use", "PowerUpUse");
         }
     }
 }

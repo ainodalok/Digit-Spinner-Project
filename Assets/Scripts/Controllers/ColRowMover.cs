@@ -221,7 +221,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                     }
                     else
                     {
-                        GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "PowerUpWrongMove", 1, "Use", "PowerUpUse");
+                        GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "wrongMoveLeft", 1, "Use", "PowerUpUse");
                     }
                 }
                 bc.SetEnableTileColliders(true);

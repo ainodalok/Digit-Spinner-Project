@@ -39,7 +39,7 @@ public class Regenerate : MonoBehaviour {
         }
         else
         {
-            GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "PowerUpRegenerate", 1, "Use", "PowerUpUse");
+            GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "regenLeft", 1, "Use", "PowerUpUse");
         }
     }
 }

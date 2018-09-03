@@ -53,8 +53,16 @@ MonoBehaviour:
   CustomDimensions01: []
   CustomDimensions02: []
   CustomDimensions03: []
-  ResourceItemTypes: []
-  ResourceCurrencies: []
+  ResourceItemTypes:
+  - reward
+  - purchase
+  - Use
+  ResourceCurrencies:
+  - credits
+  - bombLeft
+  - regenLeft
+  - wrongMoveLeft
+  - overtimeLeft
   LastCreatedGamePlatform: -1
   Platforms: 0b000000
   CurrentInspectorState: 1
@@ -87,5 +95,5 @@ MonoBehaviour:
   CustomDimensions01FoldOut: 0
   CustomDimensions02FoldOut: 0
   CustomDimensions03FoldOut: 0
-  ResourceItemTypesFoldOut: 0
-  ResourceCurrenciesFoldOut: 0
+  ResourceItemTypesFoldOut: 1
+  ResourceCurrenciesFoldOut: 1
