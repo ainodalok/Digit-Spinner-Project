@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using GameAnalyticsSDK;
 
 public class FPSBtn : MonoBehaviour {
     public TextMeshProUGUI FPSText;
@@ -16,11 +17,13 @@ public class FPSBtn : MonoBehaviour {
         {
             Application.targetFrameRate = 60;
             FPSText.text = "60";
+            GameAnalytics.NewDesignEvent("Button:FPS:60");
         }
         else
         {
             Application.targetFrameRate = 30;
             FPSText.text = "30";
+            GameAnalytics.NewDesignEvent("Button:FPS:30");
         }
     }
 }

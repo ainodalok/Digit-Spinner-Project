@@ -2,6 +2,7 @@
 using UnityEngine;
 using TMPro;
 using DG.Tweening;
+using GameAnalyticsSDK;
 
 public class MenuOpener : MonoBehaviour {
     [HideInInspector]
@@ -281,8 +282,45 @@ public class MenuOpener : MonoBehaviour {
         settingsBtn.transform.localPosition = new Vector3(0.0f, settingsBtn.transform.localPosition.y, settingsBtn.transform.localPosition.z);
     }
 
+    public void FireGameOverAnalyticsEvent()
+    {
+        string eventName = "";
+        switch (GameModeManager.mode)
+        {
+            case GameMode.None:
+                GameAnalytics.NewErrorEvent(GAErrorSeverity.Warning, "No Mode at the end of the game");
+                break;
+            case GameMode.TimeAttack:
+                eventName = "Game:TimeAttack:Play";
+                break;
+            case GameMode.LimitedTurns:
+                eventName = "Game:LimitedTurns:Play";
+                break;
+            case GameMode.Tutorial:
+                eventName = "Game:Tutorial:Play";
+                break;
+        }
+
+        if (eventName != "")
+        {
+            GAProgressionStatus status;
+
+            if (gameModeManager.playerGaveUp)
+            {
+                status = GAProgressionStatus.Fail;
+            }
+            else
+            {
+                status = GAProgressionStatus.Complete;
+            }
+
+            GameAnalytics.NewProgressionEvent(status, eventName, SafeMemory.GetInt("score"));
+        }
+    }
+
     public void EndGame()
     {
+        FireGameOverAnalyticsEvent();
         scoreEndTxt.GetComponent<TextMeshProUGUI>().text = "Score:\n" + SafeMemory.Get("score");
         Currency.ProcessEndGame();
         currencyTextController.UpdateText();

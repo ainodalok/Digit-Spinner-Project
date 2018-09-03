@@ -26,6 +26,8 @@ public class GameModeManager : MonoBehaviour {
     public bool tutorialShown = false;
     [HideInInspector][System.NonSerialized]
     public bool tutorialOpens = false;
+    [HideInInspector]
+    public bool playerGaveUp = false;
 
     public BoardController boardController;
     public TextMeshProUGUI BombLeftTxt;

@@ -5,6 +5,7 @@ using UnityEngine.EventSystems;
 using System;
 using TMPro;
 using DG.Tweening;
+using GameAnalyticsSDK;
 
 public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndDragHandler {
     /* false when moving a row, true when moving a column */
@@ -217,6 +218,10 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                     if (GameModeManager.mode == GameMode.Tutorial)
                     {
                         (bc.gameModeManager.tracker as SectionCounter).NextSection();
+                    }
+                    else
+                    {
+                        GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "PowerUpWrongMove", 1, "Use", "PowerUpUse");
                     }
                 }
                 bc.SetEnableTileColliders(true);

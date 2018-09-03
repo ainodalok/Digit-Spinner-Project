@@ -2,14 +2,13 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using GameAnalyticsSDK;
 
 public class Overtime : MonoBehaviour {
     public GameModeManager gameModeManager;
     public TextMeshProUGUI OTLeftTxt;
     private const int ADDITIONAL_TURNS = 2;
     private const int ADDITIONAL_TIME = 300;
-
-
     
     void Awake()
     {
@@ -39,6 +38,7 @@ public class Overtime : MonoBehaviour {
             }
             SafeMemory.SetInt("overtimeLeft", SafeMemory.GetInt("overtimeLeft") - 1);
             OTLeftTxt.SetText(SafeMemory.GetInt("overtimeLeft").ToString());
+            GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "PowerUpOvertime", 1, "Use", "PowerUpUse");
         }
     }
 }

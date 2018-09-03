@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using GameAnalyticsSDK;
 
 public class Regenerate : MonoBehaviour {
     public TextMeshProUGUI RegenLeftTxt;
@@ -31,6 +32,10 @@ public class Regenerate : MonoBehaviour {
         if (GameModeManager.mode == GameMode.Tutorial)
         {
             (gameModeManager.tracker as SectionCounter).NextSection();
+        }
+        else
+        {
+            GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "PowerUpRegenerate", 1, "Use", "PowerUpUse");
         }
     }
 }

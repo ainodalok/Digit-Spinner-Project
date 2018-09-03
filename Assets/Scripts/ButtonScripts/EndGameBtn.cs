@@ -79,6 +79,7 @@ public class EndGameBtn : MonoBehaviour
         isEnding = true;
         gameObject.transform.DOScale(BoardController.SPAWN_SIZE, 0.5f).SetEase(Ease.InCubic).Play();
         StopCoroutine(timer);
+        gameModeManager.playerGaveUp = true;
         gameModeManager.tracker.gameOver = true;
 
         while (bc.isDestroying)

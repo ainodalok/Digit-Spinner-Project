@@ -1,9 +1,8 @@
 ﻿using System.Collections;
 using UnityEngine;
 using UnityEngine.SceneManagement;
-using System.Linq;
-using System;
 using DG.Tweening;
+using GameAnalyticsSDK;
 
 public class SceneLoadManager : MonoBehaviour
 {
@@ -95,6 +94,25 @@ public class SceneLoadManager : MonoBehaviour
             adManager.InitAds();
             PlayServicesManager.Init();
             PlayServicesManager.SaveData();
+        }
+        if (sceneName == "Game")
+        {
+            if (gameMode == GameMode.LimitedTurns)
+            {
+                GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "Game:LimitedTurns:Play");
+            }
+            else if (gameMode == GameMode.TimeAttack)
+            {
+                GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "Game:TimeAttack:Play");
+            }
+            else if (gameMode == GameMode.Tutorial)
+            {
+                GameAnalytics.NewProgressionEvent(GAProgressionStatus.Start, "Tutorial:Tutorial:Play");
+            }
+            else
+            {
+                GameAnalytics.NewErrorEvent(GAErrorSeverity.Error, "Unavailable game mode requested.");
+            }
         }
 
         currentScene = sceneName;

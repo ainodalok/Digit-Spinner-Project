@@ -1,5 +1,6 @@
 ﻿using System.Collections;
 using UnityEngine;
+using GameAnalyticsSDK;
 
 public class RestartBtn : MonoBehaviour {
     public MenuOpener menuOpener;
@@ -20,6 +21,15 @@ public class RestartBtn : MonoBehaviour {
     private IEnumerator RestartBtnSceneLoad()
     {
         yield return StartCoroutine(menuOpener.SlideOffScreenAnimation());
+        if (!menuOpener.gameModeManager.tracker.gameOver)
+        {
+            menuOpener.gameModeManager.playerGaveUp = true;
+            menuOpener.FireGameOverAnalyticsEvent();
+        }
+        else
+        {
+            GameAnalytics.NewDesignEvent("AfterGame:Button:MainMenu");
+        }
         LoaderScript.ReloadScene();
     }
 }

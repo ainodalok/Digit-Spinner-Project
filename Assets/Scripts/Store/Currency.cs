@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using GameAnalyticsSDK;
 
 public class Currency
 {
@@ -25,7 +26,8 @@ public class Currency
     public static void ProcessEndGame()
     {
         Init();
-        ChangeBalance(SafeMemory.GetInt("score") / 100);
+        ChangeBalance(SafeMemory.GetInt("score") / 1000);
+        GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "credits", SafeMemory.GetInt("score") / 1000, "reward", "game");
     }
 
     public static void ProcessPurchase(int amount)
@@ -34,13 +36,15 @@ public class Currency
         {
             Init();
             ChangeBalance(amount);
+            GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "credits", amount, "purchase", amount.ToString() + "credits");
         }
     }
 
     public static void ProcessRewardedVideo()
     {
         Init();
-        ChangeBalance(50);
+        ChangeBalance(RewardedVideo.REWARD_AMOUNT);
+        GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "credits", RewardedVideo.REWARD_AMOUNT, "reward", "rewardedVideoAd");
     }
 
     private static void ChangeBalance(int change)

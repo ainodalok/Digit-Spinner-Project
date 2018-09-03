@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
 using UnityEngine.UI;
+using GameAnalyticsSDK;
 
 public class Bomb : MonoBehaviour {
     public GameObject board;
@@ -112,6 +113,10 @@ public class Bomb : MonoBehaviour {
                         if (GameModeManager.mode == GameMode.Tutorial)
                         {
                             (gameModeManager.tracker as SectionCounter).NextSection();
+                        }
+                        else
+                        {
+                            GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "PowerUpOvertime", 1, "Use", "PowerUpUse");
                         }
                     }
                     

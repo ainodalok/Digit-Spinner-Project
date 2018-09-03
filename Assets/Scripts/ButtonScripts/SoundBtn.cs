@@ -4,6 +4,7 @@ using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
 using DG.Tweening;
+using GameAnalyticsSDK;
 
 public class SoundBtn : MonoBehaviour
 {
@@ -52,6 +53,7 @@ public class SoundBtn : MonoBehaviour
             soundTxt.text = "ON";
             soundTxt.fontSharedMaterial = blue;
             widener = DOTween.To(x => transform.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, x), 250, 200, 0.2f).SetEase(Ease.OutQuart);
+            GameAnalytics.NewDesignEvent("Button:Sound:Unmute");
         }
         else
         {
@@ -60,6 +62,7 @@ public class SoundBtn : MonoBehaviour
             soundTxt.text = "OFF";
             soundTxt.fontSharedMaterial = red;
             widener = DOTween.To(x => transform.GetComponent<RectTransform>().SetSizeWithCurrentAnchors(RectTransform.Axis.Horizontal, x), 200, 250, 0.2f).SetEase(Ease.OutQuart);
+            GameAnalytics.NewDesignEvent("Button:Sound:Mute");
         }
     }
 }
