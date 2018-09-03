@@ -2140,7 +2140,7 @@ GameObject:
   - component: {fileID: 268567886}
   - component: {fileID: 268567885}
   m_Layer: 5
-  m_Name: WatchAdBtn
+  m_Name: PromoCodeBtn
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
@@ -7397,7 +7397,7 @@ GameObject:
   - component: {fileID: 1062742965}
   - component: {fileID: 1062742964}
   m_Layer: 5
-  m_Name: WatchAdTxt
+  m_Name: PromoCodeTxt
   m_TagString: Untagged
   m_Icon: {fileID: 0}
   m_NavMeshLayer: 0
