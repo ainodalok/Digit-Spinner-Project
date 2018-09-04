@@ -9,6 +9,19 @@ public class LeaderboardBtn : MonoBehaviour {
     public void OpenLeaderboard()
     {
         GameAnalytics.NewDesignEvent("Button:Leaderboard:Open");
-        Social.ShowLeaderboardUI();
+        StartCoroutine(OpenUI());
+    }
+
+    private IEnumerator OpenUI()
+    {
+        while (PlayServicesManager.isSigningIn)
+        {
+            yield return null;
+        }
+
+        if (PlayServicesManager.authenicated)
+        {
+            Social.ShowLeaderboardUI();
+        }
     }
 }

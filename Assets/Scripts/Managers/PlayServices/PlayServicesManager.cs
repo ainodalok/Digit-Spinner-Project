@@ -9,7 +9,7 @@ using GameAnalyticsSDK;
 public class PlayServicesManager
 {
     private static bool initialized = false;
-    private static bool authenicated = false;
+    public static bool authenicated = false;
     private static ISavedGameMetadata metaData;
     public static bool isSigningIn = false;
 
@@ -21,7 +21,7 @@ public class PlayServicesManager
         if (!initialized)
         {
             PlayGamesClientConfiguration config = new PlayGamesClientConfiguration.Builder()
-                .EnableSavedGames()
+                //.EnableSavedGames()
                 .Build();
 
             PlayGamesPlatform.InitializeInstance(config);

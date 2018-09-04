@@ -58,7 +58,7 @@ public class SceneLoadManager : MonoBehaviour
         UpdateGamePanelScales();
         AsyncOperation async = SceneManager.LoadSceneAsync(sceneName, LoadSceneMode.Additive);
 
-        while (!async.isDone/* || PlayServicesManager.isSigningIn*/)
+        while (!async.isDone || PlayServicesManager.isSigningIn)
         {
             yield return null;
         }
@@ -97,6 +97,7 @@ public class SceneLoadManager : MonoBehaviour
         if (currentScene == "")
         {
             adManager.InitAds();
+            PlayServicesManager.Init();
         }
         if (sceneName == "Game")
         {

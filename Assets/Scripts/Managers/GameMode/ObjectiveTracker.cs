@@ -15,14 +15,14 @@ public abstract class ObjectiveTracker : MonoBehaviour {
         }
         if (GameModeManager.mode == GameMode.LimitedTurns)
         {
-            Social.ReportScore(SafeMemory.GetInt("score"), "CgkI-MWprNwaEAIQAg", (bool success) =>
+            Social.ReportScore(SafeMemory.GetInt("score"), Leaderboards.LimitedTurnsLeaderboard, (bool success) =>
             {
 
             });
         }
         else if (GameModeManager.mode == GameMode.TimeAttack)
         {
-            Social.ReportScore(SafeMemory.GetInt("score"), "CgkI-MWprNwaEAIQAw", (bool success) =>
+            Social.ReportScore(SafeMemory.GetInt("score"), Leaderboards.TimeAttackLeaderboard, (bool success) =>
             {
 
             });
