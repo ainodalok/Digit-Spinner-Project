@@ -5,9 +5,6 @@ using UnityEngine.UI;
 using TMPro;
 
 public class WatchRewardedVideoBtn : MonoBehaviour {
-    public CurrencyTextController currencyTxt;
-    public ScalingObjectController infoPanel;
-    public TextMeshPro infoText;
     private AdManager adManager;
 
 	void Awake () {

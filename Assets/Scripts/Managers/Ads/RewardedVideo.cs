@@ -68,7 +68,7 @@ public class RewardedVideo
 
     private void HandleOnAdShouldBeRewarded(object sender, Reward reward)
     {
-        Debug.Log(reward);
+        //Debug.Log(reward);
         Currency.ProcessRewardedVideo();
     }
 

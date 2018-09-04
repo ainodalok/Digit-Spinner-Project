@@ -156,7 +156,7 @@ PlayerSettings:
   applicationIdentifier:
     Android: com.FrostNovaInt.DigitSpinner
   buildNumber: {}
-  AndroidBundleVersionCode: 13
+  AndroidBundleVersionCode: 14
   AndroidMinSdkVersion: 16
   AndroidTargetSdkVersion: 0
   AndroidPreferredInstallLocation: 1
@@ -244,8 +244,8 @@ PlayerSettings:
   AndroidTargetArchitectures: 5
   AndroidSplashScreenScale: 0
   androidSplashScreen: {fileID: 0}
-  AndroidKeystoreName: C:/Users/Helge/keys/spinner.keystore
-  AndroidKeyaliasName: 
+  AndroidKeystoreName: H:/Stuff/programming/Unity/Digit Spinner/Digit Spinner/spinner.keystore
+  AndroidKeyaliasName: spinner
   AndroidTVCompatibility: 0
   AndroidIsGame: 1
   AndroidEnableTango: 0
