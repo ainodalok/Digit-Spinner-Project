@@ -96,8 +96,8 @@ public class SceneLoadManager : MonoBehaviour
         CheckViewport();
         if (currentScene == "")
         {
-            adManager.InitAds();
             PlayServicesManager.Init();
+            adManager.InitAds();
         }
         if (sceneName == "Game")
         {
