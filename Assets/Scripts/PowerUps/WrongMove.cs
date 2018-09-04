@@ -10,13 +10,18 @@ public class WrongMove : MonoBehaviour {
     public static bool active = false;
     public static bool used = false;
 
-    void Awake()
+    void Start()
     {
+        used = false;
         //CHANGE TO A REAL VALUE LATER
         //SafeMemory.SetInt("wrongMoveLeft", 1);
         if (GameModeManager.mode != GameMode.Tutorial)
         {
             PowerUps.GetPowerUpLeft("wrongMoveLeft");
+        }
+        else
+        {
+            SafeMemory.SetInt("wrongMoveLeft", 0);
         }
         WMLeftTxt.SetText(SafeMemory.GetInt("wrongMoveLeft").ToString());
     }

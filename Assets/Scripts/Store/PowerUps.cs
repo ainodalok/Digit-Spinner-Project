@@ -5,7 +5,7 @@ using UnityEngine;
 public class PowerUps
 {
     public const int POWERUP_COUNT = 4;
-    private static bool[] initialized = new bool[4] { false, false, false, false };
+    public static bool[] initialized = new bool[4] { false, false, false, false };
 
     public const int DEFAULT_BALANCE = 0;
 

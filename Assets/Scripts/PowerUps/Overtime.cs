@@ -13,13 +13,18 @@ public class Overtime : MonoBehaviour {
     private const int ADDITIONAL_TURNS = 2;
     private const int ADDITIONAL_TIME = 300;
     
-    void Awake()
+    void Start()
     {
+        used = false;
         //CHANGE TO A REAL VALUE LATER
         //SafeMemory.SetInt("overtimeLeft", 1);
         if (GameModeManager.mode != GameMode.Tutorial)
         {
             PowerUps.GetPowerUpLeft("overtimeLeft");
+        }
+        else
+        {
+            SafeMemory.SetInt("overtimeLeft", 0);
         }
         OTLeftTxt.SetText(SafeMemory.GetInt("overtimeLeft").ToString());
     }
@@ -46,7 +51,14 @@ public class Overtime : MonoBehaviour {
 
                 }
                 used = true;
-                PowerUps.ChangePowerUpLeft("overtimeLeft", PowerUps.GetPowerUpLeft("overtimeLeft") - 1);
+                if (GameModeManager.mode != GameMode.Tutorial)
+                {
+                    PowerUps.ChangePowerUpLeft("overtimeLeft", PowerUps.GetPowerUpLeft("overtimeLeft") - 1);
+                }
+                else
+                {
+                    SafeMemory.SetInt("overtimeLeft", 0);
+                }
                 OTLeftTxt.SetText(SafeMemory.GetInt("overtimeLeft").ToString());
                 GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "overtimeLeft", 1, "Use", "PowerUpUse");
             }

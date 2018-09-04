@@ -215,7 +215,14 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                     Util.SwapButtonColors(bc.WMLeftBtn);
                     WrongMove.used = true;
                     WrongMove.active = false;
-                    PowerUps.ChangePowerUpLeft("wrongMoveLeft", PowerUps.GetPowerUpLeft("wrongMoveLeft") - 1);
+                    if (GameModeManager.mode != GameMode.Tutorial)
+                    {
+                        PowerUps.ChangePowerUpLeft("wrongMoveLeft", PowerUps.GetPowerUpLeft("wrongMoveLeft") - 1);
+                    }
+                    else
+                    {
+                        SafeMemory.SetInt("wrongMoveLeft", 0);
+                    }
                     bc.WMLeftTxt.SetText(SafeMemory.GetInt("wrongMoveLeft").ToString());
                     if (GameModeManager.mode == GameMode.Tutorial)
                     {

@@ -11,15 +11,22 @@ public class Regenerate : MonoBehaviour {
 
     public static bool used = false;
 
-    void Awake()
+    void Start()
     {
+        used = false;
         //CHANGE TO A REAL VALUE LATER
         //SafeMemory.SetInt("regenLeft", 1);
         if (GameModeManager.mode != GameMode.Tutorial)
         {
             PowerUps.GetPowerUpLeft("regenLeft");
         }
+        else
+        {
+            SafeMemory.SetInt("regenLeft", 0);
+        }
+        Debug.Log(SafeMemory.GetInt("regenLeft"));
         RegenLeftTxt.SetText(SafeMemory.GetInt("regenLeft").ToString());
+        Debug.Log(RegenLeftTxt.text);
     }
 
     public void RegenerateBoard()
@@ -35,7 +42,14 @@ public class Regenerate : MonoBehaviour {
                 }
                 boardController.UpdateDigitsBasic();
                 used = true;
-                PowerUps.ChangePowerUpLeft("regenLeft", PowerUps.GetPowerUpLeft("regenLeft") - 1);
+                if (GameModeManager.mode != GameMode.Tutorial)
+                {
+                    PowerUps.ChangePowerUpLeft("regenLeft", PowerUps.GetPowerUpLeft("regenLeft") - 1);
+                }
+                else
+                {
+                    SafeMemory.SetInt("regenLeft", 0);
+                }
                 RegenLeftTxt.SetText(SafeMemory.GetInt("regenLeft").ToString());
             }
             if (GameModeManager.mode == GameMode.Tutorial)

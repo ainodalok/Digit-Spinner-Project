@@ -33,15 +33,21 @@ public class Bomb : MonoBehaviour {
     }
 #endif
 
-    void Awake()
+    void Start()
     {
+        used = false;
         //CHANGE TO A REAL VALUE LATER
         //SafeMemory.SetInt("bombLeft", 1);
         if (GameModeManager.mode != GameMode.Tutorial)
         {
             PowerUps.GetPowerUpLeft("bombLeft");
         }
+        else
+        {
+            SafeMemory.SetInt("bombLeft", 0);
+        }
         BombLeftTxt.SetText(SafeMemory.GetInt("bombLeft").ToString());
+
     }
 
     public void PickAndExplode()
@@ -116,7 +122,14 @@ public class Bomb : MonoBehaviour {
                             boardController.activeTileObjects[tilesToExplode[i].x][tilesToExplode[i].y].GetComponentInChildren<SpriteRenderer>().sprite = normalBorder;
                         }
                         used = true;
-                        PowerUps.ChangePowerUpLeft("bombLeft", PowerUps.GetPowerUpLeft("bombLeft") - 1);
+                        if (GameModeManager.mode != GameMode.Tutorial)
+                        {
+                            PowerUps.ChangePowerUpLeft("bombLeft", PowerUps.GetPowerUpLeft("bombLeft") - 1);
+                        }
+                        else
+                        {
+                            SafeMemory.SetInt("bombLeft", 0);
+                        }
                         BombLeftTxt.SetText(SafeMemory.GetInt("bombLeft").ToString());
                         Util.SwapButtonColors(transform.GetComponent<Button>());
                         yield return StartCoroutine(boardController.DestroyMatchedTiles(tilesToExplode, true));
