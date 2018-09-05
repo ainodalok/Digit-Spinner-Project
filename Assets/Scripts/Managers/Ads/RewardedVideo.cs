@@ -6,7 +6,7 @@ using System;
 
 public class RewardedVideo
 {
-    public const int REWARD_AMOUNT = 35;
+    public const int REWARD_AMOUNT = 10;
 
     private RewardBasedVideoAd video;
     private bool loaded = false;
