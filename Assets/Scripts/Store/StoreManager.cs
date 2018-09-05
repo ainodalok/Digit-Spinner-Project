@@ -10,9 +10,9 @@ public class StoreManager : MonoBehaviour {
     public TextMeshProUGUI InfoTabTxt;
     public GameObject AdRemoveBtnObj;
 
-    public const int POWER_UP_PRICE = 70;
-    public const int POWER_UP_SET_PRICE = 240;
-    public const int ADBLOCK_PRICE = 500;
+    public const int POWER_UP_PRICE = 15;
+    public const int POWER_UP_SET_PRICE = 50;
+    public const int ADBLOCK_PRICE = 750;
 
     public void PurchaseRegenerate()
     {

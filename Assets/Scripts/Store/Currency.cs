@@ -27,7 +27,7 @@ public class Currency
     {
         Init();
         ChangeBalance(SafeMemory.GetInt("score") / 1000 * 5);
-        GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "credits", SafeMemory.GetInt("score") / 1000 * 5, "reward", "game");
+        GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "credits", SafeMemory.GetInt("score") / 1000, "reward", "game");
     }
 
     public static void ProcessPurchase(int amount)
