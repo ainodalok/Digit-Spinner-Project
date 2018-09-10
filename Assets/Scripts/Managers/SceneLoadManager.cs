@@ -91,7 +91,7 @@ public class SceneLoadManager : MonoBehaviour
         {
             SceneManager.UnloadSceneAsync(currentScene);
         }
-        
+
         ActivateCamerasInLastScene();
         CheckViewport();
         if (currentScene == "")

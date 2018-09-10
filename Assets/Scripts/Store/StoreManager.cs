@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using TMPro;
+using GameAnalyticsSDK;
 
 public class StoreManager : MonoBehaviour {
     public CurrencyTextController CurrencyTxt;
@@ -19,6 +20,7 @@ public class StoreManager : MonoBehaviour {
         if (Currency.ProcessPowerUpPurchase())
         {
             PowerUps.ChangePowerUpLeft("regenLeft", PowerUps.GetPowerUpLeft("regenLeft") + 1);
+            GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "regenLeft", 1, "purchase", "powerUp");
             ShowSuccess();
         }
         else
@@ -32,6 +34,7 @@ public class StoreManager : MonoBehaviour {
         if (Currency.ProcessPowerUpPurchase())
         {
             PowerUps.ChangePowerUpLeft("overtimeLeft", PowerUps.GetPowerUpLeft("overtimeLeft") + 1);
+            GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "overtimeLeft", 1, "purchase", "powerUp");
             ShowSuccess();
         }
         else
@@ -45,6 +48,7 @@ public class StoreManager : MonoBehaviour {
         if (Currency.ProcessPowerUpPurchase())
         {
             PowerUps.ChangePowerUpLeft("bombLeft", PowerUps.GetPowerUpLeft("bombLeft") + 1);
+            GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "bombLeft", 1, "purchase", "powerUp");
             ShowSuccess();
         }
         else
@@ -58,6 +62,7 @@ public class StoreManager : MonoBehaviour {
         if (Currency.ProcessPowerUpPurchase())
         {
             PowerUps.ChangePowerUpLeft("wrongMoveLeft", PowerUps.GetPowerUpLeft("wrongMoveLeft") + 1);
+            GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "wrongMoveLeft", 1, "purchase", "powerUp");
             ShowSuccess();
         }
         else
@@ -71,9 +76,13 @@ public class StoreManager : MonoBehaviour {
         if (Currency.ProcessPowerUpSetPurchase())
         {
             PowerUps.ChangePowerUpLeft("regenLeft", PowerUps.GetPowerUpLeft("regenLeft") + 1);
+            GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "regenLeft", 1, "purchase", "powerUp");
             PowerUps.ChangePowerUpLeft("overtimeLeft", PowerUps.GetPowerUpLeft("overtimeLeft") + 1);
+            GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "overtimeLeft", 1, "purchase", "powerUp");
             PowerUps.ChangePowerUpLeft("bombLeft", PowerUps.GetPowerUpLeft("bombLeft") + 1);
+            GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "bombLeft", 1, "purchase", "powerUp");
             PowerUps.ChangePowerUpLeft("wrongMoveLeft", PowerUps.GetPowerUpLeft("wrongMoveLeft") + 1);
+            GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "wrongMoveLeft", 1, "purchase", "powerUp");
             ShowSuccess();
         }
         else
@@ -87,6 +96,7 @@ public class StoreManager : MonoBehaviour {
         if (Currency.ProcessBlockAdsPurchase())
         {
             AdRemove.Enable();
+            GameAnalytics.NewDesignEvent("Ad:Block:On");
             ShowSuccess();
             AdRemoveBtnObj.SetActive(false);
         }
