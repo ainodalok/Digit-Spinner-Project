@@ -12,6 +12,7 @@ public class CloseAndCheckPromocodeBtn : MonoBehaviour
 
     private const string PROMOCODE_1 = "GZ4Rne5e";
     private const string PROMOCODE_2 = "5ALrNS8c";
+    private const string PROMOCODE_3 = "Dt0PKPeb";
 
     public void CloseAndCheckPromocodeBtnAction()
     {
@@ -23,12 +24,18 @@ public class CloseAndCheckPromocodeBtn : MonoBehaviour
         if (string.CompareOrdinal(inputField.text.Trim(), PROMOCODE_1) == 0)
         {
             AdRemove.Enable();
-            Currency.ProcessPromocode();
+            Currency.ProcessPromocode(2000);
             infoText.text = "Promocode accepted. \n Thank you!";
         }
         else if (string.CompareOrdinal(inputField.text.Trim(), PROMOCODE_2) == 0)
         {
             AdRemove.Enable();
+            infoText.text = "Promocode accepted. \n Thank you!";
+        }
+        else if (string.CompareOrdinal(inputField.text.Trim(), PROMOCODE_3) == 0)
+        {
+            AdRemove.Enable();
+            Currency.ProcessPromocode(5000);
             infoText.text = "Promocode accepted. \n Thank you!";
         }
         else

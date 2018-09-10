@@ -95,10 +95,10 @@ public class Currency
         }
     }
 
-    public static void ProcessPromocode()
+    public static void ProcessPromocode(int value)
     {
         Init();
-        ChangeBalance(2000);
+        ChangeBalance(value);
     }
 
     private static void ChangeBalance(int change)
