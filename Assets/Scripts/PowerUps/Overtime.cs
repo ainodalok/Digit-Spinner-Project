@@ -61,6 +61,7 @@ public class Overtime : MonoBehaviour {
                 }
                 OTLeftTxt.SetText(SafeMemory.GetInt("overtimeLeft").ToString());
                 GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "overtimeLeft", 1, "Use", "PowerUpUse");
+                GameAnalytics.NewDesignEvent("PowerUp:OverTime:Used");
             }
         }
     }

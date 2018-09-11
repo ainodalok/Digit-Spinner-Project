@@ -7,6 +7,7 @@ using System;
 using TMPro;
 using DG.Tweening;
 using UnityEngine.UI;
+using GameAnalyticsSDK;
 
 public class BoardController : MonoBehaviour {
     public BoardLogic boardLogic;
@@ -63,6 +64,8 @@ public class BoardController : MonoBehaviour {
     private Vector3[][] prophecyTileScale = new Vector3[BoardLogic.BOARD_SIZE][];
 
     private float shakeDuration = 0.5f;
+    private bool eventFor1000sent = false;
+    private bool eventFor5000sent = false;
 
     void Start ()
     {
@@ -360,6 +363,16 @@ public class BoardController : MonoBehaviour {
         else
         {
             scoreText.text = string.Format("Score: \n{0}", SafeMemory.Get("score"));
+        }
+        if (!eventFor1000sent && SafeMemory.GetInt("score") > 1000)
+        {
+            GameAnalytics.NewDesignEvent("Game:Score:1000");
+            eventFor1000sent = true;
+        }
+        if (!eventFor5000sent && SafeMemory.GetInt("score") > 5000)
+        {
+            GameAnalytics.NewDesignEvent("Game:Score:5000");
+            eventFor5000sent = true;
         }
     }
 

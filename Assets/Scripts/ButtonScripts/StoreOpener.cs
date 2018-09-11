@@ -24,6 +24,7 @@ public class StoreOpener : MonoBehaviour {
     public void CloseStore()
     {
         StartCoroutine(SwitchPanels(storePanel, mainMenuPanel));
+        GameAnalytics.NewDesignEvent("Button:Store:Close");
     }
 
     private IEnumerator SwitchPanels(ScalingObjectController panelToHide, ScalingObjectController panelToShow)
@@ -40,6 +41,7 @@ public class StoreOpener : MonoBehaviour {
         IAPBtn.sprite = burgundyBorderPref;
         coinBtn.sprite = blueBorderPref;
         IAPTab.SetActive(true);
+        GameAnalytics.NewDesignEvent("Button:Store:IAPTab");
     }
 
     public void OpenCoin()

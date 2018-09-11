@@ -21,6 +21,7 @@ public class StoreManager : MonoBehaviour {
         {
             PowerUps.ChangePowerUpLeft("regenLeft", PowerUps.GetPowerUpLeft("regenLeft") + 1);
             GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "regenLeft", 1, "purchase", "powerUp");
+            GameAnalytics.NewDesignEvent("Store:Purchase:Regenerate");
             ShowSuccess();
         }
         else
@@ -35,6 +36,7 @@ public class StoreManager : MonoBehaviour {
         {
             PowerUps.ChangePowerUpLeft("overtimeLeft", PowerUps.GetPowerUpLeft("overtimeLeft") + 1);
             GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "overtimeLeft", 1, "purchase", "powerUp");
+            GameAnalytics.NewDesignEvent("Store:Purchase:OverTime");
             ShowSuccess();
         }
         else
@@ -49,6 +51,7 @@ public class StoreManager : MonoBehaviour {
         {
             PowerUps.ChangePowerUpLeft("bombLeft", PowerUps.GetPowerUpLeft("bombLeft") + 1);
             GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "bombLeft", 1, "purchase", "powerUp");
+            GameAnalytics.NewDesignEvent("Store:Purchase:Bomb");
             ShowSuccess();
         }
         else
@@ -63,6 +66,7 @@ public class StoreManager : MonoBehaviour {
         {
             PowerUps.ChangePowerUpLeft("wrongMoveLeft", PowerUps.GetPowerUpLeft("wrongMoveLeft") + 1);
             GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "wrongMoveLeft", 1, "purchase", "powerUp");
+            GameAnalytics.NewDesignEvent("Store:Purchase:WrongMove");
             ShowSuccess();
         }
         else
@@ -83,6 +87,7 @@ public class StoreManager : MonoBehaviour {
             GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "bombLeft", 1, "purchase", "powerUp");
             PowerUps.ChangePowerUpLeft("wrongMoveLeft", PowerUps.GetPowerUpLeft("wrongMoveLeft") + 1);
             GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "wrongMoveLeft", 1, "purchase", "powerUp");
+            GameAnalytics.NewDesignEvent("Store:Purchase:PowerUpSet");
             ShowSuccess();
         }
         else

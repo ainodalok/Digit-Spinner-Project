@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using UnityEngine;
 using UnityEngine.UI;
 using TMPro;
+using GameAnalyticsSDK;
 
 public class WatchRewardedVideoBtn : MonoBehaviour {
     private AdManager adManager;
@@ -16,6 +17,7 @@ public class WatchRewardedVideoBtn : MonoBehaviour {
         if (adManager.rewardedVideo.IsLoaded())
         {
             adManager.rewardedVideo.Show();
+            GameAnalytics.NewDesignEvent("Ad:RewardedVideo:Show");
         }
     }
 }

@@ -8,11 +8,7 @@ public class CloseStoreInfoBtn : MonoBehaviour {
     public ScalingObjectController StorePanel;
     public ScalingObjectController InfoTab;
 
-	void Awake () {
-        GetComponent<Button>().onClick.AddListener(() => ReturnToStore());
-    }
-
-    private void ReturnToStore()
+    public void ReturnToStore()
     {
         StartCoroutine(FadeToStore());
     }

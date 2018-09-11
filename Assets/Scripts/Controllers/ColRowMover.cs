@@ -231,6 +231,7 @@ public class ColRowMover : MonoBehaviour, IBeginDragHandler, IDragHandler, IEndD
                     else
                     {
                         GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "wrongMoveLeft", 1, "Use", "PowerUpUse");
+                        GameAnalytics.NewDesignEvent("PowerUp:WrongMove:Used");
                     }
                 }
                 bc.SetEnableTileColliders(true);

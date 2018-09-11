@@ -141,6 +141,7 @@ public class Bomb : MonoBehaviour {
                         else
                         {
                             GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "bombLeft", 1, "Use", "PowerUpUse");
+                            GameAnalytics.NewDesignEvent("PowerUp:Bomb:Used");
                         }
                     }
                     

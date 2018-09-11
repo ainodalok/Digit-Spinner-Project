@@ -45,6 +45,7 @@ public class Currency
         Init();
         ChangeBalance(RewardedVideo.REWARD_AMOUNT);
         GameAnalytics.NewResourceEvent(GAResourceFlowType.Source, "credits", RewardedVideo.REWARD_AMOUNT, "reward", "rewardedVideoAd");
+        GameAnalytics.NewDesignEvent("Ad:RewardedVideo:Reward");
     }
 
     public static bool ProcessPowerUpPurchase()
@@ -86,6 +87,7 @@ public class Currency
         if (GetBalance() > StoreManager.ADBLOCK_PRICE)
         {
             GameAnalytics.NewResourceEvent(GAResourceFlowType.Sink, "credits", StoreManager.ADBLOCK_PRICE, "purchase", "adblock");
+            GameAnalytics.NewDesignEvent("Store:Purchase:AdBlock");
             ChangeBalance(-StoreManager.ADBLOCK_PRICE);
             return true;
         }

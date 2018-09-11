@@ -3,6 +3,7 @@ using UnityEngine;
 using UnityEngine.Purchasing;
 using TMPro;
 using System.Collections;
+using GameAnalyticsSDK;
 
 public class IAPManager : MonoBehaviour, IStoreListener
 {
@@ -66,31 +67,37 @@ public class IAPManager : MonoBehaviour, IStoreListener
 
     public void Buy100Credits()
     {
+        GameAnalytics.NewDesignEvent("IAP:100:Inititalize");
         BuyProductByID(CREDITS_100);
     }
 
     public void Buy200Credits()
     {
+        GameAnalytics.NewDesignEvent("IAP:200:Inititalize");
         BuyProductByID(CREDITS_200);
     }
 
     public void Buy500Credits()
     {
+        GameAnalytics.NewDesignEvent("IAP:500:Inititalize");
         BuyProductByID(CREDITS_500);
     }
 
     public void Buy1000Credits()
     {
+        GameAnalytics.NewDesignEvent("IAP:1000:Inititalize");
         BuyProductByID(CREDITS_1000);
     }
 
     public void Buy5000Credits()
     {
+        GameAnalytics.NewDesignEvent("IAP:5000:Inititalize");
         BuyProductByID(CREDITS_5000);
     }
 
     public void Buy10000Credits()
     {
+        GameAnalytics.NewDesignEvent("IAP:10000:Inititalize");
         BuyProductByID(CREDITS_10000);
     }
 
@@ -154,35 +161,41 @@ public class IAPManager : MonoBehaviour, IStoreListener
         if (String.Equals(args.purchasedProduct.definition.id, CREDITS_100, StringComparison.Ordinal))
         {
             Currency.ProcessPurchase(100);
+            GameAnalytics.NewDesignEvent("IAP:100:Complete");
             currencyTxt.UpdateText();
             ShowSuccess();
         }
         else if (String.Equals(args.purchasedProduct.definition.id, CREDITS_200, StringComparison.Ordinal))
         {
+            GameAnalytics.NewDesignEvent("IAP:200:Complete");
             Currency.ProcessPurchase(200);
             currencyTxt.UpdateText();
             ShowSuccess();
         }
         else if (String.Equals(args.purchasedProduct.definition.id, CREDITS_500, StringComparison.Ordinal))
         {
+            GameAnalytics.NewDesignEvent("IAP:500:Complete");
             Currency.ProcessPurchase(500);
             currencyTxt.UpdateText();
             ShowSuccess();
         }
         else if (String.Equals(args.purchasedProduct.definition.id, CREDITS_1000, StringComparison.Ordinal))
         {
+            GameAnalytics.NewDesignEvent("IAP:1000:Complete");
             Currency.ProcessPurchase(1000);
             currencyTxt.UpdateText();
             ShowSuccess();
         }
         else if (String.Equals(args.purchasedProduct.definition.id, CREDITS_5000, StringComparison.Ordinal))
         {
+            GameAnalytics.NewDesignEvent("IAP:5000:Complete");
             Currency.ProcessPurchase(5000);
             currencyTxt.UpdateText();
             ShowSuccess();
         }
         else if (String.Equals(args.purchasedProduct.definition.id, CREDITS_10000, StringComparison.Ordinal))
         {
+            GameAnalytics.NewDesignEvent("IAP:10000:Complete");
             Currency.ProcessPurchase(10000);
             currencyTxt.UpdateText();
             ShowSuccess();
