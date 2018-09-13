@@ -24,9 +24,7 @@ public class Regenerate : MonoBehaviour {
         {
             SafeMemory.SetInt("regenLeft", 0);
         }
-        Debug.Log(SafeMemory.GetInt("regenLeft"));
         RegenLeftTxt.SetText(SafeMemory.GetInt("regenLeft").ToString());
-        Debug.Log(RegenLeftTxt.text);
     }
 
     public void RegenerateBoard()

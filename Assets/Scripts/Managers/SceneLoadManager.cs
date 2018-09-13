@@ -14,6 +14,9 @@ public class SceneLoadManager : MonoBehaviour
     [HideInInspector]
     public GameMode currentGameMode = GameMode.None;
 
+    [HideInInspector]
+    public static bool firstSessionStarted = false;
+
     // MenuBtn, MuteBtn, ScoreTxt, ObjectiveTxt, EndGameBtn
     public Vector3[] gamePanelScales;
 
@@ -63,23 +66,30 @@ public class SceneLoadManager : MonoBehaviour
             yield return null;
         }
         audioManager.pausedBGM = false;
+        Debug.Log(firstSessionStarted);
         //Uncomment to enable INTERSTITIALS
-        
 #if !UNITY_EDITOR
-        if (currentScene != "")
-        {
-            if (adManager.interstitial.IsLoaded())
+            if (currentScene != "")
             {
-                GL.Clear(false, true, new Color (0.0f, 0.0f, 0.0f, 1.0f));
-                adManager.interstitial.Show();
-                while (adManager.interstitial.IsShown())
+                if (!firstSessionStarted)
                 {
-                    yield return null;
+                    firstSessionStarted = true;
+                }
+                else
+                {
+                    if (adManager.interstitial.IsLoaded())
+                    {
+                        GL.Clear(false, true, new Color (0.0f, 0.0f, 0.0f, 1.0f));
+                        adManager.interstitial.Show();
+                        while (adManager.interstitial.IsShown())
+                        {
+                            yield return null;
+                        }
+                    }
                 }
             }
-        }
 #endif
-        
+
         if (currentScene != "")
         {
             DeactivateCamerasInCurrentScene();
