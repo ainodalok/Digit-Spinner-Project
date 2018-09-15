@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds.Api;
+using GoogleMobileAds.Api.Mediation.AdColony;
 using System;
 
 public class Interstitial {
@@ -35,8 +36,12 @@ public class Interstitial {
 
     public void LoadNew()
     {
+        AdColonyMediationExtras extras = new AdColonyMediationExtras();
+        extras.SetGDPRRequired(true);
+        extras.SetGDPRConsentString("1");
+
         // Create an empty ad request.
-        AdRequest request = new AdRequest.Builder().Build();
+        AdRequest request = new AdRequest.Builder().AddMediationExtras(extras).Build();
         // Load the interstitial with the request.
         interstitial.LoadAd(request);
         loaded = false;

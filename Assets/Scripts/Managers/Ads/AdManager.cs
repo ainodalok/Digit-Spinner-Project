@@ -2,6 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds.Api;
+using GoogleMobileAds.Api.Mediation.InMobi;
+using GoogleMobileAds.Api.Mediation.AppLovin;
 
 public class AdManager : MonoBehaviour {
     public SceneLoadManager sceneLoadManager;
@@ -23,6 +25,15 @@ public class AdManager : MonoBehaviour {
 #else
         string appId = "unexpected_platform";
 #endif
+
+        Dictionary<string, string> consentObject = new Dictionary<string, string>();
+        consentObject.Add("gdpr_consent_available", "true");
+        consentObject.Add("gdpr", "1");
+
+        InMobi.UpdateGDPRConsent(consentObject);
+
+        AppLovin.Initialize();
+        AppLovin.SetHasUserConsent(true);
 
         // Initialize the Google Mobile Ads SDK.
         MobileAds.Initialize(appId);

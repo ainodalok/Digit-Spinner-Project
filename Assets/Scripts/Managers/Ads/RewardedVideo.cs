@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using UnityEngine;
 using GoogleMobileAds.Api;
+using GoogleMobileAds.Api.Mediation.AdColony;
 using System;
 
 public class RewardedVideo
@@ -40,7 +41,11 @@ public class RewardedVideo
         string adUnitId = "unexpected_platform";
 #endif
 
-        AdRequest request = new AdRequest.Builder().Build();
+        AdColonyMediationExtras extras = new AdColonyMediationExtras();
+        extras.SetGDPRRequired(true);
+        extras.SetGDPRConsentString("1");
+
+        AdRequest request = new AdRequest.Builder().AddMediationExtras(extras).Build();
         video.LoadAd(request, adUnitId);
         loaded = false;
         shown = false;
