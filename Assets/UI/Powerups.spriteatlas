@@ -3,10 +3,12 @@
 --- !u!687078895 &4343727234628468602
 SpriteAtlas:
   m_ObjectHideFlags: 0
-  m_PrefabParentObject: {fileID: 0}
-  m_PrefabInternal: {fileID: 0}
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
   m_Name: Powerups
   m_EditorData:
+    serializedVersion: 2
     textureSettings:
       serializedVersion: 2
       anisoLevel: 1
@@ -18,8 +20,19 @@ SpriteAtlas:
       readable: 0
       crunchedCompression: 0
       sRGB: 1
-    platformSettings: []
-    packingParameters:
+    platformSettings:
+    - serializedVersion: 2
+      m_BuildTarget: DefaultTexturePlatform
+      m_MaxTextureSize: 512
+      m_ResizeAlgorithm: 0
+      m_TextureFormat: -1
+      m_TextureCompression: 0
+      m_CompressionQuality: 50
+      m_CrunchedCompression: 0
+      m_AllowsAlphaSplitting: 0
+      m_Overridden: 0
+      m_AndroidETC2FallbackOverride: 0
+    packingSettings:
       serializedVersion: 2
       padding: 4
       blockOffset: 1
@@ -32,17 +45,18 @@ SpriteAtlas:
     - {fileID: 2800000, guid: 5774747ae4e2eb4469cd767921d8baef, type: 3}
     - {fileID: 2800000, guid: c6e3f410b563d1a449b76b1c853b7d60, type: 3}
     - {fileID: 2800000, guid: 0cf4b199081d9404fb003526b0f26668, type: 3}
+    totalSpriteSurfaceArea: 1048576
     bindAsDefault: 1
   m_MasterAtlas: {fileID: 0}
   m_PackedSprites:
-  - {fileID: 21300000, guid: 0cf4b199081d9404fb003526b0f26668, type: 3}
   - {fileID: 21300000, guid: c6e3f410b563d1a449b76b1c853b7d60, type: 3}
-  - {fileID: 21300000, guid: c3757eebc79abfd43ba946003b7e8eaf, type: 3}
+  - {fileID: 21300000, guid: 0cf4b199081d9404fb003526b0f26668, type: 3}
   - {fileID: 21300000, guid: 5774747ae4e2eb4469cd767921d8baef, type: 3}
+  - {fileID: 21300000, guid: c3757eebc79abfd43ba946003b7e8eaf, type: 3}
   m_PackedSpriteNamesToIndex:
-  - WrongMove
   - Regenerate
-  - Overtime
+  - WrongMove
   - Bomb
+  - Overtime
   m_Tag: Powerups
   m_IsVariant: 0

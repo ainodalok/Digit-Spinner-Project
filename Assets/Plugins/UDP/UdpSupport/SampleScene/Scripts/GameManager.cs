@@ -33,7 +33,7 @@ public class GameManager : MonoBehaviour
          * GameSettings.asset only supports Unity whose version is higher than 5.6.1 (inlcuded).
          * If developers are using older Unity, they should get these information from the developer portal and fill the AppInfo manually.
          */
-        AppStoreSettings appStoreSettings = Resources.Load<AppStoreSettings>("GameSettings");
+        UnityEngine.UDP.AppStoreSettings appStoreSettings = Resources.Load<UnityEngine.UDP.AppStoreSettings>("GameSettings");
         appInfo.AppSlug = appStoreSettings.AppSlug;
         appInfo.ClientId = appStoreSettings.UnityClientID;
         appInfo.ClientKey = appStoreSettings.UnityClientKey;

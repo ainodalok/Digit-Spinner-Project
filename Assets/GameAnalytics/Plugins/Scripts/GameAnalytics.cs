@@ -79,8 +79,6 @@ namespace GameAnalyticsSDK
             DontDestroyOnLoad(gameObject);
 
             Application.logMessageReceived += GA_Debug.HandleLog;
-
-            InternalInitialize();
         }
 
         void OnDestroy()
@@ -92,28 +90,13 @@ namespace GameAnalyticsSDK
                 _instance = null;
         }
 
-//         void OnApplicationPause(bool pauseStatus)
-//         {
-// #if UNITY_ANDROID && !UNITY_EDITOR
-//             AndroidJavaClass jc = new AndroidJavaClass("com.unity3d.player.UnityPlayer");
-//             AndroidJavaObject activity = jc.GetStatic<AndroidJavaObject>("currentActivity");
-//             AndroidJavaClass ga = new AndroidJavaClass("com.gameanalytics.sdk.GAPlatform");
-//             if (pauseStatus) {
-//                 ga.CallStatic("onActivityPaused", activity);
-//             }
-//             else {
-//                 ga.CallStatic("onActivityResumed", activity);
-//             }
-// #endif
-//         }
-
         void OnApplicationQuit()
         {
 #if (!UNITY_EDITOR && !UNITY_IOS && !UNITY_ANDROID && !UNITY_TVOS && !UNITY_WEBGL && !UNITY_TIZEN)
-            if(!SettingsGA.UseManualSessionHandling)
-            {
-                GameAnalyticsSDK.Net.GameAnalytics.OnStop();
-            }
+            GameAnalyticsSDK.Net.GameAnalytics.OnQuit();
+#if UNITY_STANDALONE
+            System.Threading.Thread.Sleep(1500);
+#endif
 #endif
         }
 
@@ -232,6 +215,7 @@ namespace GameAnalyticsSDK
 
         public static void Initialize ()
         {
+            InternalInitialize();
             int platformIndex = GetPlatformIndex();
 
             if(platformIndex >= 0)
@@ -258,7 +242,7 @@ namespace GameAnalyticsSDK
         {
             if(!GameAnalytics._hasInitializeBeenCalled)
             {
-                Debug.LogWarning("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
+                Debug.LogError("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
                 return;
             }
             GA_Business.NewEvent(currency, amount, itemType, itemId, cartType, null);
@@ -278,7 +262,7 @@ namespace GameAnalyticsSDK
         {
             if(!GameAnalytics._hasInitializeBeenCalled)
             {
-                Debug.LogWarning("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
+                Debug.LogError("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
                 return;
             }
             GA_Business.NewEvent(currency, amount, itemType, itemId, cartType, receipt, false, null);
@@ -296,7 +280,7 @@ namespace GameAnalyticsSDK
         {
             if(!GameAnalytics._hasInitializeBeenCalled)
             {
-                Debug.LogWarning("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
+                Debug.LogError("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
                 return;
             }
             GA_Business.NewEvent(currency, amount, itemType, itemId, cartType, null, true, null);
@@ -317,7 +301,7 @@ namespace GameAnalyticsSDK
         {
             if(!GameAnalytics._hasInitializeBeenCalled)
             {
-                Debug.LogWarning("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
+                Debug.LogError("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
                 return;
             }
             GA_Business.NewEventGooglePlay(currency, amount, itemType, itemId, cartType, receipt, signature, null);
@@ -332,7 +316,7 @@ namespace GameAnalyticsSDK
         {
             if(!GameAnalytics._hasInitializeBeenCalled)
             {
-                Debug.LogWarning("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
+                Debug.LogError("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
                 return;
             }
             GA_Design.NewEvent(eventName, null);
@@ -347,7 +331,7 @@ namespace GameAnalyticsSDK
         {
             if(!GameAnalytics._hasInitializeBeenCalled)
             {
-                Debug.LogWarning("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
+                Debug.LogError("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
                 return;
             }
             GA_Design.NewEvent(eventName, eventValue, null);
@@ -362,7 +346,7 @@ namespace GameAnalyticsSDK
         {
             if(!GameAnalytics._hasInitializeBeenCalled)
             {
-                Debug.LogWarning("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
+                Debug.LogError("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
                 return;
             }
             GA_Progression.NewEvent(progressionStatus, progression01, null);
@@ -378,7 +362,7 @@ namespace GameAnalyticsSDK
         {
             if(!GameAnalytics._hasInitializeBeenCalled)
             {
-                Debug.LogWarning("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
+                Debug.LogError("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
                 return;
             }
             GA_Progression.NewEvent(progressionStatus, progression01, progression02, null);
@@ -395,7 +379,7 @@ namespace GameAnalyticsSDK
         {
             if(!GameAnalytics._hasInitializeBeenCalled)
             {
-                Debug.LogWarning("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
+                Debug.LogError("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
                 return;
             }
             GA_Progression.NewEvent(progressionStatus, progression01, progression02, progression03, null);
@@ -411,7 +395,7 @@ namespace GameAnalyticsSDK
         {
             if(!GameAnalytics._hasInitializeBeenCalled)
             {
-                Debug.LogWarning("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
+                Debug.LogError("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
                 return;
             }
             GA_Progression.NewEvent(progressionStatus, progression01, score, null);
@@ -428,7 +412,7 @@ namespace GameAnalyticsSDK
         {
             if(!GameAnalytics._hasInitializeBeenCalled)
             {
-                Debug.LogWarning("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
+                Debug.LogError("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
                 return;
             }
             GA_Progression.NewEvent(progressionStatus, progression01, progression02, score, null);
@@ -446,7 +430,7 @@ namespace GameAnalyticsSDK
         {
             if(!GameAnalytics._hasInitializeBeenCalled)
             {
-                Debug.LogWarning("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
+                Debug.LogError("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
                 return;
             }
             GA_Progression.NewEvent(progressionStatus, progression01, progression02, progression03, score, null);
@@ -464,7 +448,7 @@ namespace GameAnalyticsSDK
         {
             if(!GameAnalytics._hasInitializeBeenCalled)
             {
-                Debug.LogWarning("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
+                Debug.LogError("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
                 return;
             }
             GA_Resource.NewEvent(flowType, currency, amount, itemType, itemId, null);
@@ -479,7 +463,7 @@ namespace GameAnalyticsSDK
         {
             if(!GameAnalytics._hasInitializeBeenCalled)
             {
-                Debug.LogWarning("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
+                Debug.LogError("GameAnalytics: REMEMBER THE SDK NEEDS TO BE MANUALLY INITIALIZED NOW");
                 return;
             }
             GA_Error.NewEvent(severity, message, null);
@@ -529,6 +513,15 @@ namespace GameAnalyticsSDK
         public static void SetEnabledManualSessionHandling(bool enabled)
         {
             GA_Wrapper.SetEnabledManualSessionHandling(enabled);
+        }
+
+        /// <summary>
+        /// Sets the enabled event submission.
+        /// </summary>
+        /// <param name="enabled">If set to <c>true</c> enabled.</param>
+        public static void SetEnabledEventSubmission(bool enabled)
+        {
+            GA_Wrapper.SetEnabledEventSubmission(enabled);
         }
 
         /// <summary>

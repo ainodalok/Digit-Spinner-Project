@@ -24,8 +24,20 @@
 
 public static class GPGSIds
 {
-        public const string leaderboard_limited_turns = "CgkI-MWprNwaEAIQAg"; // <GPGSID>
+        public const string achievement_devils_due = "CgkI-MWprNwaEAIQCQ"; // <GPGSID>
+        public const string achievement_15k = "CgkI-MWprNwaEAIQBw"; // <GPGSID>
+        public const string achievement_8_in_one_go = "CgkI-MWprNwaEAIQDQ"; // <GPGSID>
+        public const string achievement_20k = "CgkI-MWprNwaEAIQCA"; // <GPGSID>
         public const string leaderboard_time_attack = "CgkI-MWprNwaEAIQAw"; // <GPGSID>
+        public const string achievement_6_in_one_go = "CgkI-MWprNwaEAIQCw"; // <GPGSID>
+        public const string achievement_7_in_one_go = "CgkI-MWprNwaEAIQDA"; // <GPGSID>
+        public const string achievement_10k = "CgkI-MWprNwaEAIQBg"; // <GPGSID>
+        public const string leaderboard_limited_turns = "CgkI-MWprNwaEAIQAg"; // <GPGSID>
+        public const string achievement_all_the_power_ups = "CgkI-MWprNwaEAIQDw"; // <GPGSID>
+        public const string achievement_3k = "CgkI-MWprNwaEAIQBA"; // <GPGSID>
+        public const string achievement_all_at_once = "CgkI-MWprNwaEAIQDg"; // <GPGSID>
+        public const string achievement_5k = "CgkI-MWprNwaEAIQBQ"; // <GPGSID>
+        public const string achievement_5_in_one_go = "CgkI-MWprNwaEAIQCg"; // <GPGSID>
 
 }
 
