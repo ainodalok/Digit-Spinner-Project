@@ -7,4 +7,8 @@ The workload was spread over three team members and extensive planning has been 
 
 The Android build makes use of Google Play Services which changed a lot over the years, so there is no guarantee they will be working later (leaderboards and achievements are still accessible as of 21.01.21).
 
+The game is available either from it's [Homepage](https://frostnova-net.herokuapp.com/) (Google Play Store link and WebGL version playable in browser ) or [Releases page](https://github.com/ainodalok/Digit-Spinner-Project/releases/) (builds for Android, Windows and WebGL).
+
+[![Showcase Trailer](https://i.imgur.com/WVlwUbP.png)](https://www.youtube.com/watch?v=WasH_aM4bmg)
+
 All assets are either royalty free or licensed under CC0 license.
